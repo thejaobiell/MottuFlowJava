@@ -2,6 +2,7 @@ package com.sprint.MottuFlow.controller;
 
 import com.sprint.MottuFlow.dto.MotoDTO;
 import com.sprint.MottuFlow.model.Moto;
+import com.sprint.MottuFlow.model.Patio;
 import com.sprint.MottuFlow.service.MotoService;
 
 import jakarta.validation.Valid;
@@ -40,7 +41,7 @@ public class MotoController {
         moto.setFabricante(dto.getFabricante());
         moto.setAno(dto.getAno());
         if (dto.getIdPatio() != 0) {
-            var patio = new com.sprint.MottuFlow.model.Patio();
+        	Patio patio = new Patio();
             patio.setIdPatio(dto.getIdPatio());
             moto.setPatio(patio);
         }

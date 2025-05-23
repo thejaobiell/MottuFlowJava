@@ -80,7 +80,4 @@ public class StatusDTO {
 	public void setIdFuncionario(Long idFuncionario) {
 		this.idFuncionario = idFuncionario;
 	}
-
-    // Getters e Setters
-    // ...
 }

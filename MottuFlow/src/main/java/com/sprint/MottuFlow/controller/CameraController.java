@@ -2,6 +2,7 @@ package com.sprint.MottuFlow.controller;
 
 import com.sprint.MottuFlow.dto.CameraDTO;
 import com.sprint.MottuFlow.model.Camera;
+import com.sprint.MottuFlow.model.Patio;
 import com.sprint.MottuFlow.service.CameraService;
 
 import jakarta.validation.Valid;
@@ -36,7 +37,7 @@ public class CameraController {
         camera.setLocalizacaoFisica(dto.getLocalizacaoFisica());
 
         if (dto.getIdPatio() != 0) {
-            var patio = new com.sprint.MottuFlow.model.Patio();
+            Patio patio = new Patio();
             patio.setIdPatio(dto.getIdPatio());
             camera.setPatio(patio);
         }

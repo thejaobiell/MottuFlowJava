@@ -81,7 +81,4 @@ public class LocalidadeDTO {
 	public void setIdCamera(Long idCamera) {
 		this.idCamera = idCamera;
 	}
-
-    // Getters e Setters
-    // ...
 }

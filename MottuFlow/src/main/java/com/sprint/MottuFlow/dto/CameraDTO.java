@@ -57,7 +57,4 @@ public class CameraDTO {
 	public void setIdPatio(Long idPatio) {
 		this.idPatio = idPatio;
 	}
-
-    // Getters e Setters
-    // ...
 }

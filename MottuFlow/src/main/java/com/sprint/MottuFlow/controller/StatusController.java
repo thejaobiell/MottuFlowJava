@@ -1,6 +1,8 @@
 package com.sprint.MottuFlow.controller;
 
 import com.sprint.MottuFlow.dto.StatusDTO;
+import com.sprint.MottuFlow.model.Funcionario;
+import com.sprint.MottuFlow.model.Moto;
 import com.sprint.MottuFlow.model.Status;
 import com.sprint.MottuFlow.service.StatusService;
 
@@ -39,12 +41,12 @@ public class StatusController {
         status.setDataStatus(dto.getDataStatus());
 
         if (dto.getIdMoto() != 0) {
-            var moto = new com.sprint.MottuFlow.model.Moto();
+        	Moto moto = new Moto();
             moto.setIdMoto(dto.getIdMoto());
             status.setMoto(moto);
         }
         if (dto.getIdFuncionario() != 0) {
-            var funcionario = new com.sprint.MottuFlow.model.Funcionario();
+        	Funcionario funcionario = new Funcionario();
             funcionario.setId(dto.getIdFuncionario());
             status.setFuncionario(funcionario);
         }

@@ -2,6 +2,7 @@ package com.sprint.MottuFlow.controller;
 
 import com.sprint.MottuFlow.dto.ArucoTagDTO;
 import com.sprint.MottuFlow.model.ArucoTag;
+import com.sprint.MottuFlow.model.Moto;
 import com.sprint.MottuFlow.service.ArucoTagService;
 
 import jakarta.validation.Valid;
@@ -35,7 +36,7 @@ public class ArucoTagController {
         tag.setCodigo(dto.getCodigo());
 
         if (dto.getIdMoto() != 0) {
-            var moto = new com.sprint.MottuFlow.model.Moto();
+            Moto moto = new Moto();
             moto.setIdMoto(dto.getIdMoto());
             tag.setMoto(moto);
         }

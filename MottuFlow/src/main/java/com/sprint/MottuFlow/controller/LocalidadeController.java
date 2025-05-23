@@ -1,7 +1,10 @@
 package com.sprint.MottuFlow.controller;
 
 import com.sprint.MottuFlow.dto.LocalidadeDTO;
+import com.sprint.MottuFlow.model.Camera;
 import com.sprint.MottuFlow.model.Localidade;
+import com.sprint.MottuFlow.model.Moto;
+import com.sprint.MottuFlow.model.Patio;
 import com.sprint.MottuFlow.service.LocalidadeService;
 
 import jakarta.validation.Valid;
@@ -40,17 +43,17 @@ public class LocalidadeController {
         localidade.setPontoReferencia(dto.getPontoReferencia());
 
         if (dto.getIdMoto() != 0) {
-            var moto = new com.sprint.MottuFlow.model.Moto();
+        	Moto moto = new Moto();
             moto.setIdMoto(dto.getIdMoto());
             localidade.setMoto(moto);
         }
         if (dto.getIdPatio() != 0) {
-            var patio = new com.sprint.MottuFlow.model.Patio();
+            Patio patio = new Patio();
             patio.setIdPatio(dto.getIdPatio());
             localidade.setPatio(patio);
         }
         if (dto.getIdCamera() != 0) {
-            var camera = new com.sprint.MottuFlow.model.Camera();
+            Camera camera = new Camera();
             camera.setIdCamera(dto.getIdCamera());
             localidade.setCamera(camera);
         }
