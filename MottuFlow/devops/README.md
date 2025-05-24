@@ -20,10 +20,13 @@ Este projeto automatiza a criação de uma VM no Azure, instalação do Docker e
 ## ✅ Pré-requisitos
 
 - Azure CLI instalado e autenticado (`az login`)
+- Fazer o git clone do [repositório da API em Java](https://github.com/thejaobiell/MottuFlowJava)
+  >OBS: Em **MottuFlowJava/MottuFlow/devops** tem todos os arquivos requisitados.
 - Dois arquivos prontos:
   - `vm-deploy.sh` – cria e configura a VM
   - `instalar-dockerVM.sh` – instala Docker e reinicia a VM
-  > OBS: Ambos os arquivos devem estar na mesma pasta.
+  - `limparVM.sh` – deleta a VM após o seu uso
+  > OBS: Todos os arquivos devem estar na mesma pasta.
 
 ---
 
@@ -56,15 +59,19 @@ No terminal da sua máquina local, execute:
 bash vm-deploy.sh
 # ou
 ./vm-deploy.sh
-````
+```
 
-Esse comando irá:
+> 💡 **Dica:** Se o script não tiver permissão de execução, use o comando abaixo para torná-lo executável:
+>
+> ```bash
+> chmod +x nome-do-arquivo.sh
+> ```
 
-* Criar toda a infraestrutura
-* Instalar o Docker
-* Reiniciar a VM automaticamente
+### Scripts disponíveis:
 
----
+* `vm-deploy.sh`
+* `instalar-dockerVM.sh` 
+* `limparVM.sh` 
 
 ### ⚠️ ATENÇÃO!
 
@@ -93,9 +100,13 @@ ssh azureuser@<IP_PÚBLICO>
 
 ---
 
-## ✅ Etapa 4 – Rodar o container da aplicação
+Claro! Aqui está a **versão atualizada da Etapa 4**, já incluindo as instruções para acesso via Postman e a observação sobre os endpoints:
 
-Dentro da VM, execute:
+---
+
+## ✅ Etapa 4 – Rodar o container e acessar a aplicação
+
+Dentro da **VM**, execute:
 
 ```bash
 docker run -p 8080:8080 thejaobiel/mottuflow:sprint1
@@ -117,13 +128,13 @@ http://<IP_PÚBLICO>:8080/h2-console
 Saved Settings: Generic H2 (Embedded)
 Settings Name: Generic H2 (Embedded)
 
-Driver Class: org.h2.Driver
-JDBC URL: jdbc:h2:mem:MottuFlow
-User Name: sa
+Driver Class: org.h2.Driver  
+JDBC URL: jdbc:h2:mem:MottuFlow  
+User Name: sa  
 Password: 
 ```
 
-### 🔍 Consultas SQL:
+### 🔍 Consultas SQL sugeridas:
 
 ```sql
 SELECT * FROM FUNCIONARIO;
@@ -135,7 +146,19 @@ SELECT * FROM STATUS;
 SELECT * FROM LOCALIDADE;
 ```
 
-> ⚠️ Obs: Por padrão, as tabelas já estarão populadas com conteúdo significativo.
+> ⚠️ **Obs:** Por padrão, as tabelas já estarão populadas com conteúdo significativo.
+
+---
+
+## 📡 Como acessar a API REST
+
+Você também pode acessar a API usando ferramentas como o **Postman** ou diretamente pelo navegador, através da URL:
+
+```
+http://<IP_PÚBLICO>:8080/api/<nome-do-endpoint>
+```
+
+> 🔎 Consulte as classes Controller no código-fonte para verificar os endpoints disponíveis (por exemplo, `/api/funcionarios`, `/api/motos`, etc.).
 
 ---
 
@@ -144,10 +167,26 @@ SELECT * FROM LOCALIDADE;
 Após finalizar o uso da API na VM, execute localmente o script:
 
 ```bash
+./limparVM.sh
+ou
 bash limparVM.sh
 ```
 
 ---
+
+## ❗ Possíveis erros comuns
+
+- **Permissão negada ao rodar script**  
+  ➜ Execute `chmod +x <nome-do-script>.sh` para garantir que o arquivo é executável.
+
+- **Conexão SSH recusada após reboot**  
+  ➜ Aguarde até 2 minutos e tente novamente com `ssh azureuser@<IP_PÚBLICO>`.
+
+- **Porta 8080 bloqueada?**  
+  ➜ Verifique se as regras de segurança do grupo de recursos permitem entrada na porta 8080 (TCP).
+
+---
+
 
 ## 🧑‍💻 Créditos
 
@@ -157,19 +196,8 @@ Turma: 2TDSB - 2025
 
 ### 👨‍🎓 Alunos
 
-* João Gabriel Boaventura Marques e Silva – RM554874
-* Leo Motta Lima – RM557851
-* Lucas Leal das Chagas – RM551124
+* [João Gabriel Boaventura Marques e Silva  | RM554874 | 2TDSB-2025](https://github.com/thejaobiell)
+* [Léo Mota Lima | RM557851 | 2TDSB-2025](https://github.com/leomotalima)
+* [Lucas Leal das Chagas | RM551124 | 2TDSB-2025](https://github.com/LucasLDC)
 
 🔗 [Repositório da API em Java no GitHub](https://github.com/thejaobiell/MottuFlowJava)
-
----
-
-> 💡 **DEVOPS TOOLS & CLOUD COMPUTING – Sprint 1 Avaliação**
->
-> * Spring Web para criação da API
-> * Spring Data JPA para acesso ao banco de dados
-> * Banco H2 (ou Oracle)
-> * CRUD completo de pelo menos 2 entidades
-> * Relacionamentos entre entidades
-> * Dockerfile, scripts Azure CLI, README com instruções
