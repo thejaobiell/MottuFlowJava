@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - MottuFlow</title>
+    <link rel="stylesheet" th:href="@{/css/estiloHome.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+<h1>Bem-vindo ao MottuFlow</h1>
+<img><img th:src="@{/images/logo.png}" alt="MottuFlow Logo" style="width:200px;height:auto;">
+<p>Escolha uma das opções abaixo:</p>
+
+<ul>
+    <li><a th:href="@{/funcionario}">Gerenciar Funcionários</a></li>
+</ul>
+</body>
+</html>
