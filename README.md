@@ -1,22 +1,14 @@
-# 🚀 MottuFlow – API REST em Java
+# 🚀 MottuFlow – API REST & Thymeleaf
 
-Este repositório contém a implementação da API REST **MottuFlow**, desenvolvida como parte da disciplina de **Java Advanced**, no curso de **Análise e Desenvolvimento de Sistemas**.
+**MottuFlow** é uma aplicação híbrida desenvolvida em **Java**, projetada para gerenciar de forma completa **funcionários, pátios, motos, câmeras, ArUco tags, status das motos e localidades**. Ela combina:
 
-A API tem como objetivo oferecer funcionalidades completas de **CRUD** para o gerenciamento de:
+* **API REST**: para integração com front-ends externos (como aplicativos mobile em React Native).
+* **Interface web com Thymeleaf**: para uso direto pelo navegador, com páginas de gerenciamento e visualização dos dados.
 
-* Funcionários
-* Pátios
-* Motos
-* Câmeras
-* ArUco Tags
-* Status das motos
-* Localidades
-
-No contexto da disciplina de **IoT**, está sendo desenvolvida uma solução de **visão computacional** que utilizará câmeras para identificar motocicletas por meio de **ArUco Tags**.
+No contexto da disciplina de **IoT**, a solução utiliza **visão computacional** com câmeras para identificar motocicletas por meio de **ArUco Tags**.
 👉 [Exemplo de imagem com ArUco Tag](https://docs.opencv.org/4.x/singlemarkersdetection.jpg)
 
-A API será responsável pela comunicação com o banco de dados criado na disciplina de **Database**, facilitando o envio e recebimento de informações na infraestrutura do projeto.
-Além disso, será futuramente integrada ao aplicativo mobile desenvolvido na disciplina de **Mobile Application Development**.
+A API comunica-se com o **banco de dados MySQL**, facilitando o envio e recebimento de informações, e será futuramente integrada ao aplicativo mobile desenvolvido na disciplina de **Mobile Application Development**.
 
 ---
 
@@ -26,13 +18,29 @@ Além disso, será futuramente integrada ao aplicativo mobile desenvolvido na di
 
 ---
 
+## Funcionalidades
+
+A aplicação oferece **CRUD completo** para os seguintes módulos:
+
+* Funcionários: cadastro, atualização, listagem e remoção.
+* Pátios: gerenciamento de pátios e suas localizações.
+* Motos: registro de motos, status, localização e histórico.
+* Câmeras: gerenciamento das câmeras dos pátios.
+* ArUco Tags: identificação das motos usando tags de rastreamento.
+* Status das motos: atualização automática e manual de status.
+* Localidades: controle de localizações dentro dos pátios.
+
+---
+
 ## 📚 Tecnologias Utilizadas
 
-* **Java 17+**
+* **Java 21+**
 * **Spring Boot**
 * **Spring Data JPA**
-* **Banco de Dados H2** (posteriormente será substituído por Oracle)
+* **MySQL** (banco de dados)
 * **Maven** (gerenciador de dependências)
+* **JWT** (autenticação segura)
+* **Thymeleaf** (templates para interface web)
 
 ---
 
@@ -47,52 +55,39 @@ cd MottuFlowJava/MottuFlow
 
 ---
 
-### 📥 Ou importar o projeto no Eclipse IDE:
+### 📥 Importar o projeto no IntelliJ IDEA:
 
-1. Abra o **Eclipse IDE**
-2. Vá em **File > Import...**
-3. Selecione **Maven > Existing Maven Projects**
-4. Clique em **Browse** e selecione a pasta `MottuFlow`
-5. Marque o arquivo `pom.xml`
-6. Clique em **Finish** para concluir a importação
+1. Abra o **IntelliJ IDEA**
+2. Vá em **File > Open**
+3. Selecione a pasta `MottuFlow` que contém o `pom.xml`
+4. O IntelliJ irá reconhecer automaticamente como **projeto Maven**
 
 ---
 
-### 🛠️ Configuração do Banco de Dados H2
+### 🛠️ Configuração do Banco de Dados MySQL
 
-O projeto já está configurado para utilizar o banco de dados H2 em memória. As configurações estão definidas no arquivo:
-
-```
-src/main/resources/application.properties
-```
+No arquivo `src/main/resources/application.properties`, configure o MySQL:
 
 ```properties
-spring.datasource.url=jdbc:h2:mem:MottuFlow
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
+spring.application.name=MottuFlow
 
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.datasource.url=jdbc:mysql://localhost:3306/mottuflow?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=root
+
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
-spring.sql.init.mode=always
-spring.jpa.defer-datasource-initialization=true
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+spring.flyway.repair=true
+spring.flyway.repair-on-migrate=true
+
+spring.main.allow-bean-definition-overriding=true
 ```
 
-### 🔁 Sobre o `data.sql`
-
-**Para ativar a carga automática de dados de exemplo:**
-
-* Deixe `spring.sql.init.mode=always`
-* Mantenha a linha `spring.jpa.defer-datasource-initialization=true` **descomentada**
-
-**Para desativar:**
-
-* Altere `spring.sql.init.mode=never`
-* Comente ou remova `spring.jpa.defer-datasource-initialization=true`
+> ⚠️ Certifique-se de que o MySQL esteja rodando e que o usuário configurado tenha permissões para criar banco e tabelas.
 
 ---
 
@@ -104,62 +99,42 @@ spring.jpa.defer-datasource-initialization=true
 ./mvnw spring-boot:run
 ```
 
-#### Via Eclipse:
+#### Via IntelliJ IDEA:
 
 1. Navegue até: `MottuFlow/src/main/java/com/sprint/MottuFlow`
-2. Abra o arquivo `MottuFlowApplication.java`
-3. Clique com o botão direito e selecione **Run As > Java Application**
+2. Abra `MottuFlowApplication.java`
+3. Clique com o botão direito e selecione **Run 'MottuFlowApplication'**
+
+A aplicação estará disponível em:
+
+```
+http://localhost:8080
+```
 
 ---
 
 ## 🔌 Acessando a API
 
-### 💻 Console H2
+Você pode consumir os endpoints REST utilizando ferramentas como **Postman** ou **Insomnia**.
 
-Acesse pelo navegador:
+* Todas as requisições e respostas utilizam **JSON**.
+* Exemplo de endpoints CRUD:
 
 ```
-http://localhost:8080/h2-console
+GET /funcionarios
+POST /funcionarios
+PUT /funcionarios/{id}
+DELETE /funcionarios/{id}
 ```
 
-Preencha com os dados:
-
-* **JDBC URL:** `jdbc:h2:mem:MottuFlow`
-* **User Name:** `sa`
-* **Password:** *(deixe em branco)*
-* **Driver Class:** `org.h2.Driver`
-
----
-
-### 📮 Testes com Postman
-
-1. Abra o **Postman**
-2. Clique em **File > Import**
-3. Selecione ou arraste a pasta **JSONS POSTMAN**
-4. Realize os testes da API com os exemplos fornecidos
-
----
-
-## ✅ Funcionalidades Disponíveis
-
-A API oferece operações CRUD completas para as seguintes entidades:
-
-* Funcionários
-* Pátios
-* Motos
-* Câmeras
-* ArUco Tags
-* Status das motos
-* Localidades
-
-> Todas as requisições e respostas seguem o formato **JSON**.
+*(similares para motos, pátios, câmeras, tags e status)*
 
 ---
 
 ## 🧭 Observações
 
-* O projeto segue o padrão de arquitetura em camadas
-* Utiliza **DTOs** para separar o modelo de domínio dos dados expostos
+* Arquitetura em **camadas** com uso de **DTOs** para separar domínio e dados expostos
+* Autenticação com **JWT** para API REST e **Spring Security** para Thymeleaf
 
 ---
 
@@ -168,3 +143,5 @@ A API oferece operações CRUD completas para as seguintes entidades:
 * **João Gabriel Boaventura Marques e Silva** – RM554874 – 2TDSB2025
 * **Léo Mota Lima** – RM557851 – 2TDSB2025
 * **Lucas Leal das Chagas** – RM551124 – 2TDSB2025
+
+---
