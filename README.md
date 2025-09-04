@@ -64,6 +64,15 @@ cd MottuFlowJava/MottuFlow
 
 ---
 
+### 📥 Ou importar o projeto no Eclipse IDE: 
+1. Abra o **Eclipse IDE**
+2. Vá em **File > Import...**
+3. Selecione **Maven > Existing Maven Projects**
+4. Clique em **Browse** e selecione a pasta MottuFlow
+5. Marque o arquivo pom.xml
+6. Clique em **Finish** para concluir a importação
+---
+
 ### 🛠️ Configuração do Banco de Dados MySQL
 
 No arquivo `src/main/resources/application.properties`, configure o MySQL:
