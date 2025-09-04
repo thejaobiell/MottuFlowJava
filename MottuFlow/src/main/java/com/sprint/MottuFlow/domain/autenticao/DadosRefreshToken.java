@@ -1,4 +1,4 @@
-package com.sprint.MottuFlow.autenticao;
+package com.sprint.MottuFlow.domain.autenticao;
 
 import jakarta.validation.constraints.NotBlank;
 

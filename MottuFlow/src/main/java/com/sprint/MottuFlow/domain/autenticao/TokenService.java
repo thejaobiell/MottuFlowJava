@@ -1,4 +1,4 @@
-package com.sprint.MottuFlow.autenticao;
+package com.sprint.MottuFlow.domain.autenticao;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -25,7 +25,7 @@ public class TokenService {
 	 */
 	public String gerarToken( Funcionario funcionario) {
 		try {
-			Algorithm algorithm = Algorithm.HMAC256("MEU-SEGREDO");
+			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
 			return JWT.create()
 					.withIssuer("MottuFlow") // Identificador do emissor do token
 					.withSubject(funcionario.getUsername()) // Nome de usuário do usuário autenticado
@@ -38,7 +38,7 @@ public class TokenService {
 	
 	public String gerarRefreshToken(Funcionario funcionario) {
 		try {
-			Algorithm algorithm = Algorithm.HMAC256("MEU-SEGREDO");
+			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
 			return JWT.create()
 					.withIssuer("MottuFlow")
 					.withSubject(funcionario.getId_funcionario().toString())
@@ -49,10 +49,10 @@ public class TokenService {
 		}
 	}
 	
-	public String verificarToken(String token) {
+	public String getSubject( String token) {
 		DecodedJWT decodedJWT;
 		try {
-			Algorithm algorithm = Algorithm.HMAC256("MEU-SEGREDO");
+			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
 			JWTVerifier verifier = JWT.require(algorithm)
 					.withIssuer("MottuFlow")
 					.build();

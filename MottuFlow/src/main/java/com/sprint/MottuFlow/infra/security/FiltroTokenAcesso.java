@@ -1,6 +1,6 @@
 package com.sprint.MottuFlow.infra.security;
 
-import com.sprint.MottuFlow.autenticao.TokenService;
+import com.sprint.MottuFlow.domain.autenticao.TokenService;
 import com.sprint.MottuFlow.domain.funcionario.Funcionario;
 import com.sprint.MottuFlow.domain.funcionario.FuncionarioRepository;
 import jakarta.servlet.FilterChain;
@@ -19,7 +19,6 @@ import java.io.IOException;
 public class FiltroTokenAcesso extends OncePerRequestFilter {
 	
 	private final TokenService tokenService;
-	
 	private final FuncionarioRepository funcionarioRepository;
 	
 	public FiltroTokenAcesso( TokenService tokenService, FuncionarioRepository funcionarioRepository ) {
@@ -28,26 +27,27 @@ public class FiltroTokenAcesso extends OncePerRequestFilter {
 	}
 	
 	@Override
-	protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response, FilterChain filterChain ) throws ServletException, IOException {
+	protected void doFilterInternal( HttpServletRequest request, HttpServletResponse response,
+	                                 FilterChain filterChain ) throws ServletException, IOException {
 		String token = recuperarTokenRequisicao( request );
 		
 		if ( token != null ) {
-			String usuario = tokenService.verificarToken( token );
-			Funcionario funcionario = funcionarioRepository.findByEmailIgnoreCase( usuario ).orElseThrow();
-			
-			Authentication authentication = new UsernamePasswordAuthenticationToken( funcionario, null, funcionario.getAuthorities() );
-			
-			SecurityContextHolder.getContext().setAuthentication( authentication );
+			try {
+				String usuario = tokenService.getSubject( token );
+				Funcionario funcionario = funcionarioRepository.findByEmailIgnoreCase( usuario ).orElseThrow();
+				
+				Authentication authentication = new UsernamePasswordAuthenticationToken( funcionario, null, funcionario.getAuthorities() );
+				SecurityContextHolder.getContext().setAuthentication( authentication );
+				
+			} catch ( Exception e ) {}
 		}
-		
 		filterChain.doFilter( request, response );
 	}
 	
 	private String recuperarTokenRequisicao( HttpServletRequest request ) {
-		var authorizationHeader = request.getHeader( "Authorization" );
-		
-		if ( authorizationHeader != null ) {
-			return authorizationHeader.replace( "Bearer ", "" );
+		String authHeader = request.getHeader( "Authorization" );
+		if ( authHeader != null && authHeader.startsWith( "Bearer " ) ) {
+			return authHeader.substring( 7 );
 		}
 		return null;
 	}

@@ -47,12 +47,6 @@ public class Funcionario implements UserDetails{
 	
 	@Column(name = "expiracao_refresh_token", nullable = true)
 	private LocalDateTime expiracaoRefreshToken;
-	
-	@Column(name = "token", nullable = true)
-	private String token;
-	
-	@Column(name = "expiracao_token", nullable = true)
-	private LocalDateTime expiracaoToken;
 
     @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Status> estadoList;
@@ -127,22 +121,6 @@ public class Funcionario implements UserDetails{
 	
 	public void setExpiracaoRefreshToken( LocalDateTime expiracaoRefreshToken ) {
 		this.expiracaoRefreshToken = expiracaoRefreshToken;
-	}
-	
-	public String getToken() {
-		return token;
-	}
-	
-	public void setToken( String token ) {
-		this.token = token;
-	}
-	
-	public LocalDateTime getExpiracaoToken() {
-		return expiracaoToken;
-	}
-	
-	public void setExpiracaoToken( LocalDateTime expiracaoToken ) {
-		this.expiracaoToken = expiracaoToken;
 	}
 	
 	@Override
