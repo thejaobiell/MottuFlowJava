@@ -26,9 +26,13 @@ public class ConfiguracoesSeguranca {
 	
 	@Bean
 	@Order(1)
-	public SecurityFilterChain apiSecurity(HttpSecurity http) throws Exception {
+	/*
+	 - Filtros de Segurança para a APIREST
+	    - Ela permite qualquer um acessar a urls /login e /atualizar-token
+	*/
+	public SecurityFilterChain apiRestSecurity( HttpSecurity http ) throws Exception {
 		return http
-				.securityMatcher("/api/**")
+				.securityMatcher( "/api/**" )
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/api/login", "/api/atualizar-token").permitAll()
 						.anyRequest().authenticated()
@@ -42,28 +46,35 @@ public class ConfiguracoesSeguranca {
 	
 	@Bean
 	@Order(2)
-	public SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
+	/*
+	 - Filtros de Segurança para Thymeleaf
+	*/
+	public SecurityFilterChain webSecurity( HttpSecurity http ) throws Exception {
 		return http
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/css/**", "/js/**", "/assets/**").permitAll()
+						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 						.requestMatchers("/login").permitAll()
 						.anyRequest().authenticated()
 				)
 				.formLogin(form -> form
 						.loginPage("/login")
-						.defaultSuccessUrl("https://www.globo.com", true)
+						.defaultSuccessUrl("/menu")
 						.permitAll()
+						.successHandler((request, response, authentication) -> {
+							response.sendRedirect("/menu");
+						})
 				)
 				.logout(logout -> logout
 						.logoutUrl("/logout")
 						.logoutSuccessUrl("/login?logout")
 						.permitAll()
 				)
+				.csrf(AbstractHttpConfigurer::disable)
 				.build();
 	}
 	
-	
 	@Bean
+	//Encriptador de senhas
 	public PasswordEncoder encriptador() {
 		return new BCryptPasswordEncoder();
 	}

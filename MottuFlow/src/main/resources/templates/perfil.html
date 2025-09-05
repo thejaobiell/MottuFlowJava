@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/components/header.css}">
+    <link rel="stylesheet" th:href="@{/css/components/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+    <div th:replace="~{components/header :: header}"></div>
+
+    <main>
+        <div class="profile-container">
+            <div class="profile-card">
+                <h2>Perfil do Usuário</h2>
+
+                <div class="profile-field">
+                    <span class="profile-label">Nome:</span>
+                    <span class="profile-value" th:text="${usuario.nome}">Nome do Usuário</span>
+                </div>
+
+                <div class="profile-field">
+                    <span class="profile-label">Email:</span>
+                    <span class="profile-value" th:text="${usuario.email}">email@exemplo.com</span>
+                </div>
+
+                <div class="profile-field">
+                    <span class="profile-label">CPF:</span>
+                    <span class="profile-value" th:text="${usuario.cpf}">000.000.000-00</span>
+                </div>
+
+                <div class="profile-field">
+                    <span class="profile-label">Cargo:</span>
+                    <span class="profile-value" th:text="${usuario.cargo}">Cargo</span>
+                </div>
+
+                <div class="profile-field">
+                    <span class="profile-label">Telefone:</span>
+                    <span class="profile-value" th:text="${usuario.telefone}">(00) 00000-0000</span>
+                </div>
+	            
+                <div class="profile-field">
+				    <form th:action="@{/logout}" method="post" onsubmit="return confirmLogout()">
+				        <button type="submit" class="btn-logout">Logout</button>
+				    </form>
+				</div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{components/footer :: footer}"></div>
+</body>
+
+<script>
+function confirmLogout() {
+    return confirm("Tem certeza que deseja sair?");
+}
+</script>
+
+</html>

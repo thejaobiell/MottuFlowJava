@@ -7,7 +7,6 @@ import com.sprint.MottuFlow.domain.autenticao.TokenService;
 import com.sprint.MottuFlow.domain.funcionario.Funcionario;
 import com.sprint.MottuFlow.domain.funcionario.FuncionarioService;
 
-import com.sprint.MottuFlow.infra.exception.RegraDeNegocioException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,14 +42,14 @@ public class AutenticacaoRestController {
 		LocalDateTime expiracaoRefresh = LocalDateTime.now().plusMinutes( 120 );
 		
 		// salvar refresh token no banco
-		fS.atualizarRefreshToken( funcionario, refreshToken, expiracaoRefresh );
+		fS.atualizarRefreshTokenFuncionario( funcionario, refreshToken, expiracaoRefresh );
 		
 		return ResponseEntity.ok( new DadosToken( tokenAcesso, refreshToken ) );
 	}
 	
 	@PostMapping( "/atualizar-token" )
 	public ResponseEntity<DadosToken> atualizarToken( @Valid @RequestBody DadosRefreshToken dados ) {
-		Funcionario funcionario = fS.validarRefreshToken( dados.refreshToken() );
+		Funcionario funcionario = fS.validarRefreshTokenFuncionario( dados.refreshToken() );
 		
 		// gerar novos tokens
 		String tokenAcesso = tS.gerarToken( funcionario );
@@ -58,7 +57,7 @@ public class AutenticacaoRestController {
 		LocalDateTime expiracaoRefresh = LocalDateTime.now().plusMinutes( 120 );
 		
 		// atualizar refresh token no banco
-		fS.atualizarRefreshToken( funcionario, novoRefreshToken, expiracaoRefresh );
+		fS.atualizarRefreshTokenFuncionario( funcionario, novoRefreshToken, expiracaoRefresh );
 		
 		return ResponseEntity.ok( new DadosToken( tokenAcesso, novoRefreshToken ) );
 	}

@@ -48,19 +48,19 @@ public class FuncionarioRestController {
 
     @GetMapping
     public List<FuncionarioDTO> getAll() {
-        List<Funcionario> funcionarios = fS.buscarFuncionarios();
+        List<Funcionario> funcionarios = fS.listarFuncionarios();
         return funcionarios.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<FuncionarioDTO> getById(@PathVariable Long id) {
-        Funcionario funcionario = fS.buscarPorIDFuncionario(id);
+        Funcionario funcionario = fS.buscarFuncionarioPorId(id);
         return ResponseEntity.ok(convertToDTO(funcionario));
     }
     
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<FuncionarioDTO> getByCpf(@PathVariable String cpf) {
-        Funcionario funcionario = fS.BuscarPorCPFFuncionario(cpf);
+        Funcionario funcionario = fS.buscarFuncionarioPorCPF(cpf);
         if (funcionario == null) {
             return ResponseEntity.notFound().build();
         }

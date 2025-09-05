@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Funcionários</title>
+    <link rel="stylesheet" th:href="@{/css/mainListar.css}">
+    <link rel="stylesheet" th:href="@{/css/components/header.css}">
+    <link rel="stylesheet" th:href="@{/css/components/footer.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+    <div th:replace="~{components/header :: header}"></div>
+
+	    <main>
+	        <h2>Gerenciar Funcionários</h2>
+		    
+	        <section>
+	            <form th:action="@{/funcionarios/cadastrar}" method="post">
+	                <input type="text" name="nome" placeholder="Nome" required>
+	                <input type="email" name="email" placeholder="Email" required>
+	                <input type="text" name="cpf" placeholder="CPF" required>
+	                <input type="text" name="telefone" placeholder="Telefone" required>
+	                <select name="cargo" required>
+	                    <option value="">Selecione o Cargo</option>
+	                    <option value="MECANICO">Mecânico</option>
+	                    <option value="GERENTE">Gerente</option>
+	                    <option value="ADMIN">Admin</option>
+	                </select>
+	                <input type="password" name="senha" placeholder="Senha" required>
+	                <button type="submit">Cadastrar</button>
+	            </form>
+	        </section>
+		    
+	        <section>
+	            <table>
+	                <thead>
+	                    <tr>
+	                        <th>Nome</th>
+	                        <th>Email</th>
+	                        <th>CPF</th>
+	                        <th>Telefone</th>
+	                        <th>Cargo</th>
+	                        <th class="actions">Ações</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr th:each="func : ${funcionarios}">
+	                        <td th:text="${func.nome}">Nome</td>
+	                        <td th:text="${func.email}">email@exemplo.com</td>
+	                        <td th:text="${func.cpf}">000.000.000-00</td>
+	                        <td th:text="${func.telefone}">(00) 00000-0000</td>
+	                        <td th:text="${func.cargo}">Cargo</td>
+	                        <td class="actions">
+							    <a th:href="@{'/funcionarios/editar/' + ${func.id_funcionario}}" class="button edit">Editar</a>
+							    <form th:action="@{'/funcionarios/deletar/' + ${func.id_funcionario}}" method="post" style="display:block; margin-top:5px;"
+							          onsubmit="return confirm('Tem certeza que deseja deletar este funcionário?')">
+							        <button type="submit" class="button delete">Deletar</button>
+							    </form>
+							</td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	        </section>
+	    </main>
+
+    <div th:replace="~{components/footer :: footer}"></div>
+</body>
+</html>

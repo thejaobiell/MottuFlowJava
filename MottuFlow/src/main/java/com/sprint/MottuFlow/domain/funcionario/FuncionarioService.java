@@ -22,16 +22,20 @@ public class FuncionarioService implements UserDetailsService {
 		this.encoder = encoder;
 	}
 	
-	public List<Funcionario> buscarFuncionarios() {
+	public List<Funcionario> listarFuncionarios() {
 		return fR.findAll();
 	}
 	
-	public Funcionario buscarPorIDFuncionario( Long id ) {
+	public Funcionario buscarFuncionarioPorId( Long id ) {
 		return fR.findById( id ).orElseThrow( () -> new RegraDeNegocioException( "Funcionario não encontrado com id: " + id ) );
 	}
 	
+	public Funcionario buscarFuncionarioPorEmail( String email ) {
+		return fR.findByEmailIgnoreCase( email ).orElseThrow( () -> new RegraDeNegocioException( "Funcionario não encontrado com email: " + email ) );
+	}
+	
 	@Transactional
-	public Funcionario BuscarPorCPFFuncionario( String cpf ) {
+	public Funcionario buscarFuncionarioPorCPF( String cpf ) {
 		return fR.findByCpfNative( cpf );
 	}
 	
@@ -43,7 +47,7 @@ public class FuncionarioService implements UserDetailsService {
 	
 	@Transactional
 	public Funcionario editarFuncionario( Long id, Funcionario funcionarioAtualizado ) {
-		Funcionario funcionario = buscarPorIDFuncionario( id );
+		Funcionario funcionario = buscarFuncionarioPorId( id );
 		
 		if ( funcionarioAtualizado.getNome() != null && !funcionarioAtualizado.getNome().isBlank() ) {
 			funcionario.setNome( funcionarioAtualizado.getNome() );
@@ -75,7 +79,7 @@ public class FuncionarioService implements UserDetailsService {
 	
 	@Transactional
 	public void deletarFuncionario( Long id ) {
-		Funcionario funcionario = buscarPorIDFuncionario( id );
+		Funcionario funcionario = buscarFuncionarioPorId( id );
 		fR.delete( funcionario );
 	}
 	
@@ -85,14 +89,14 @@ public class FuncionarioService implements UserDetailsService {
 	}
 	
 	@Transactional
-	public void atualizarRefreshToken( Funcionario funcionario, String refreshToken, LocalDateTime expiracao ) {
+	public void atualizarRefreshTokenFuncionario( Funcionario funcionario, String refreshToken, LocalDateTime expiracao ) {
 		funcionario.setRefreshToken( refreshToken );
 		funcionario.setExpiracaoRefreshToken( expiracao );
 		fR.save( funcionario );
 	}
 	
 	@Transactional
-	public Funcionario validarRefreshToken( String refreshToken ) {
+	public Funcionario validarRefreshTokenFuncionario( String refreshToken ) {
 		Funcionario funcionario = fR.findByRefreshToken( refreshToken ).orElseThrow( () -> new RegraDeNegocioException( "Refresh token inválido!" ) );
 		
 		if ( funcionario.getExpiracaoRefreshToken().isBefore( LocalDateTime.now() ) ) {
