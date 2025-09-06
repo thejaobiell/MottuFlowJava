@@ -10,18 +10,21 @@ import java.util.List;
 
 @Service
 public class CameraService {
-
-    @Autowired
-    private CameraRepository cR;
-
-    @Autowired
-    private PatioRepository pR;
-
-    public List<Camera> findAllCamera() {
+	
+    private final CameraRepository cR;
+	
+    private final PatioRepository pR;
+	
+	public CameraService( CameraRepository cR, PatioRepository pR ) {
+		this.cR = cR;
+		this.pR = pR;
+	}
+	
+	public List<Camera> listarCameras() {
         return cR.findAll();
     }
 
-    public Camera findByIdCamera(Long id) {
+    public Camera buscarCameraPorId( Long id) {
         return cR.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Camera não encontrada com id: " + id));
     }
@@ -34,28 +37,38 @@ public class CameraService {
         return cR.findByLocalizacaoFisica(localizacao);
     }
 
-    public Camera saveCamera(Camera camera) {
+    public Camera cadastrarCamera( Camera camera) {
         Patio patio = pR.findById(camera.getPatio().getIdPatio())
                 .orElseThrow(() -> new RegraDeNegocioException("Patio não encontrado com id: " + camera.getPatio().getIdPatio()));
         camera.setPatio(patio);
 
         return cR.save(camera);
     }
-
-    public Camera updateCamera(Long id, Camera cameraAtualizado) {
-        Camera camera = findByIdCamera(id);
-
-        camera.setStatusOperacional(cameraAtualizado.getStatusOperacional());
-        camera.setLocalizacaoFisica(cameraAtualizado.getLocalizacaoFisica());
-
-        Patio patio = pR.findById(cameraAtualizado.getPatio().getIdPatio()).orElseThrow(() -> new RegraDeNegocioException("Patio não encontrado com id: " + cameraAtualizado.getPatio().getIdPatio()));
-        camera.setPatio(patio);
-
-        return cR.save(camera);
-    }
-
-    public void deleteByIdCamera(Long id) {
-        Camera camera = findByIdCamera(id);
-        cR.delete(camera);
-    }
+	
+	public Camera editarCamera(Long id, Camera cameraAtualizada) {
+		Camera camera = buscarCameraPorId(id);
+		
+		if (cameraAtualizada.getStatusOperacional() != null && !cameraAtualizada.getStatusOperacional().isBlank()) {
+			camera.setStatusOperacional(cameraAtualizada.getStatusOperacional());
+		}
+		
+		if (cameraAtualizada.getLocalizacaoFisica() != null && !cameraAtualizada.getLocalizacaoFisica().isBlank()) {
+			camera.setLocalizacaoFisica(cameraAtualizada.getLocalizacaoFisica());
+		}
+		
+		if (cameraAtualizada.getPatio() != null && cameraAtualizada.getPatio().getIdPatio() != null) {
+			Patio patio = pR.findById(cameraAtualizada.getPatio().getIdPatio())
+					.orElseThrow(() -> new RegraDeNegocioException(
+							"Pátio não encontrado com id: " + cameraAtualizada.getPatio().getIdPatio()
+					));
+			camera.setPatio(patio);
+		}
+		
+		return cR.save(camera);
+	}
+	
+	public void deletarCamera(Long id) {
+		Camera camera = buscarCameraPorId(id);
+		cR.delete(camera);
+	}
 }

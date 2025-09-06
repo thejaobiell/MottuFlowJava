@@ -7,7 +7,6 @@ import com.sprint.MottuFlow.domain.arucotag.ArucoTagService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +17,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/aruco-tags")
 public class ArucoTagRestController {
 
-    @Autowired
-    private ArucoTagService atS;
-
-    private ArucoTagDTO convertToDTO(ArucoTag tag) {
+    private final ArucoTagService atS;
+	
+	public ArucoTagRestController( ArucoTagService atS ) {
+		this.atS = atS;
+	}
+	
+	private ArucoTagDTO convertToDTO(ArucoTag tag) {
         return new ArucoTagDTO(
                 tag.getIdTag(),
                 tag.getCodigo(),
@@ -46,25 +48,25 @@ public class ArucoTagRestController {
 
     @GetMapping
     public List<ArucoTagDTO> getAll() {
-        List<ArucoTag> tags = atS.findAllAruco();
+        List<ArucoTag> tags = atS.listarArucoTags();
         return tags.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<ArucoTagDTO> getById(@PathVariable Long id) {
-        ArucoTag tag = atS.findByIdAruco(id);
+        ArucoTag tag = atS.buscarTagPorId(id);
         return ResponseEntity.ok(convertToDTO(tag));
     }
     
     @GetMapping("/status/{status}")
     public List<ArucoTagDTO> getByStatus(@PathVariable String status) {
-        List<ArucoTag> tags = atS.findByStatus(status);
+        List<ArucoTag> tags = atS.buscarPorStatus(status);
         return tags.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/codigo/{codigo}")
     public ResponseEntity<ArucoTagDTO> getByCodigo(@PathVariable String codigo) {
-        ArucoTag tag = atS.findByCodigoStatus(codigo);
+        ArucoTag tag = atS.buscarPorCodigo(codigo);
         return ResponseEntity.ok(convertToDTO(tag));
     }
 
@@ -72,20 +74,20 @@ public class ArucoTagRestController {
     @PostMapping
     public ResponseEntity<ArucoTagDTO> create(@RequestBody @Valid ArucoTagDTO tagDTO) {
         ArucoTag tag = convertToEntity(tagDTO);
-        ArucoTag saved = atS.saveAruco(tag);
+        ArucoTag saved = atS.cadastrarTag(tag);
         return ResponseEntity.ok(convertToDTO(saved));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ArucoTagDTO> update(@PathVariable Long id, @RequestBody ArucoTagDTO tagDTO) {
         ArucoTag tagDetails = convertToEntity(tagDTO);
-        ArucoTag updated = atS.updateAruco(id, tagDetails);
+        ArucoTag updated = atS.editarTag(id, tagDetails);
         return ResponseEntity.ok(convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        atS.deleteByIdAruco(id);
+        atS.deletarTag(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -9,7 +9,6 @@ import com.sprint.MottuFlow.domain.localidade.LocalidadeService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +21,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/localidades")
 public class LocalidadeRestController {
 
-    @Autowired
-    private LocalidadeService localidadeService;
-
-    private LocalidadeDTO convertToDTO(Localidade localidade) {
+    
+    private final LocalidadeService lS;
+	
+	public LocalidadeRestController( LocalidadeService lS ) {
+		this.lS = lS;
+	}
+	
+	private LocalidadeDTO convertToDTO(Localidade localidade) {
         return new LocalidadeDTO(
                 localidade.getIdLocalidade(),
                 localidade.getDataHora(),
@@ -63,19 +66,19 @@ public class LocalidadeRestController {
 
     @GetMapping
     public List<LocalidadeDTO> getAll() {
-        List<Localidade> localidades = localidadeService.findAll();
+        List<Localidade> localidades = lS.listarLocalidades();
         return localidades.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<LocalidadeDTO> getById(@PathVariable Long id) {
-        Localidade localidade = localidadeService.findById(id);
+        Localidade localidade = lS.buscarLocalidadePorId(id);
         return ResponseEntity.ok(convertToDTO(localidade));
     }
     
     @GetMapping("/ponto-referencia/{ponto}")
     public List<LocalidadeDTO> getByPontoReferencia(@PathVariable String ponto) {
-        List<Localidade> localidades = localidadeService.findByPontoReferencia(ponto);
+        List<Localidade> localidades = lS.buscarPorPontoReferencia(ponto);
         return localidades.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
@@ -84,7 +87,7 @@ public class LocalidadeRestController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
 
-        List<Localidade> localidades = localidadeService.findByDataHoraBetween(dataInicio, dataFim);
+        List<Localidade> localidades = lS.buscarPorIntervaloData(dataInicio, dataFim);
         return localidades.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
@@ -92,20 +95,20 @@ public class LocalidadeRestController {
     @PostMapping
     public ResponseEntity<LocalidadeDTO> create(@RequestBody @Valid LocalidadeDTO localidadeDTO) {
         Localidade localidade = convertToEntity(localidadeDTO);
-        Localidade saved = localidadeService.save(localidade);
+        Localidade saved = lS.cadastrarLocalidade(localidade);
         return ResponseEntity.ok(convertToDTO(saved));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<LocalidadeDTO> update(@PathVariable Long id, @RequestBody LocalidadeDTO localidadeDTO) {
         Localidade localidadeDetails = convertToEntity(localidadeDTO);
-        Localidade updated = localidadeService.update(id, localidadeDetails);
+        Localidade updated = lS.editarLocalidade(id, localidadeDetails);
         return ResponseEntity.ok(convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        localidadeService.deleteById(id);
+        lS.deletarLocalidade(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -10,9 +10,8 @@ public class StatusDTO {
 	@NotNull
 	private Long idMoto;
 	
-	@NotBlank
-	@Size(max = 50)
-	private String tipoStatus;
+	@NotNull
+	private TipoStatus tipoStatus;
 	
 	@Size(max = 255)
 	private String descricao;
@@ -24,7 +23,8 @@ public class StatusDTO {
 	
 	public StatusDTO() {}
 	
-	public StatusDTO(Long idStatus, Long idMoto, String tipoStatus, String descricao, LocalDateTime dataStatus, Long idFuncionario) {
+	// Construtor usando TipoStatus
+	public StatusDTO(Long idStatus, Long idMoto, TipoStatus tipoStatus, String descricao, LocalDateTime dataStatus, Long idFuncionario) {
 		this.idStatus = idStatus;
 		this.idMoto = idMoto;
 		this.tipoStatus = tipoStatus;
@@ -33,6 +33,7 @@ public class StatusDTO {
 		this.idFuncionario = idFuncionario;
 	}
 	
+	// Getters e Setters
 	public Long getIdStatus() {
 		return idStatus;
 	}
@@ -49,11 +50,11 @@ public class StatusDTO {
 		this.idMoto = idMoto;
 	}
 	
-	public String getTipoStatus() {
+	public TipoStatus getTipoStatus() {
 		return tipoStatus;
 	}
 	
-	public void setTipoStatus(String tipoStatus) {
+	public void setTipoStatus(TipoStatus tipoStatus) {
 		this.tipoStatus = tipoStatus;
 	}
 	

@@ -59,7 +59,6 @@ form input:focus, form select:focus, form textarea:focus {
     box-shadow: 0 0 5px rgba(21, 97, 68, 0.3);
 }
 
-/* === Botões === */
 button, input[type="submit"], a.button {
     padding: 12px 25px;
     border-radius: 6px;
@@ -71,7 +70,6 @@ button, input[type="submit"], a.button {
     transition: background 0.3s, transform 0.2s;
 }
 
-/* Botão padrão (Salvar/Editar) */
 button.save, input[type="submit"].save {
     background-color: #156144;
     color: white;
@@ -82,7 +80,6 @@ button.save:hover, input[type="submit"].save:hover {
     transform: translateY(-2px);
 }
 
-/* Botão de cancelar (opcional) */
 button.cancel, a.button.cancel {
     background-color: #dc3545;
     color: white;
@@ -93,7 +90,6 @@ button.cancel:hover, a.button.cancel:hover {
     transform: translateY(-2px);
 }
 
-/* === Layout responsivo === */
 @media screen and (max-width: 500px) {
     .edit-container {
         padding: 20px;

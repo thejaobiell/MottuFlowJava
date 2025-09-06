@@ -6,7 +6,6 @@ import com.sprint.MottuFlow.domain.patio.PatioService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,11 +15,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/patios")
 public class PatioRestController {
-
-    @Autowired
-    private PatioService patioService;
-
-    private PatioDTO convertToDTO(Patio patio) {
+	
+    private final PatioService pS;
+	
+	public PatioRestController( PatioService pS ) {
+		this.pS = pS;
+	}
+	
+	private PatioDTO convertToDTO(Patio patio) {
         return new PatioDTO(
                 patio.getIdPatio(),
                 patio.getNome(),
@@ -40,39 +42,39 @@ public class PatioRestController {
 
     @GetMapping
     public List<PatioDTO> getAll() {
-        List<Patio> patios = patioService.findAll();
+        List<Patio> patios = pS.listarPatios();
         return patios.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<PatioDTO> getById(@PathVariable Long id) {
-        Patio patio = patioService.findByIdPatio(id);
+        Patio patio = pS.buscarPatioPorId(id);
         return ResponseEntity.ok(convertToDTO(patio));
     }
     
     @GetMapping("/search")
     public List<PatioDTO> searchByEndereco(@RequestParam String endereco) {
-        List<Patio> patios = patioService.findByEnderecoPatio(endereco);
+        List<Patio> patios = pS.buscarPatioPorEndereco(endereco);
         return patios.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @PostMapping
     public ResponseEntity<PatioDTO> create(@RequestBody @Valid PatioDTO patioDTO) {
         Patio patio = convertToEntity(patioDTO);
-        Patio saved = patioService.savePatio(patio);
+        Patio saved = pS.cadastrarPatio(patio);
         return ResponseEntity.ok(convertToDTO(saved));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PatioDTO> update(@PathVariable Long id, @RequestBody PatioDTO patioDTO) {
         Patio patioDetails = convertToEntity(patioDTO);
-        Patio updated = patioService.updatePatio(id, patioDetails);
+        Patio updated = pS.editarPatio(id, patioDetails);
         return ResponseEntity.ok(convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        patioService.deletePatioPatio(id);
+        pS.deletarPatio(id);
         return ResponseEntity.noContent().build();
     }
 }

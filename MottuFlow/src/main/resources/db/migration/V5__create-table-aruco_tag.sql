@@ -7,3 +7,9 @@ CREATE TABLE aruco_tag (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+INSERT INTO aruco_tag (codigo, status, id_moto) VALUES
+('TAG001', 'ATIVO', 1),
+('TAG002', 'ATIVO', 2),
+('TAG003', 'INATIVO', 3),
+('TAG004', 'ATIVO', 4);

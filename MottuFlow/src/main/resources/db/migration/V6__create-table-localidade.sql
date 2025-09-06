@@ -15,3 +15,9 @@ CREATE TABLE localidade (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+INSERT INTO localidade (ponto_referencia, id_moto, id_patio, id_camera) VALUES
+('Entrada principal', 1, 1, 1),
+('Saída norte', 2, 1, 2),
+('Corredor lateral', 3, 2, 3),
+('Vaga sul', 4, 3, 4);

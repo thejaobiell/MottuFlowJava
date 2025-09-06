@@ -7,3 +7,9 @@ CREATE TABLE camera (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
+
+INSERT INTO camera (status_operacional, localizacao_fisica, id_patio) VALUES
+('OPERACIONAL', 'Entrada principal', 1),
+('OPERACIONAL', 'Saída norte', 1),
+('MANUTENCAO', 'Corredor lateral', 2),
+('OPERACIONAL', 'Entrada sul', 3);

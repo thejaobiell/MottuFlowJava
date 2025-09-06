@@ -16,37 +16,38 @@ import java.util.List;
 @Service
 public class LocalidadeService {
 
-    @Autowired
-    private LocalidadeRepository lR;
+    private  final LocalidadeRepository lR;
 
-    @Autowired
-    private MotoRepository mR;
+    private final MotoRepository mR;
+	
+    private final PatioRepository pR;
 
-    @Autowired
-    private PatioRepository pR;
-
-    @Autowired
-    private CameraRepository cR;
-
-    public List<Localidade> findAll() {
+    private final CameraRepository cR;
+	
+	public LocalidadeService( LocalidadeRepository lR, MotoRepository mR, PatioRepository pR, CameraRepository cR ) {
+		this.lR = lR;
+		this.mR = mR;
+		this.pR = pR;
+		this.cR = cR;
+	}
+	
+	public List<Localidade> listarLocalidades() {
         return lR.findAll();
     }
 
-    public Localidade findById(Long id) {
+    public Localidade buscarLocalidadePorId( Long id) {
         return lR.findById(id).orElseThrow(() -> new RegraDeNegocioException("Localidade não encontrada com id: " + id));
     }
     
-    public List<Localidade> findByPontoReferencia(String ponto) {
+    public List<Localidade> buscarPorPontoReferencia( String ponto) {
         return lR.findByPontoReferencia(ponto);
     }
 
-    public List<Localidade> findByDataHoraBetween(LocalDateTime dataInicio, LocalDateTime dataFim) {
+    public List<Localidade> buscarPorIntervaloData( LocalDateTime dataInicio, LocalDateTime dataFim) {
         return lR.findDatas(dataInicio, dataFim);
     }
 
-
-
-    public Localidade save(Localidade localidade) {
+    public Localidade cadastrarLocalidade( Localidade localidade) {
         Moto moto = mR.findById(localidade.getMoto().getIdMoto()).orElseThrow(() -> new RegraDeNegocioException("Moto não encontrada com id: " + localidade.getMoto().getIdMoto()));
 
         Patio patio = pR.findById(localidade.getPatio().getIdPatio()).orElseThrow(() -> new RegraDeNegocioException("Patio não encontrado com id: " + localidade.getPatio().getIdPatio()));
@@ -60,8 +61,8 @@ public class LocalidadeService {
         return lR.save(localidade);
     }
 
-    public Localidade update(Long id, Localidade localidadeAtualizada) {
-        Localidade localidade = findById(id);
+    public Localidade editarLocalidade( Long id, Localidade localidadeAtualizada) {
+        Localidade localidade = buscarLocalidadePorId(id);
 
         localidade.setDataHora(localidadeAtualizada.getDataHora());
         localidade.setPontoReferencia(localidadeAtualizada.getPontoReferencia());
@@ -79,8 +80,8 @@ public class LocalidadeService {
         return lR.save(localidade);
     }
 
-    public void deleteById(Long id) {
-        Localidade localidade = findById(id);
+    public void deletarLocalidade( Long id) {
+        Localidade localidade = buscarLocalidadePorId(id);
         lR.delete(localidade);
     }
 }

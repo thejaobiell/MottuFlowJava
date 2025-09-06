@@ -17,11 +17,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/cameras")
 public class CameraRestController {
-
-    @Autowired
-    private CameraService cS;
-
-    private CameraDTO convertToDTO(Camera camera) {
+	
+    private final CameraService cS;
+	
+	public CameraRestController( CameraService cS ) {
+		this.cS = cS;
+	}
+	
+	private CameraDTO convertToDTO(Camera camera) {
         return new CameraDTO(
                 camera.getIdCamera(),
                 camera.getStatusOperacional(),
@@ -46,13 +49,13 @@ public class CameraRestController {
 
     @GetMapping
     public List<CameraDTO> getAll() {
-        List<Camera> cameras = cS.findAllCamera();
+        List<Camera> cameras = cS.listarCameras();
         return cameras.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<CameraDTO> getById(@PathVariable Long id) {
-        Camera camera = cS.findByIdCamera(id);
+        Camera camera = cS.buscarCameraPorId(id);
         return ResponseEntity.ok(convertToDTO(camera));
     }
     
@@ -72,20 +75,20 @@ public class CameraRestController {
     @PostMapping
     public ResponseEntity<CameraDTO> create(@RequestBody @Valid CameraDTO cameraDTO) {
         Camera camera = convertToEntity(cameraDTO);
-        Camera saved = cS.saveCamera(camera);
+        Camera saved = cS.cadastrarCamera(camera);
         return ResponseEntity.ok(convertToDTO(saved));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CameraDTO> update(@PathVariable Long id, @RequestBody CameraDTO cameraDTO) {
         Camera cameraDetails = convertToEntity(cameraDTO);
-        Camera updated = cS.updateCamera(id, cameraDetails);
+        Camera updated = cS.editarCamera(id, cameraDetails);
         return ResponseEntity.ok(convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        cS.deleteByIdCamera(id);
+        cS.deletarCamera(id);
         return ResponseEntity.noContent().build();
     }
 }

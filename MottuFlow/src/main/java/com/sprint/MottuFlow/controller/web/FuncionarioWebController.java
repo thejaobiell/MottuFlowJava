@@ -10,41 +10,41 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping( "/funcionarios" )
 public class FuncionarioWebController {
 	
-	private final FuncionarioService funcionarioService;
+	private final FuncionarioService fS;
 	
-	public FuncionarioWebController( FuncionarioService funcionarioService ) {
-		this.funcionarioService = funcionarioService;
+	public FuncionarioWebController( FuncionarioService fS ) {
+		this.fS = fS;
 	}
 	
 	@GetMapping( "/listar" )
 	public String listarFuncionarios( Model model ) {
-		model.addAttribute( "funcionarios", funcionarioService.listarFuncionarios() );
+		model.addAttribute( "funcionarios", fS.listarFuncionarios() );
 		model.addAttribute( "novoFuncionario", new Funcionario() );
 		return "funcionarios/listar";
 	}
 	
 	@PostMapping( "/cadastrar" )
 	public String cadastrarFuncionario( @ModelAttribute( "novoFuncionario" ) Funcionario funcionario ) {
-		funcionarioService.cadastrarFuncionario( funcionario );
+		fS.cadastrarFuncionario( funcionario );
 		return "redirect:/funcionarios/listar";
 	}
 	
 	@GetMapping( "/editar/{id}" )
 	public String editarFuncionarioForm( @PathVariable Long id, Model model ) {
-		Funcionario funcionario = funcionarioService.buscarFuncionarioPorId( id );
+		Funcionario funcionario = fS.buscarFuncionarioPorId( id );
 		model.addAttribute( "funcionario", funcionario );
 		return "funcionarios/editar";
 	}
 	
 	@PostMapping( "/editar/{id}" )
 	public String editarFuncionario( @PathVariable Long id, @ModelAttribute Funcionario funcionarioAtualizado ) {
-		funcionarioService.editarFuncionario( id, funcionarioAtualizado );
+		fS.editarFuncionario( id, funcionarioAtualizado );
 		return "redirect:/funcionarios/listar";
 	}
 	
 	@PostMapping( "/deletar/{id}" )
 	public String deletarFuncionario( @PathVariable Long id ) {
-		funcionarioService.deletarFuncionario( id );
+		fS.deletarFuncionario( id );
 		return "redirect:/funcionarios/listar";
 	}
 }

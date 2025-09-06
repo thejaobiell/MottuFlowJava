@@ -13,14 +13,17 @@ import java.util.List;
 @Service
 public class StatusService {
 	
-	@Autowired
-	private StatusRepository sR;
+	private final StatusRepository sR;
 	
-	@Autowired
-	private MotoRepository mR;
+	private final MotoRepository mR;
 	
-	@Autowired
-	private FuncionarioRepository fR;
+	private final FuncionarioRepository fR;
+	
+	public StatusService( StatusRepository sR, MotoRepository mR, FuncionarioRepository fR ) {
+		this.sR = sR;
+		this.mR = mR;
+		this.fR = fR;
+	}
 	
 	public List<Status> findAllStatus() {
 		return sR.findAll();
@@ -31,7 +34,7 @@ public class StatusService {
 				.orElseThrow(() -> new RegraDeNegocioException("Status não encontrado com id: " + id));
 	}
 	
-	public List<Status> findByTipoStatus(String tipoStatus) {
+	public List<Status> findByTipoStatus(TipoStatus tipoStatus) {
 		return sR.findByTipoStatus(tipoStatus);
 	}
 	

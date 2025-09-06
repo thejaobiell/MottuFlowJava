@@ -12,3 +12,9 @@ CREATE TABLE registro_status (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
+
+INSERT INTO registro_status (tipo_status, descricao, id_moto, id_funcionario) VALUES
+('DISPONIVEL', 'Moto pronta para uso', 1, 1),
+('MANUTENCAO', 'Troca de óleo', 2, 2),
+('RESERVADO', 'Reservada para cliente', 3, 2),
+('BAIXA_BOLETIM_OCORRENCIA', 'Perda por BO', 4, 1);

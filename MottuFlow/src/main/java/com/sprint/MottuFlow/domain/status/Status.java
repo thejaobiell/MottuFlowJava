@@ -18,8 +18,9 @@ public class Status {
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long idStatus;
 	
-	@Column( nullable = false, length = 50 )
-	private String tipoStatus;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 50)
+	private TipoStatus tipoStatus;
 	
 	@Column( length = 255 )
 	private String descricao;
@@ -58,11 +59,11 @@ public class Status {
 		this.moto = moto;
 	}
 	
-	public String getTipoStatus() {
+	public TipoStatus getTipoStatus() {
 		return tipoStatus;
 	}
 	
-	public void setTipoStatus( String tipoStatus ) {
+	public void setTipoStatus( TipoStatus tipoStatus ) {
 		this.tipoStatus = tipoStatus;
 	}
 	

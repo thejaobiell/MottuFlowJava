@@ -9,7 +9,7 @@ import java.util.List;
 public interface StatusRepository extends JpaRepository<Status, Long> {
 	
 	@Query("SELECT s FROM Status s WHERE s.tipoStatus = :tipoStatus")
-	List<Status> findByTipoStatus(@Param("tipoStatus") String tipoStatus);
+	List<Status> findByTipoStatus(@Param("tipoStatus") TipoStatus tipoStatus);
 	
 	@Query(value = "SELECT * FROM registro_status WHERE descricao LIKE %:descricao%", nativeQuery = true)
 	List<Status> findByDescricao(@Param("descricao") String descricao);

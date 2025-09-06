@@ -1,51 +1,55 @@
 package com.sprint.MottuFlow.domain.patio;
 
 import com.sprint.MottuFlow.infra.exception.RegraDeNegocioException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class PatioService {
-
-    @Autowired
-    private PatioRepository pR;
-
-    public List<Patio> findAll() {
-        return pR.findAll();
-    }
-
-    public Patio findByIdPatio(Long id) {
-        return pR.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("Patio não encontrado com id: " + id));
-    }
-    
-    public List<Patio> findByEnderecoPatio(String endereco) {
-        return pR.findByEndereco(endereco);
-    }
-
-    public Patio savePatio(Patio patio) {
-        return pR.save(patio);
-    }
-
-    public Patio updatePatio(Long id, Patio patioDetails) {
-        Patio patio = findByIdPatio(id);
-
-        patio.setNome(patioDetails.getNome());
-        patio.setEndereco(patioDetails.getEndereco());
-        patio.setCapacidadeMaxima(patioDetails.getCapacidadeMaxima());
-        
-        return pR.save(patio);
-    }
-
-    public void deletePatioPatio(Long id) {
-        Patio patio = pR.findById(id).orElseThrow();
-        patio.getMotos().size();
-        patio.getCameras().size();
-        patio.getLocalidades().size();
-
-        pR.delete(patio);
-    }
-
+	
+	private final PatioRepository pR;
+	
+	public PatioService( PatioRepository pR ) {
+		this.pR = pR;
+	}
+	
+	public List<Patio> listarPatios() {
+		return pR.findAll();
+	}
+	
+	public Patio buscarPatioPorId(Long id) {
+		return pR.findById(id)
+				.orElseThrow(() -> new RegraDeNegocioException("Pátio não encontrado com id: " + id));
+	}
+	
+	public List<Patio> buscarPatioPorEndereco(String endereco) {
+		return pR.findByEndereco(endereco);
+	}
+	
+	public Patio cadastrarPatio(Patio patio) {
+		return pR.save(patio);
+	}
+	
+	public Patio editarPatio(Long id, Patio patioAtualizado) {
+		Patio patio = buscarPatioPorId(id);
+		
+		patio.setNome(patioAtualizado.getNome());
+		patio.setEndereco(patioAtualizado.getEndereco());
+		patio.setCapacidadeMaxima(patioAtualizado.getCapacidadeMaxima());
+		
+		return pR.save(patio);
+	}
+	
+	public void deletarPatio(Long id) {
+		Patio patio = pR.findById(id)
+				.orElseThrow(() -> new RegraDeNegocioException("Pátio não encontrado com id: " + id));
+		
+		// Força carregamento das coleções (se for necessário)
+		patio.getMotos().size();
+		patio.getCameras().size();
+		patio.getLocalidades().size();
+		
+		pR.delete(patio);
+	}
 }

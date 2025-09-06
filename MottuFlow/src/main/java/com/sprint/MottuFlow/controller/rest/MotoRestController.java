@@ -7,7 +7,6 @@ import com.sprint.MottuFlow.domain.moto.MotoService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,11 +16,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/motos")
 public class MotoRestController {
-
-    @Autowired
-    private MotoService motoService;
-
-    private MotoDTO convertToDTO(Moto moto) {
+	
+    private final MotoService mS;
+	
+	public MotoRestController( MotoService mS ) {
+		this.mS = mS;
+	}
+	
+	private MotoDTO convertToDTO(Moto moto) {
         return new MotoDTO(
                 moto.getIdMoto(),
                 moto.getPlaca(),
@@ -52,26 +54,26 @@ public class MotoRestController {
 
     @GetMapping
     public List<MotoDTO> getAll() {
-        List<Moto> motos = motoService.findAllMoto();
+        List<Moto> motos = mS.listarMotos();
         return motos.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @GetMapping("/id/{id}")
     public ResponseEntity<MotoDTO> getById(@PathVariable Long id) {
-        Moto moto = motoService.findByIdMoto(id);
+        Moto moto = mS.buscarMotoPorId(id);
         return ResponseEntity.ok(convertToDTO(moto));
     }
     
     @GetMapping("/fabricante")
     public ResponseEntity<List<MotoDTO>> getByFabricante(@RequestParam String fabricante) {
-        List<Moto> motos = motoService.findByFabricanteMoto(fabricante);
+        List<Moto> motos = mS.buscarMotoPorFabricante(fabricante);
         List<MotoDTO> dtos = motos.stream().map(this::convertToDTO).collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/patio/{idPatio}")
     public ResponseEntity<List<MotoDTO>> getByPatio(@PathVariable long idPatio) {
-        List<Moto> motos = motoService.findByPatioIdMoto(idPatio);
+        List<Moto> motos = mS.buscarMotoPorPlaca(idPatio);
         List<MotoDTO> dtos = motos.stream().map(this::convertToDTO).collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -80,20 +82,20 @@ public class MotoRestController {
     @PostMapping
     public ResponseEntity<MotoDTO> create(@RequestBody @Valid MotoDTO motoDTO) {
         Moto moto = convertToEntity(motoDTO);
-        Moto saved = motoService.saveMoto(moto);
+        Moto saved = mS.cadastrarMoto(moto);
         return ResponseEntity.ok(convertToDTO(saved));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MotoDTO> update(@PathVariable Long id, @RequestBody MotoDTO motoDTO) {
         Moto motoDetails = convertToEntity(motoDTO);
-        Moto updated = motoService.updateMoto(id, motoDetails);
+        Moto updated = mS.editarMoto(id, motoDetails);
         return ResponseEntity.ok(convertToDTO(updated));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        motoService.deleteByIdMoto(id);
+        mS.deletarMoto(id);
         return ResponseEntity.noContent().build();
     }
 }

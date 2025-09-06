@@ -17,21 +17,35 @@
 	        <h2>Gerenciar Funcionários</h2>
 		    
 	        <section>
-	            <form th:action="@{/funcionarios/cadastrar}" method="post">
-	                <input type="text" name="nome" placeholder="Nome" required>
-	                <input type="email" name="email" placeholder="Email" required>
-	                <input type="text" name="cpf" placeholder="CPF" required>
-	                <input type="text" name="telefone" placeholder="Telefone" required>
-	                <select name="cargo" required>
-	                    <option value="">Selecione o Cargo</option>
-	                    <option value="MECANICO">Mecânico</option>
-	                    <option value="GERENTE">Gerente</option>
-	                    <option value="ADMIN">Admin</option>
-	                </select>
-	                <input type="password" name="senha" placeholder="Senha" required>
-	                <button type="submit">Cadastrar</button>
-	            </form>
-	        </section>
+			    <form th:action="@{/funcionarios/cadastrar}" method="post">
+			
+			        <label for="nome">Nome</label>
+			        <input id="nome" type="text" name="nome" placeholder="Nome" required>
+			
+			        <label for="email">Email</label>
+			        <input id="email" type="email" name="email" placeholder="Email" required>
+			
+			        <label for="cpf">CPF</label>
+			        <input id="cpf" type="text" name="cpf" placeholder="CPF" required>
+			
+			        <label for="telefone">Telefone</label>
+			        <input id="telefone" type="text" name="telefone" placeholder="Telefone" required>
+			
+			        <label for="cargo">Cargo</label>
+			        <select id="cargo" name="cargo" required>
+			            <option value="">Selecione o Cargo</option>
+			            <option value="MECANICO">Mecânico</option>
+			            <option value="GERENTE">Gerente</option>
+			            <option value="ADMIN">Admin</option>
+			        </select>
+			
+			        <label for="senha">Senha</label>
+			        <input id="senha" type="password" name="senha" placeholder="Senha" required>
+			
+			        <button type="submit">Cadastrar</button>
+			    </form>
+			</section>
+
 		    
 	        <section>
 	            <table>

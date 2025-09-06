@@ -10,28 +10,31 @@ import java.util.List;
 
 @Service
 public class ArucoTagService {
-
-    @Autowired
-    private ArucoTagRepository atR;
-
-    @Autowired
-    private MotoRepository mR;
-
-    public List<ArucoTag> findAllAruco() {
+	
+    private final ArucoTagRepository atR;
+	
+    private final MotoRepository mR;
+	
+	public ArucoTagService( ArucoTagRepository atR, MotoRepository mR ) {
+		this.atR = atR;
+		this.mR = mR;
+	}
+	
+	public List<ArucoTag> listarArucoTags() {
         return atR.findAll();
     }
 
-    public ArucoTag findByIdAruco(Long id) {
+    public ArucoTag buscarTagPorId( Long id) {
         return atR.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("ArucoTag não encontrada com id: " + id));
     }
     
-    public List<ArucoTag> findByStatus(String status) {
+    public List<ArucoTag> buscarPorStatus( String status) {
         return atR.findByStatus(status);
     }
     
 
-	public ArucoTag findByCodigoStatus(String codigo) {
+	public ArucoTag buscarPorCodigo( String codigo) {
 	    ArucoTag tag = atR.findByCodigoNative(codigo);
 	    if (tag == null) {
 	        throw new RegraDeNegocioException("ArucoTag não encontrada com código: " + codigo);
@@ -40,7 +43,7 @@ public class ArucoTagService {
 	}
 
 
-    public ArucoTag saveAruco(ArucoTag arucoTag) {
+    public ArucoTag cadastrarTag( ArucoTag arucoTag) {
         Moto moto = mR.findById(arucoTag.getMoto().getIdMoto())
                 .orElseThrow(() -> new RegraDeNegocioException("Moto não encontrada com id: " + arucoTag.getMoto().getIdMoto()));
         arucoTag.setMoto(moto);
@@ -48,8 +51,8 @@ public class ArucoTagService {
         return atR.save(arucoTag);
     }
 
-    public ArucoTag updateAruco(Long id, ArucoTag arucoTagAtualizado) {
-        ArucoTag arucoTag = findByIdAruco(id);
+    public ArucoTag editarTag( Long id, ArucoTag arucoTagAtualizado) {
+        ArucoTag arucoTag = buscarTagPorId(id);
 
         arucoTag.setCodigo(arucoTagAtualizado.getCodigo());
         arucoTag.setStatus(arucoTagAtualizado.getStatus());
@@ -61,8 +64,8 @@ public class ArucoTagService {
         return atR.save(arucoTag);
     }
 
-    public void deleteByIdAruco(Long id) {
-        ArucoTag arucoTag = findByIdAruco(id);
+    public void deletarTag( Long id) {
+        ArucoTag arucoTag = buscarTagPorId(id);
         atR.delete(arucoTag);
     }
 }

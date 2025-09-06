@@ -69,7 +69,9 @@ public class ConfiguracoesSeguranca {
 						.logoutSuccessUrl("/login?logout")
 						.permitAll()
 				)
-				.csrf(AbstractHttpConfigurer::disable)
+				.csrf(csrf -> csrf
+						.ignoringRequestMatchers("/api/**")
+				)
 				.build();
 	}
 	
