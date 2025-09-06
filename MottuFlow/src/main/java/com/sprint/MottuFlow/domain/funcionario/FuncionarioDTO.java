@@ -17,7 +17,7 @@ public class FuncionarioDTO {
 
     @NotBlank(message = "Cargo é obrigatório")
     @Size(max = 50)
-    private String cargo;
+    private Cargo cargo;
 
     @NotBlank(message = "Telefone é obrigatório")
     @Size(max = 20)
@@ -33,7 +33,7 @@ public class FuncionarioDTO {
 
     public FuncionarioDTO() {}
 
-    public FuncionarioDTO(Long id, String nome, String cpf, String cargo, String telefone, String email, String senha) {
+    public FuncionarioDTO(Long id, String nome, String cpf, Cargo cargo, String telefone, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -66,15 +66,15 @@ public class FuncionarioDTO {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-
-	public String getCargo() {
+	
+	public Cargo getCargo() {
 		return cargo;
 	}
-
-	public void setCargo(String cargo) {
+	
+	public void setCargo( Cargo cargo ) {
 		this.cargo = cargo;
 	}
-
+	
 	public String getTelefone() {
 		return telefone;
 	}

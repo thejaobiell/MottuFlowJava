@@ -2,6 +2,8 @@ package com.sprint.MottuFlow.infra.security;
 
 import org.springframework.context.annotation.*;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,29 +51,28 @@ public class ConfiguracoesSeguranca {
 	/*
 	 - Filtros de Segurança para Thymeleaf
 	*/
-	public SecurityFilterChain webSecurity( HttpSecurity http ) throws Exception {
+	public SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 						.requestMatchers("/login").permitAll()
-						.anyRequest().authenticated()
+						
+						.requestMatchers("/motos/**", "/arucotags/**", "/localidades/**", "/status/**")
+						.hasRole("MECANICO")
+						
+						.anyRequest().hasAnyRole("GERENTE", "ADMIN")
 				)
 				.formLogin(form -> form
 						.loginPage("/login")
 						.defaultSuccessUrl("/menu")
 						.permitAll()
-						.successHandler((request, response, authentication) -> {
-							response.sendRedirect("/menu");
-						})
 				)
 				.logout(logout -> logout
 						.logoutUrl("/logout")
 						.logoutSuccessUrl("/login?logout")
 						.permitAll()
 				)
-				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/api/**")
-				)
+				.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
 				.build();
 	}
 	
@@ -84,5 +85,13 @@ public class ConfiguracoesSeguranca {
 	@Bean
 	public AuthenticationManager authenticationManager( AuthenticationConfiguration authenticationConfiguration ) throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
+	}
+	
+	@Bean
+	public RoleHierarchy hierarchyPerfis() {
+		String hierarquia = "ROLE_ADMIN > ROLE_GERENTE";
+		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+		roleHierarchy.setHierarchy( hierarquia );
+		return roleHierarchy;
 	}
 }

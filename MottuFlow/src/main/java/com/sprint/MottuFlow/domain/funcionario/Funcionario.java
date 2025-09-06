@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -29,9 +30,10 @@ public class Funcionario implements UserDetails{
 
     @Column(nullable = false, length = 14)
     private String cpf;
-
-    @Column(nullable = false, length = 50)
-    private String cargo;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 50)
+	private Cargo cargo;
 
     @Column(nullable = false, length = 20)
     private String telefone;
@@ -75,11 +77,11 @@ public class Funcionario implements UserDetails{
 		this.cpf = cpf;
 	}
 	
-	public String getCargo() {
+	public Cargo getCargo() {
 		return cargo;
 	}
 	
-	public void setCargo( String cargo ) {
+	public void setCargo( Cargo cargo ) {
 		this.cargo = cargo;
 	}
 	
@@ -125,9 +127,9 @@ public class Funcionario implements UserDetails{
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority("ROLE_" + this.cargo.toUpperCase()));
+		return List.of(new SimpleGrantedAuthority("ROLE_" + this.cargo.name()));
 	}
-
+	
 	@Override
 	public String getPassword() {
 		return senha;

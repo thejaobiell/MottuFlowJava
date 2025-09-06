@@ -42,8 +42,14 @@ public class FuncionarioService implements UserDetailsService {
 	@Transactional
 	public Funcionario cadastrarFuncionario( Funcionario funcionario ) {
 		funcionario.setSenha( encoder.encode( funcionario.getSenha() ) );
+		
+		if ( funcionario.getCargo() == null ) {
+			throw new RegraDeNegocioException( "Cargo não pode ser nulo!" );
+		}
+		
 		return fR.save( funcionario );
 	}
+	
 	
 	@Transactional
 	public Funcionario editarFuncionario( Long id, Funcionario funcionarioAtualizado ) {
@@ -57,9 +63,10 @@ public class FuncionarioService implements UserDetailsService {
 			funcionario.setCpf( funcionarioAtualizado.getCpf() );
 		}
 		
-		if ( funcionarioAtualizado.getCargo() != null && !funcionarioAtualizado.getCargo().isBlank() ) {
+		if ( funcionarioAtualizado.getCargo() != null ) {
 			funcionario.setCargo( funcionarioAtualizado.getCargo() );
 		}
+		
 		
 		if ( funcionarioAtualizado.getTelefone() != null && !funcionarioAtualizado.getTelefone().isBlank() ) {
 			funcionario.setTelefone( funcionarioAtualizado.getTelefone() );
@@ -75,7 +82,6 @@ public class FuncionarioService implements UserDetailsService {
 		
 		return fR.save( funcionario );
 	}
-	
 	
 	@Transactional
 	public void deletarFuncionario( Long id ) {
@@ -107,14 +113,14 @@ public class FuncionarioService implements UserDetailsService {
 	}
 	
 	@Transactional
-	public void alterarSenha(String email, String senhaAtual, String novaSenha) {
-		Funcionario funcionario = buscarFuncionarioPorEmail(email);
-		if (!encoder.matches(senhaAtual, funcionario.getSenha())) {
-			throw new RegraDeNegocioException("Senha atual incorreta!");
+	public void alterarSenha( String email, String senhaAtual, String novaSenha ) {
+		Funcionario funcionario = buscarFuncionarioPorEmail( email );
+		if ( !encoder.matches( senhaAtual, funcionario.getSenha() ) ) {
+			throw new RegraDeNegocioException( "Senha atual incorreta!" );
 		}
 		
-		funcionario.setSenha(encoder.encode(novaSenha));
-		fR.save(funcionario);
+		funcionario.setSenha( encoder.encode( novaSenha ) );
+		fR.save( funcionario );
 	}
 	
 }
