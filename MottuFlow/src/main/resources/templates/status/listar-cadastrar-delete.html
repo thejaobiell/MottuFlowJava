@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Gerenciar Status</title>
-    <link rel="stylesheet" th:href="@{/css/mainListar.css}">
+    <link rel="stylesheet" th:href="@{/css/listar-cadastrar-delete.css}">
     <link rel="stylesheet" th:href="@{/css/components/header.css}">
     <link rel="stylesheet" th:href="@{/css/components/footer.css}">
 	<link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
@@ -53,7 +53,7 @@
                 <td th:text="${status.descricao}"></td>
                 <td th:text="${status.moto.placa}"></td>
                 <td th:text="${status.funcionario.nome}"></td>
-                <td th:text="${#dates.format(status.dataStatus, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(status.dataStatus,'dd/MM/yyyy HH:mm')}"></td>
                 <td>
                     <a th:href="@{'/status/editar/' + ${status.idStatus}}" class="button edit">Editar</a>
                     <form th:action="@{'/status/deletar/' + ${status.idStatus}}" method="post" style="display:block; margin-top:5px;"

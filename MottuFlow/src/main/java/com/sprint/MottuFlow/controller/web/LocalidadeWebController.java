@@ -30,7 +30,7 @@ public class LocalidadeWebController {
 		this.cS = cS;
 	}
 	
-	@GetMapping( "/listar" )
+	@GetMapping( "/listar-cadastrar-delete" )
 	public String listarLocalidades( Model model ) {
 		List<Localidade> localidades = lS.listarLocalidades();
 		List<Moto> motos = mS.listarMotos();
@@ -46,14 +46,14 @@ public class LocalidadeWebController {
 		model.addAttribute( "novaLocalidade", new Localidade() );
 		model.addAttribute( "dataHoraAtual", dataHoraAtual ); // adiciona no Model
 		
-		return "localidades/listar";
+		return "localidades/listar-cadastrar-delete";
 	}
 	
 	
 	@PostMapping( "/cadastrar" )
 	public String cadastrarLocalidade( @ModelAttribute( "novaLocalidade" ) Localidade localidade ) {
 		lS.cadastrarLocalidade( localidade );
-		return "redirect:/localidades/listar";
+		return "redirect:/localidades/listar-cadastrar-delete";
 	}
 	
 	@GetMapping( "/editar/{id}" )
@@ -73,12 +73,12 @@ public class LocalidadeWebController {
 	@PostMapping( "/editar/{id}" )
 	public String editarLocalidade( @PathVariable Long id, @ModelAttribute Localidade localidadeAtualizada ) {
 		lS.editarLocalidade( id, localidadeAtualizada );
-		return "redirect:/localidades/listar";
+		return "redirect:/localidades/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/deletar/{id}" )
 	public String deletarLocalidade( @PathVariable Long id ) {
 		lS.deletarLocalidade( id );
-		return "redirect:/localidades/listar";
+		return "redirect:/localidades/listar-cadastrar-delete";
 	}
 }

@@ -19,18 +19,18 @@ public class MotoWebController {
 		this.pS = pS;
 	}
 	
-	@GetMapping( "/listar" )
+	@GetMapping( "/listar-cadastrar-delete" )
 	public String listarMotos( Model model ) {
 		model.addAttribute( "motos", mS.listarMotos() );
 		model.addAttribute( "novaMoto", new Moto() );
 		model.addAttribute( "patios", pS.listarPatios() );
-		return "motos/listar";
+		return "motos/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/cadastrar" )
 	public String cadastrarMoto( @ModelAttribute( "novaMoto" ) Moto moto ) {
 		mS.cadastrarMoto( moto );
-		return "redirect:/motos/listar";
+		return "redirect:/motos/listar-cadastrar-delete";
 	}
 	
 	@GetMapping( "/editar/{id}" )
@@ -44,12 +44,12 @@ public class MotoWebController {
 	@PostMapping( "/editar/{id}" )
 	public String editarMoto( @PathVariable Long id, @ModelAttribute Moto motoAtualizada ) {
 		mS.editarMoto( id, motoAtualizada );
-		return "redirect:/motos/listar";
+		return "redirect:/motos/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/deletar/{id}" )
 	public String deletarMoto( @PathVariable Long id ) {
 		mS.deletarMoto( id );
-		return "redirect:/motos/listar";
+		return "redirect:/motos/listar-cadastrar-delete";
 	}
 }

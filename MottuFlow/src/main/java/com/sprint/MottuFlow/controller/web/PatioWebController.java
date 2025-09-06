@@ -16,19 +16,19 @@ public class PatioWebController {
 		this.pS = pS;
 	}
 	
-	// Listar todos os pátios
-	@GetMapping("/listar")
+	// listar-cadastrar-delete todos os pátios
+	@GetMapping("/listar-cadastrar-delete")
 	public String listarPatios(Model model) {
 		model.addAttribute("patios", pS.listarPatios());
 		model.addAttribute("novoPatio", new Patio());
-		return "patios/listar"; // -> resources/templates/patios/listar.html
+		return "patios/listar-cadastrar-delete"; // -> resources/templates/patios/listar-cadastrar-delete-cadastrar-delete.html
 	}
 	
 	// Cadastrar novo pátio
 	@PostMapping("/cadastrar")
 	public String cadastrarPatio(@ModelAttribute("novoPatio") Patio patio) {
 		pS.cadastrarPatio(patio);
-		return "redirect:/patios/listar";
+		return "redirect:/patios/listar-cadastrar-delete";
 	}
 	
 	// Formulário de edição
@@ -43,13 +43,13 @@ public class PatioWebController {
 	@PostMapping("/editar/{id}")
 	public String editarPatio(@PathVariable Long id, @ModelAttribute Patio patioAtualizado) {
 		pS.editarPatio(id, patioAtualizado);
-		return "redirect:/patios/listar";
+		return "redirect:/patios/listar-cadastrar-delete";
 	}
 	
 	// Deletar pátio
 	@PostMapping("/deletar/{id}")
 	public String deletarPatio(@PathVariable Long id) {
 		pS.deletarPatio(id);
-		return "redirect:/patios/listar";
+		return "redirect:/patios/listar-cadastrar-delete";
 	}
 }

@@ -19,18 +19,18 @@ public class ArucoTagWebController {
 		this.mS = mS;
 	}
 	
-	@GetMapping( "/listar" )
+	@GetMapping( "/listar-cadastrar-delete" )
 	public String listarTags( Model model ) {
 		model.addAttribute( "tags", atS.listarArucoTags() );
 		model.addAttribute( "motos", mS.listarMotos() );
 		model.addAttribute( "novaTag", new ArucoTag() );
-		return "arucotags/listar";
+		return "arucotags/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/cadastrar" )
 	public String cadastrarTag( @ModelAttribute( "novaTag" ) ArucoTag tag ) {
 		atS.cadastrarTag( tag );
-		return "redirect:/arucotags/listar";
+		return "redirect:/arucotags/listar-cadastrar-delete";
 	}
 	
 	@GetMapping( "/editar/{id}" )
@@ -44,12 +44,12 @@ public class ArucoTagWebController {
 	@PostMapping( "/editar/{id}" )
 	public String editarTag( @PathVariable Long id, @ModelAttribute ArucoTag tagAtualizada ) {
 		atS.editarTag( id, tagAtualizada );
-		return "redirect:/arucotags/listar";
+		return "redirect:/arucotags/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/deletar/{id}" )
 	public String deletarTag( @PathVariable Long id ) {
 		atS.deletarTag( id );
-		return "redirect:/arucotags/listar";
+		return "redirect:/arucotags/listar-cadastrar-delete";
 	}
 }

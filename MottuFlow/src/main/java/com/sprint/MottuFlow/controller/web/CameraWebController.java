@@ -19,18 +19,18 @@ public class CameraWebController {
 		this.pS = pS;
 	}
 	
-	@GetMapping( "/listar" )
+	@GetMapping( "/listar-cadastrar-delete" )
 	public String listarCameras( Model model ) {
 		model.addAttribute( "cameras", cS.listarCameras() );
 		model.addAttribute( "patios", pS.listarPatios() );
 		model.addAttribute( "novaCamera", new Camera() );
-		return "cameras/listar";
+		return "cameras/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/cadastrar" )
 	public String cadastrarCamera( @ModelAttribute( "novaCamera" ) Camera camera ) {
 		cS.cadastrarCamera( camera );
-		return "redirect:/cameras/listar";
+		return "redirect:/cameras/listar-cadastrar-delete";
 	}
 	
 	@GetMapping( "/editar/{id}" )
@@ -44,12 +44,12 @@ public class CameraWebController {
 	@PostMapping( "/editar/{id}" )
 	public String editarCamera( @PathVariable Long id, @ModelAttribute Camera cameraAtualizada ) {
 		cS.editarCamera( id, cameraAtualizada );
-		return "redirect:/cameras/listar";
+		return "redirect:/cameras/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/deletar/{id}" )
 	public String deletarCamera( @PathVariable Long id ) {
 		cS.deletarCamera( id );
-		return "redirect:/cameras/listar";
+		return "redirect:/cameras/listar-cadastrar-delete";
 	}
 }

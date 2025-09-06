@@ -22,19 +22,19 @@ public class StatusWebController {
 		this.fS = fS;
 	}
 	
-	@GetMapping("/listar")
+	@GetMapping("/listar-cadastrar-delete")
 	public String listarStatus(Model model) {
 		model.addAttribute("statusList", sS.findAllStatus());
 		model.addAttribute("novoStatus", new Status());
 		model.addAttribute("motos", mS.listarMotos());
 		model.addAttribute("funcionarios", fS.listarFuncionarios());
-		return "status/listar";
+		return "status/listar-cadastrar-delete";
 	}
 	
 	@PostMapping("/cadastrar")
 	public String cadastrarStatus(@ModelAttribute("novoStatus") Status status) {
 		sS.saveStatus(status);
-		return "redirect:/status/listar";
+		return "redirect:/status/listar-cadastrar-delete";
 	}
 	
 	@GetMapping("/editar/{id}")
@@ -49,12 +49,12 @@ public class StatusWebController {
 	@PostMapping("/editar/{id}")
 	public String editarStatus(@PathVariable Long id, @ModelAttribute Status statusAtualizado) {
 		sS.updateStatus(id, statusAtualizado);
-		return "redirect:/status/listar";
+		return "redirect:/status/listar-cadastrar-delete";
 	}
 	
 	@PostMapping("/deletar/{id}")
 	public String deletarStatus(@PathVariable Long id) {
 		sS.deleteByIdStatus(id);
-		return "redirect:/status/listar";
+		return "redirect:/status/listar-cadastrar-delete";
 	}
 }

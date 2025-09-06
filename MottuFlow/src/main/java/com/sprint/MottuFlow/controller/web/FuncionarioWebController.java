@@ -16,17 +16,17 @@ public class FuncionarioWebController {
 		this.fS = fS;
 	}
 	
-	@GetMapping( "/listar" )
+	@GetMapping( "/listar-cadastrar-delete" )
 	public String listarFuncionarios( Model model ) {
 		model.addAttribute( "funcionarios", fS.listarFuncionarios() );
 		model.addAttribute( "novoFuncionario", new Funcionario() );
-		return "funcionarios/listar";
+		return "funcionarios/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/cadastrar" )
 	public String cadastrarFuncionario( @ModelAttribute( "novoFuncionario" ) Funcionario funcionario ) {
 		fS.cadastrarFuncionario( funcionario );
-		return "redirect:/funcionarios/listar";
+		return "redirect:/funcionarios/listar-cadastrar-delete";
 	}
 	
 	@GetMapping( "/editar/{id}" )
@@ -39,12 +39,12 @@ public class FuncionarioWebController {
 	@PostMapping( "/editar/{id}" )
 	public String editarFuncionario( @PathVariable Long id, @ModelAttribute Funcionario funcionarioAtualizado ) {
 		fS.editarFuncionario( id, funcionarioAtualizado );
-		return "redirect:/funcionarios/listar";
+		return "redirect:/funcionarios/listar-cadastrar-delete";
 	}
 	
 	@PostMapping( "/deletar/{id}" )
 	public String deletarFuncionario( @PathVariable Long id ) {
 		fS.deletarFuncionario( id );
-		return "redirect:/funcionarios/listar";
+		return "redirect:/funcionarios/listar-cadastrar-delete";
 	}
 }
