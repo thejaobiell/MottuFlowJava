@@ -45,17 +45,18 @@ public class ConfiguracoesSeguranca {
 				.build();
 	}
 	
-	
-	@Bean
-	@Order(2)
 	/*
 	 - Filtros de Segurança para Thymeleaf
 	*/
+	@Bean
+	@Order(2)
 	public SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
 						.requestMatchers("/login").permitAll()
+						
+						.requestMatchers("/", "/menu", "/perfil").authenticated()
 						
 						.requestMatchers("/motos/**", "/arucotags/**", "/localidades/**", "/status/**")
 						.hasRole("MECANICO")
@@ -64,13 +65,16 @@ public class ConfiguracoesSeguranca {
 				)
 				.formLogin(form -> form
 						.loginPage("/login")
-						.defaultSuccessUrl("/menu")
+						.defaultSuccessUrl("/menu", true)
 						.permitAll()
 				)
 				.logout(logout -> logout
 						.logoutUrl("/logout")
 						.logoutSuccessUrl("/login?logout")
 						.permitAll()
+				)
+				.exceptionHandling(exception -> exception
+						.accessDeniedPage("/403")
 				)
 				.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
 				.build();
@@ -89,7 +93,7 @@ public class ConfiguracoesSeguranca {
 	
 	@Bean
 	public RoleHierarchy hierarchyPerfis() {
-		String hierarquia = "ROLE_ADMIN > ROLE_GERENTE";
+		String hierarquia = "ROLE_ADMIN > ROLE_GERENTE \n ROLE_GERENTE > ROLE_MECANICO";
 		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
 		roleHierarchy.setHierarchy( hierarquia );
 		return roleHierarchy;
