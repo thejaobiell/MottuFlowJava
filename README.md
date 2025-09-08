@@ -8,7 +8,7 @@
 No contexto da disciplina de **IoT**, a solução utiliza **visão computacional** com câmeras para identificar motocicletas por meio de **ArUco Tags**.
 👉 [Exemplo de imagem com ArUco Tag](https://docs.opencv.org/4.x/singlemarkersdetection.jpg)
 
-A API comunica-se com o **banco de dados MySQL**, facilitando o envio e recebimento de informações, e será futuramente integrada ao aplicativo mobile desenvolvido na disciplina de **Mobile Application Development**.
+A API comunica-se com o **banco de dados MySQL**, facilitando o envio e recebimento de informações, e integrada ao aplicativo mobile desenvolvido na disciplina de **Mobile Application Development**.
 
 ---
 
@@ -34,7 +34,7 @@ A aplicação oferece **CRUD completo** para os seguintes módulos:
 
 ## 📚 Tecnologias Utilizadas
 
-* **Java 21+**
+* **Java 21**
 * **Spring Boot**
 * **Spring Data JPA**
 * **MySQL** (banco de dados)
@@ -93,11 +93,30 @@ spring.flyway.locations=classpath:db/migration
 spring.flyway.repair=true
 spring.flyway.repair-on-migrate=true
 
+logging.level.root=WARN
+
+logging.level.org.springframework=WARN
+logging.level.org.hibernate=WARN
+logging.level.com.mysql.cj=WARN
+logging.level.oracle.jdbc=WARN
+logging.level.org.apache.tomcat=WARN
+logging.level.org.apache.catalina=WARN
+logging.level.org.springframework.security=WARN
+logging.level.org.springframework.web=WARN
+logging.level.org.springframework.boot=WARN
+logging.level.org.springframework.data=WARN
+logging.level.org.springframework.context=WARN
+logging.level.org.springframework.validation=WARN
+logging.level.org.hibernate.orm.deprecation=ERROR
+spring.jpa.open-in-view=false
+logging.level.org.springframework.orm.jpa.JpaBaseConfiguration=ERROR
+
+logging.level.com.sprint.MottuFlow=WARN
+
 spring.main.allow-bean-definition-overriding=true
 ```
 
 > ⚠️ Certifique-se de que o MySQL esteja rodando e que o usuário configurado tenha permissões para criar banco e tabelas.
-
 ---
 
 ### ▶️ Executando a aplicação
@@ -122,28 +141,20 @@ http://localhost:8080
 
 ---
 
-## 🔌 Acessando a API
+## 🔌 Acessando a APIREST
 
-Você pode consumir os endpoints REST utilizando ferramentas como **Postman** ou **Insomnia**.
+Você pode consumir os endpoints REST utilizando ferramentas como **Postman**.
 
 * Todas as requisições e respostas utilizam **JSON**.
-* Exemplo de endpoints CRUD:
-
-```
-GET /funcionarios
-POST /funcionarios
-PUT /funcionarios/{id}
-DELETE /funcionarios/{id}
-```
-
-*(similares para motos, pátios, câmeras, tags e status)*
 
 ---
 
 ## 🧭 Observações
 
-* Arquitetura em **camadas** com uso de **DTOs** para separar domínio e dados expostos
-* Autenticação com **JWT** para API REST e **Spring Security** para Thymeleaf
+* Arquitetura em **camadas** com uso de **DTOs** para separar domínio e dados expostos.
+* Autenticação com **JWT** para API REST e **Spring Security** para Thymeleaf.
+* Integração com **MySQL** para persistência de dados.
+* Aplicação híbrida: API REST para integração com front-ends externos (como aplicativos mobile em React Native) e interface web com Thymeleaf para uso direto pelo navegador.
 
 ---
 
