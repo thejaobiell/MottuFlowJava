@@ -143,7 +143,7 @@ http://localhost:8080
 
 ## 🔌 Acessando a APIREST
 
-Você pode consumir os endpoints REST utilizando ferramentas como **Postman**.
+Você pode consumir os endpoints REST utilizando ferramentas como **[Postman](https://www.postman.com/galactic-resonance-365575/workspace/mottuflow-endpoints)**.
 
 * Todas as requisições e respostas utilizam **JSON**.
 
