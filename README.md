@@ -51,6 +51,7 @@ A aplicação oferece **CRUD completo** para os seguintes módulos:
 ```bash
 git clone https://github.com/thejaobiell/MottuFlowJava.git
 cd MottuFlowJava/MottuFlow
+./mvnw spring-boot:run
 ```
 
 ---
