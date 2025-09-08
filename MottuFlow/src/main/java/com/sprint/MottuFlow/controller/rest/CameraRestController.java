@@ -18,77 +18,80 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/cameras")
 public class CameraRestController {
 	
-    private final CameraService cS;
+	private final CameraService cS;
 	
-	public CameraRestController( CameraService cS ) {
+	public CameraRestController(CameraService cS) {
 		this.cS = cS;
 	}
 	
-	private CameraDTO convertToDTO(Camera camera) {
-        return new CameraDTO(
-                camera.getIdCamera(),
-                camera.getStatusOperacional(),
-                camera.getLocalizacaoFisica(),
-                camera.getPatio().getIdPatio()
-        );
-    }
-
-    private Camera convertToEntity(CameraDTO dto) {
-        Camera camera = new Camera();
-        camera.setIdCamera(dto.getIdCamera());
-        camera.setStatusOperacional(dto.getStatusOperacional());
-        camera.setLocalizacaoFisica(dto.getLocalizacaoFisica());
-
-        if (dto.getIdPatio() != 0) {
-            Patio patio = new Patio();
-            patio.setIdPatio(dto.getIdPatio());
-            camera.setPatio(patio);
-        }
-        return camera;
-    }
-
-    @GetMapping
-    public List<CameraDTO> getAll() {
-        List<Camera> cameras = cS.listarCameras();
-        return cameras.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @GetMapping("/id/{id}")
-    public ResponseEntity<CameraDTO> getById(@PathVariable Long id) {
-        Camera camera = cS.buscarCameraPorId(id);
-        return ResponseEntity.ok(convertToDTO(camera));
-    }
-    
-    @GetMapping("/status/{status}")
-    public List<CameraDTO> getByStatusOperacional(@PathVariable String status) {
-        List<Camera> cameras = cS.findByStatusOperacional(status);
-        return cameras.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @GetMapping("/localizacao/{localizacao}")
-    public List<CameraDTO> getByLocalizacaoFisica(@PathVariable String localizacao) {
-        List<Camera> cameras = cS.findByLocalizacaoFisica(localizacao);
-        return cameras.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-
-    @PostMapping
-    public ResponseEntity<CameraDTO> create(@RequestBody @Valid CameraDTO cameraDTO) {
-        Camera camera = convertToEntity(cameraDTO);
-        Camera saved = cS.cadastrarCamera(camera);
-        return ResponseEntity.ok(convertToDTO(saved));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CameraDTO> update(@PathVariable Long id, @RequestBody CameraDTO cameraDTO) {
-        Camera cameraDetails = convertToEntity(cameraDTO);
-        Camera updated = cS.editarCamera(id, cameraDetails);
-        return ResponseEntity.ok(convertToDTO(updated));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        cS.deletarCamera(id);
-        return ResponseEntity.noContent().build();
-    }
+	private CameraDTO paraDTO(Camera camera) {
+		return new CameraDTO(
+				camera.getIdCamera(),
+				camera.getStatusOperacional(),
+				camera.getLocalizacaoFisica(),
+				camera.getPatio().getIdPatio()
+		);
+	}
+	
+	private Camera paraEntity(CameraDTO dto) {
+		Camera camera = new Camera();
+		camera.setIdCamera(dto.getIdCamera());
+		camera.setStatusOperacional(dto.getStatusOperacional());
+		camera.setLocalizacaoFisica(dto.getLocalizacaoFisica());
+		
+		if (dto.getIdPatio() != 0) {
+			Patio patio = new Patio();
+			patio.setIdPatio(dto.getIdPatio());
+			camera.setPatio(patio);
+		}
+		return camera;
+	}
+	
+	@GetMapping("/listar")
+	public List<CameraDTO> listarRest() {
+		return cS.listarCameras().stream().map(this::paraDTO).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/buscar-por-id/{id}")
+	public ResponseEntity<CameraDTO> buscarPorIdRest(@PathVariable Long id) {
+		Camera camera = cS.buscarCameraPorId(id);
+		return ResponseEntity.ok(paraDTO(camera));
+	}
+	
+	@GetMapping("/buscar-por-status/{status}")
+	public List<CameraDTO> buscarPorStatusRest(@PathVariable String status) {
+		return cS.buscarPorStatusOperacional(status)
+				.stream()
+				.map(this::paraDTO)
+				.collect(Collectors.toList());
+	}
+	
+	@GetMapping("/buscar-por-localizacao/{localizacao}")
+	public List<CameraDTO> buscarPorLocalizacaoRest(@PathVariable String localizacao) {
+		return cS.buscarPorLocalizacaoFisica(localizacao)
+				.stream()
+				.map(this::paraDTO)
+				.collect(Collectors.toList());
+	}
+	
+	@PostMapping("/cadastrar")
+	public ResponseEntity<CameraDTO> cadastrarRest(@RequestBody @Valid CameraDTO dto) {
+		Camera camera = paraEntity(dto);
+		Camera salvo = cS.cadastrarCamera(camera);
+		return ResponseEntity.ok(paraDTO(salvo));
+	}
+	
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<CameraDTO> editarRest(@PathVariable Long id, @RequestBody CameraDTO dto) {
+		Camera camera = paraEntity(dto);
+		Camera atualizado = cS.editarCamera(id, camera);
+		return ResponseEntity.ok(paraDTO(atualizado));
+	}
+	
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<Void> deletarRest(@PathVariable Long id) {
+		cS.deletarCamera(id);
+		return ResponseEntity.noContent().build();
+	}
 }
+

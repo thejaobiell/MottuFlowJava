@@ -20,95 +20,89 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/localidades")
 public class LocalidadeRestController {
-
-    
-    private final LocalidadeService lS;
 	
-	public LocalidadeRestController( LocalidadeService lS ) {
-		this.lS = lS;
+	private final LocalidadeService service;
+	
+	public LocalidadeRestController(LocalidadeService service) {
+		this.service = service;
 	}
 	
-	private LocalidadeDTO convertToDTO(Localidade localidade) {
-        return new LocalidadeDTO(
-                localidade.getIdLocalidade(),
-                localidade.getDataHora(),
-                localidade.getMoto().getIdMoto(),
-                localidade.getPatio().getIdPatio(),
-                localidade.getPontoReferencia(),
-                localidade.getCamera().getIdCamera()
-        );
-    }
-
-    private Localidade convertToEntity(LocalidadeDTO dto) {
-        Localidade localidade = new Localidade();
-        localidade.setIdLocalidade(dto.getIdLocalidade());
-        localidade.setDataHora(dto.getDataHora());
-        localidade.setPontoReferencia(dto.getPontoReferencia());
-
-        if (dto.getIdMoto() != 0) {
-        	Moto moto = new Moto();
-            moto.setIdMoto(dto.getIdMoto());
-            localidade.setMoto(moto);
-        }
-        if (dto.getIdPatio() != 0) {
-            Patio patio = new Patio();
-            patio.setIdPatio(dto.getIdPatio());
-            localidade.setPatio(patio);
-        }
-        if (dto.getIdCamera() != 0) {
-            Camera camera = new Camera();
-            camera.setIdCamera(dto.getIdCamera());
-            localidade.setCamera(camera);
-        }
-
-        return localidade;
-    }
-
-    @GetMapping
-    public List<LocalidadeDTO> getAll() {
-        List<Localidade> localidades = lS.listarLocalidades();
-        return localidades.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @GetMapping("/id/{id}")
-    public ResponseEntity<LocalidadeDTO> getById(@PathVariable Long id) {
-        Localidade localidade = lS.buscarLocalidadePorId(id);
-        return ResponseEntity.ok(convertToDTO(localidade));
-    }
-    
-    @GetMapping("/ponto-referencia/{ponto}")
-    public List<LocalidadeDTO> getByPontoReferencia(@PathVariable String ponto) {
-        List<Localidade> localidades = lS.buscarPorPontoReferencia(ponto);
-        return localidades.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @GetMapping("/periodo")
-    public List<LocalidadeDTO> getByDataHoraRange(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
-
-        List<Localidade> localidades = lS.buscarPorIntervaloData(dataInicio, dataFim);
-        return localidades.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-
-    @PostMapping
-    public ResponseEntity<LocalidadeDTO> create(@RequestBody @Valid LocalidadeDTO localidadeDTO) {
-        Localidade localidade = convertToEntity(localidadeDTO);
-        Localidade saved = lS.cadastrarLocalidade(localidade);
-        return ResponseEntity.ok(convertToDTO(saved));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<LocalidadeDTO> update(@PathVariable Long id, @RequestBody LocalidadeDTO localidadeDTO) {
-        Localidade localidadeDetails = convertToEntity(localidadeDTO);
-        Localidade updated = lS.editarLocalidade(id, localidadeDetails);
-        return ResponseEntity.ok(convertToDTO(updated));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        lS.deletarLocalidade(id);
-        return ResponseEntity.noContent().build();
-    }
+	private LocalidadeDTO paraDTO(Localidade localidade) {
+		return new LocalidadeDTO(
+				localidade.getIdLocalidade(),
+				localidade.getDataHora(),
+				localidade.getMoto().getIdMoto(),
+				localidade.getPatio().getIdPatio(),
+				localidade.getPontoReferencia(),
+				localidade.getCamera().getIdCamera()
+		);
+	}
+	
+	private Localidade paraEntity(LocalidadeDTO dto) {
+		Localidade localidade = new Localidade();
+		localidade.setIdLocalidade(dto.getIdLocalidade());
+		localidade.setDataHora(dto.getDataHora());
+		localidade.setPontoReferencia(dto.getPontoReferencia());
+		
+		if (dto.getIdMoto() != 0) {
+			Moto moto = new Moto();
+			moto.setIdMoto(dto.getIdMoto());
+			localidade.setMoto(moto);
+		}
+		if (dto.getIdPatio() != 0) {
+			Patio patio = new Patio();
+			patio.setIdPatio(dto.getIdPatio());
+			localidade.setPatio(patio);
+		}
+		if (dto.getIdCamera() != 0) {
+			Camera camera = new Camera();
+			camera.setIdCamera(dto.getIdCamera());
+			localidade.setCamera(camera);
+		}
+		
+		return localidade;
+	}
+	
+	@GetMapping("/listar")
+	public List<LocalidadeDTO> listarRest() {
+		return service.listarLocalidades().stream().map(this::paraDTO).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/buscar-por-id/{id}")
+	public ResponseEntity<LocalidadeDTO> buscarPorIdRest(@PathVariable Long id) {
+		Localidade localidade = service.buscarLocalidadePorId(id);
+		return ResponseEntity.ok(paraDTO(localidade));
+	}
+	
+	@GetMapping("/buscar-por-ponto-referencia/{ponto}")
+	public List<LocalidadeDTO> buscarPorPontoReferenciaRest(@PathVariable String ponto) {
+		return service.buscarPorPontoReferencia(ponto).stream().map(this::paraDTO).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/buscar-por-periodo")
+	public List<LocalidadeDTO> buscarPorPeriodoRest(
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
+		return service.buscarPorIntervaloData(dataInicio, dataFim).stream().map(this::paraDTO).collect(Collectors.toList());
+	}
+	
+	@PostMapping("/cadastrar")
+	public ResponseEntity<LocalidadeDTO> cadastrarRest(@RequestBody @Valid LocalidadeDTO dto) {
+		Localidade localidade = paraEntity(dto);
+		Localidade salvo = service.cadastrarLocalidade(localidade);
+		return ResponseEntity.ok(paraDTO(salvo));
+	}
+	
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<LocalidadeDTO> editarRest(@PathVariable Long id, @RequestBody LocalidadeDTO dto) {
+		Localidade localidade = paraEntity(dto);
+		Localidade atualizado = service.editarLocalidade(id, localidade);
+		return ResponseEntity.ok(paraDTO(atualizado));
+	}
+	
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<Void> deletarRest(@PathVariable Long id) {
+		service.deletarLocalidade(id);
+		return ResponseEntity.noContent().build();
+	}
 }

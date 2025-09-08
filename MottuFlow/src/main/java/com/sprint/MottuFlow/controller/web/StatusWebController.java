@@ -24,7 +24,7 @@ public class StatusWebController {
 	
 	@GetMapping("/listar-cadastrar-delete")
 	public String listarStatus(Model model) {
-		model.addAttribute("statusList", sS.findAllStatus());
+		model.addAttribute("statusList", sS.listarStatus());
 		model.addAttribute("novoStatus", new Status());
 		model.addAttribute("motos", mS.listarMotos());
 		model.addAttribute("funcionarios", fS.listarFuncionarios());
@@ -33,13 +33,13 @@ public class StatusWebController {
 	
 	@PostMapping("/cadastrar")
 	public String cadastrarStatus(@ModelAttribute("novoStatus") Status status) {
-		sS.saveStatus(status);
+		sS.cadastrarStatus(status);
 		return "redirect:/status/listar-cadastrar-delete";
 	}
 	
 	@GetMapping("/editar/{id}")
 	public String editarStatusForm(@PathVariable Long id, Model model) {
-		Status status = sS.findByIdStatus(id);
+		Status status = sS.buscarStatusPorId(id);
 		model.addAttribute("status", status);
 		model.addAttribute("motos", mS.listarMotos());
 		model.addAttribute("funcionarios", fS.listarFuncionarios());
@@ -48,13 +48,13 @@ public class StatusWebController {
 	
 	@PostMapping("/editar/{id}")
 	public String editarStatus(@PathVariable Long id, @ModelAttribute Status statusAtualizado) {
-		sS.updateStatus(id, statusAtualizado);
+		sS.editarStatus(id, statusAtualizado);
 		return "redirect:/status/listar-cadastrar-delete";
 	}
 	
 	@PostMapping("/deletar/{id}")
 	public String deletarStatus(@PathVariable Long id) {
-		sS.deleteByIdStatus(id);
+		sS.deletarStatus(id);
 		return "redirect:/status/listar-cadastrar-delete";
 	}
 }

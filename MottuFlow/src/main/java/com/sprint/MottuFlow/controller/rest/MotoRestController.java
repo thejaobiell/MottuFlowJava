@@ -17,85 +17,80 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/motos")
 public class MotoRestController {
 	
-    private final MotoService mS;
+	private final MotoService mS;
 	
-	public MotoRestController( MotoService mS ) {
+	public MotoRestController(MotoService mS ) {
 		this.mS = mS;
 	}
 	
-	private MotoDTO convertToDTO(Moto moto) {
-        return new MotoDTO(
-                moto.getIdMoto(),
-                moto.getPlaca(),
-                moto.getModelo(),
-                moto.getFabricante(),
-                moto.getAno(),
-                moto.getPatio().getIdPatio(),
-                moto.getLocalizacaoAtual()
-        );
-    }
-
-    private Moto convertToEntity(MotoDTO dto) {
-        Moto moto = new Moto();
-        moto.setIdMoto(dto.getIdMoto());
-        moto.setPlaca(dto.getPlaca());
-        moto.setModelo(dto.getModelo());
-        moto.setFabricante(dto.getFabricante());
-        moto.setAno(dto.getAno());
-        if (dto.getIdPatio() != 0) {
-        	Patio patio = new Patio();
-            patio.setIdPatio(dto.getIdPatio());
-            moto.setPatio(patio);
-        }
-        moto.setLocalizacaoAtual(dto.getLocalizacaoAtual());
-
-        return moto;
-    }
-
-    @GetMapping
-    public List<MotoDTO> getAll() {
-        List<Moto> motos = mS.listarMotos();
-        return motos.stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @GetMapping("/id/{id}")
-    public ResponseEntity<MotoDTO> getById(@PathVariable Long id) {
-        Moto moto = mS.buscarMotoPorId(id);
-        return ResponseEntity.ok(convertToDTO(moto));
-    }
-    
-    @GetMapping("/fabricante")
-    public ResponseEntity<List<MotoDTO>> getByFabricante(@RequestParam String fabricante) {
-        List<Moto> motos = mS.buscarMotoPorFabricante(fabricante);
-        List<MotoDTO> dtos = motos.stream().map(this::convertToDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
-    }
-
-    @GetMapping("/patio/{idPatio}")
-    public ResponseEntity<List<MotoDTO>> getByPatio(@PathVariable long idPatio) {
-        List<Moto> motos = mS.buscarMotoPorPlaca(idPatio);
-        List<MotoDTO> dtos = motos.stream().map(this::convertToDTO).collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
-    }
-
-
-    @PostMapping
-    public ResponseEntity<MotoDTO> create(@RequestBody @Valid MotoDTO motoDTO) {
-        Moto moto = convertToEntity(motoDTO);
-        Moto saved = mS.cadastrarMoto(moto);
-        return ResponseEntity.ok(convertToDTO(saved));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<MotoDTO> update(@PathVariable Long id, @RequestBody MotoDTO motoDTO) {
-        Moto motoDetails = convertToEntity(motoDTO);
-        Moto updated = mS.editarMoto(id, motoDetails);
-        return ResponseEntity.ok(convertToDTO(updated));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        mS.deletarMoto(id);
-        return ResponseEntity.noContent().build();
-    }
+	private MotoDTO paraDTO(Moto moto) {
+		return new MotoDTO(
+				moto.getIdMoto(),
+				moto.getPlaca(),
+				moto.getModelo(),
+				moto.getFabricante(),
+				moto.getAno(),
+				moto.getPatio().getIdPatio(),
+				moto.getLocalizacaoAtual()
+		);
+	}
+	
+	private Moto paraEntity(MotoDTO dto) {
+		Moto moto = new Moto();
+		moto.setIdMoto(dto.getIdMoto());
+		moto.setPlaca(dto.getPlaca());
+		moto.setModelo(dto.getModelo());
+		moto.setFabricante(dto.getFabricante());
+		moto.setAno(dto.getAno());
+		if (dto.getIdPatio() != 0) {
+			Patio patio = new Patio();
+			patio.setIdPatio(dto.getIdPatio());
+			moto.setPatio(patio);
+		}
+		moto.setLocalizacaoAtual(dto.getLocalizacaoAtual());
+		return moto;
+	}
+	
+	@GetMapping("/listar")
+	public List<MotoDTO> listarRest() {
+		return mS.listarMotos().stream().map(this::paraDTO).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/buscar-por-id/{id}")
+	public ResponseEntity<MotoDTO> buscarPorIdRest(@PathVariable Long id) {
+		Moto moto = mS.buscarMotoPorId(id);
+		return ResponseEntity.ok(paraDTO(moto));
+	}
+	
+	@GetMapping("/buscar-por-fabricante")
+	public ResponseEntity<List<MotoDTO>> buscarPorFabricanteRest(@RequestParam String fabricante) {
+		List<Moto> motos = mS.buscarPorFabricante(fabricante);
+		return ResponseEntity.ok(motos.stream().map(this::paraDTO).collect(Collectors.toList()));
+	}
+	
+	@GetMapping("/buscar-por-patio/{idPatio}")
+	public ResponseEntity<List<MotoDTO>> buscarPorPatioRest(@PathVariable long idPatio) {
+		List<Moto> motos = mS.buscarPorPatioId(idPatio);
+		return ResponseEntity.ok(motos.stream().map(this::paraDTO).collect(Collectors.toList()));
+	}
+	
+	@PostMapping("/cadastrar")
+	public ResponseEntity<MotoDTO> cadastrarRest(@RequestBody @Valid MotoDTO dto) {
+		Moto moto = paraEntity(dto);
+		Moto salvo = mS.cadastrarMoto(moto);
+		return ResponseEntity.ok(paraDTO(salvo));
+	}
+	
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<MotoDTO> editarRest(@PathVariable Long id, @RequestBody MotoDTO dto) {
+		Moto moto = paraEntity(dto);
+		Moto atualizado = mS.editarMoto(id, moto);
+		return ResponseEntity.ok(paraDTO(atualizado));
+	}
+	
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<Void> deletarRest(@PathVariable Long id) {
+		mS.deletarMoto(id);
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -14,113 +14,105 @@ import java.util.List;
 @Service
 public class FuncionarioService implements UserDetailsService {
 	
-	private final FuncionarioRepository fR;
+	private final FuncionarioRepository repository;
 	private final PasswordEncoder encoder;
 	
-	public FuncionarioService( FuncionarioRepository fR, PasswordEncoder encoder ) {
-		this.fR = fR;
+	public FuncionarioService(FuncionarioRepository repository, PasswordEncoder encoder) {
+		this.repository = repository;
 		this.encoder = encoder;
 	}
 	
 	public List<Funcionario> listarFuncionarios() {
-		return fR.findAll();
+		return repository.findAll();
 	}
 	
-	public Funcionario buscarFuncionarioPorId( Long id ) {
-		return fR.findById( id ).orElseThrow( () -> new RegraDeNegocioException( "Funcionario não encontrado com id: " + id ) );
+	public Funcionario buscarFuncionarioPorId(Long id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new RegraDeNegocioException("Funcionário não encontrado com id: " + id));
 	}
 	
-	public Funcionario buscarFuncionarioPorEmail( String email ) {
-		return fR.findByEmailIgnoreCase( email ).orElseThrow( () -> new RegraDeNegocioException( "Funcionario não encontrado com email: " + email ) );
-	}
-	
-	@Transactional
-	public Funcionario buscarFuncionarioPorCPF( String cpf ) {
-		return fR.findByCpfNative( cpf );
+	public Funcionario buscarFuncionarioPorEmail(String email) {
+		return repository.findByEmailIgnoreCase(email)
+				.orElseThrow(() -> new RegraDeNegocioException("Funcionário não encontrado com email: " + email));
 	}
 	
 	@Transactional
-	public Funcionario cadastrarFuncionario( Funcionario funcionario ) {
-		funcionario.setSenha( encoder.encode( funcionario.getSenha() ) );
-		
-		if ( funcionario.getCargo() == null ) {
-			throw new RegraDeNegocioException( "Cargo não pode ser nulo!" );
-		}
-		
-		return fR.save( funcionario );
-	}
-	
-	
-	@Transactional
-	public Funcionario editarFuncionario( Long id, Funcionario funcionarioAtualizado ) {
-		Funcionario funcionario = buscarFuncionarioPorId( id );
-		
-		if ( funcionarioAtualizado.getNome() != null && !funcionarioAtualizado.getNome().isBlank() ) {
-			funcionario.setNome( funcionarioAtualizado.getNome() );
-		}
-		
-		if ( funcionarioAtualizado.getCpf() != null && !funcionarioAtualizado.getCpf().isBlank() ) {
-			funcionario.setCpf( funcionarioAtualizado.getCpf() );
-		}
-		
-		if ( funcionarioAtualizado.getCargo() != null ) {
-			funcionario.setCargo( funcionarioAtualizado.getCargo() );
-		}
-		
-		
-		if ( funcionarioAtualizado.getTelefone() != null && !funcionarioAtualizado.getTelefone().isBlank() ) {
-			funcionario.setTelefone( funcionarioAtualizado.getTelefone() );
-		}
-		
-		if ( funcionarioAtualizado.getEmail() != null && !funcionarioAtualizado.getEmail().isBlank() ) {
-			funcionario.setEmail( funcionarioAtualizado.getEmail() );
-		}
-		
-		if ( funcionarioAtualizado.getSenha() != null && !funcionarioAtualizado.getSenha().isBlank() ) {
-			funcionario.setSenha( encoder.encode( funcionarioAtualizado.getSenha() ) );
-		}
-		
-		return fR.save( funcionario );
+	public Funcionario buscarFuncionarioPorCPF(String cpf) {
+		return repository.findByCpfNative(cpf);
 	}
 	
 	@Transactional
-	public void deletarFuncionario( Long id ) {
-		Funcionario funcionario = buscarFuncionarioPorId( id );
-		fR.delete( funcionario );
+	public Funcionario cadastrarFuncionario(Funcionario funcionario) {
+		if (funcionario.getCargo() == null) {
+			throw new RegraDeNegocioException("Cargo não pode ser nulo!");
+		}
+		funcionario.setSenha(encoder.encode(funcionario.getSenha()));
+		return repository.save(funcionario);
+	}
+	
+	@Transactional
+	public Funcionario editarFuncionario(Long id, Funcionario funcionarioAtualizado) {
+		Funcionario funcionario = buscarFuncionarioPorId(id);
+		
+		if (funcionarioAtualizado.getNome() != null && !funcionarioAtualizado.getNome().isBlank())
+			funcionario.setNome(funcionarioAtualizado.getNome());
+		
+		if (funcionarioAtualizado.getCpf() != null && !funcionarioAtualizado.getCpf().isBlank())
+			funcionario.setCpf(funcionarioAtualizado.getCpf());
+		
+		if (funcionarioAtualizado.getCargo() != null)
+			funcionario.setCargo(funcionarioAtualizado.getCargo());
+		
+		if (funcionarioAtualizado.getTelefone() != null && !funcionarioAtualizado.getTelefone().isBlank())
+			funcionario.setTelefone(funcionarioAtualizado.getTelefone());
+		
+		if (funcionarioAtualizado.getEmail() != null && !funcionarioAtualizado.getEmail().isBlank())
+			funcionario.setEmail(funcionarioAtualizado.getEmail());
+		
+		if (funcionarioAtualizado.getSenha() != null && !funcionarioAtualizado.getSenha().isBlank())
+			funcionario.setSenha(encoder.encode(funcionarioAtualizado.getSenha()));
+		
+		return repository.save(funcionario);
+	}
+	
+	@Transactional
+	public void deletarFuncionario(Long id) {
+		Funcionario funcionario = buscarFuncionarioPorId(id);
+		repository.delete(funcionario);
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername( String email ) throws UsernameNotFoundException {
-		return fR.findByEmailIgnoreCase( email ).orElseThrow( () -> new UsernameNotFoundException( "O usuário não foi encontrado!" ) );
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		return repository.findByEmailIgnoreCase(email)
+				.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
 	}
 	
 	@Transactional
-	public void atualizarRefreshTokenFuncionario( Funcionario funcionario, String refreshToken, LocalDateTime expiracao ) {
-		funcionario.setRefreshToken( refreshToken );
-		funcionario.setExpiracaoRefreshToken( expiracao );
-		fR.save( funcionario );
+	public void atualizarRefreshTokenFuncionario(Funcionario funcionario, String refreshToken, LocalDateTime expiracao) {
+		funcionario.setRefreshToken(refreshToken);
+		funcionario.setExpiracaoRefreshToken(expiracao);
+		repository.save(funcionario);
 	}
 	
 	@Transactional
-	public Funcionario validarRefreshTokenFuncionario( String refreshToken ) {
-		Funcionario funcionario = fR.findByRefreshToken( refreshToken ).orElseThrow( () -> new RegraDeNegocioException( "Refresh token inválido!" ) );
+	public Funcionario validarRefreshTokenFuncionario(String refreshToken) {
+		Funcionario funcionario = repository.findByRefreshToken(refreshToken)
+				.orElseThrow(() -> new RegraDeNegocioException("Refresh token inválido!"));
 		
-		if ( funcionario.getExpiracaoRefreshToken().isBefore( LocalDateTime.now() ) ) {
-			throw new RegraDeNegocioException( "Refresh token expirado!" );
+		if (funcionario.getExpiracaoRefreshToken().isBefore(LocalDateTime.now())) {
+			throw new RegraDeNegocioException("Refresh token expirado!");
 		}
 		
 		return funcionario;
 	}
 	
 	@Transactional
-	public void alterarSenha( String email, String senhaAtual, String novaSenha ) {
-		Funcionario funcionario = buscarFuncionarioPorEmail( email );
-		if ( !encoder.matches( senhaAtual, funcionario.getSenha() ) ) {
-			throw new RegraDeNegocioException( "Senha atual incorreta!" );
+	public void alterarSenha(String email, String senhaAtual, String novaSenha) {
+		Funcionario funcionario = buscarFuncionarioPorEmail(email);
+		if (!encoder.matches(senhaAtual, funcionario.getSenha())) {
+			throw new RegraDeNegocioException("Senha atual incorreta!");
 		}
-		
-		funcionario.setSenha( encoder.encode( novaSenha ) );
-		fR.save( funcionario );
+		funcionario.setSenha(encoder.encode(novaSenha));
+		repository.save(funcionario);
 	}
-	
 }

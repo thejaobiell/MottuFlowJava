@@ -1,6 +1,8 @@
 package com.sprint.MottuFlow.domain.funcionario;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class FuncionarioDTO {
@@ -12,23 +14,22 @@ public class FuncionarioDTO {
     private String nome;
 
     @NotBlank(message = "CPF é obrigatório")
-    @Size(min = 11, max = 11, message = "CPF deve ter exatamente 11 caracteres")
+    @Size(min = 11, max = 14, message = "CPF deve ter entre 11 e 14 caracteres")
     private String cpf;
-
-    @NotBlank(message = "Cargo é obrigatório")
-    @Size(max = 50)
-    private Cargo cargo;
-
-    @NotBlank(message = "Telefone é obrigatório")
+	
+	@NotNull(message = "Cargo não pode ser nulo")
+	private Cargo cargo;
+	
+	@NotBlank(message = "Telefone é obrigatório")
     @Size(max = 20)
     private String telefone;
 
-    @NotBlank(message = "Usuário é obrigatório")
-    @Size(max = 50)
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Isso não é um email")
     private String email;
 
     @NotBlank(message = "Senha é obrigatória")
-    @Size(min = 8)
+    @Size(min = 6, message = "Senha deve ter no minímo 6 caracteres")
     private String senha;
 
     public FuncionarioDTO() {}

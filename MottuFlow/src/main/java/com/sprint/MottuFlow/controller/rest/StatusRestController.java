@@ -17,16 +17,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/registro_status")
+@RequestMapping("/api/status")
 public class StatusRestController {
 	
-	private final StatusService sS;
+	private final StatusService service;
 	
-	public StatusRestController( StatusService sS ) {
-		this.sS = sS;
+	public StatusRestController(StatusService service) {
+		this.service = service;
 	}
 	
-	private StatusDTO convertToDTO(Status status) {
+	private StatusDTO paraDTO(Status status) {
 		return new StatusDTO(
 				status.getIdStatus(),
 				status.getMoto().getIdMoto(),
@@ -37,7 +37,7 @@ public class StatusRestController {
 		);
 	}
 	
-	private Status convertToEntity(StatusDTO dto) {
+	private Status paraEntity(StatusDTO dto) {
 		Status status = new Status();
 		status.setIdStatus(dto.getIdStatus());
 		status.setTipoStatus(dto.getTipoStatus());
@@ -59,58 +59,56 @@ public class StatusRestController {
 		return status;
 	}
 	
-	@GetMapping
-	public List<StatusDTO> getAll() {
-		return sS.findAllStatus().stream()
-				.map(this::convertToDTO)
+	@GetMapping("/listar")
+	public List<StatusDTO> listarRest() {
+		return service.listarStatus()
+				.stream().map(this::paraDTO)
 				.collect(Collectors.toList());
 	}
 	
-	@GetMapping("/id/{id}")
-	public ResponseEntity<StatusDTO> getById(@PathVariable Long id) {
-		Status status = sS.findByIdStatus(id);
-		return ResponseEntity.ok(convertToDTO(status));
+	@GetMapping("/buscar-por-id/{id}")
+	public ResponseEntity<StatusDTO> buscarPorIdRest(@PathVariable Long id) {
+		Status status = service.buscarStatusPorId(id);
+		return ResponseEntity.ok(paraDTO(status));
 	}
 	
-	@GetMapping("/tipo")
-	public List<StatusDTO> getByTipoStatus(@RequestParam String tipoStatus) {
+	@GetMapping("/buscar-por-tipo")
+	public List<StatusDTO> buscarPorTipoRest(@RequestParam String tipoStatus) {
 		TipoStatus tipo;
 		try {
-			// Converte string para enum, suportando formatos como "Disponivel", "BAIXA_BOLETIM_OCORRENCIA"
 			tipo = TipoStatus.valueOf(tipoStatus.toUpperCase().replace(" ", "_"));
 		} catch (IllegalArgumentException e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TipoStatus inválido: " + tipoStatus);
 		}
-		
-		return sS.findByTipoStatus(tipo).stream()
-				.map(this::convertToDTO)
+		return service.buscarPorTipoStatus(tipo)
+				.stream().map(this::paraDTO)
 				.collect(Collectors.toList());
 	}
 	
-	@GetMapping("/descricao")
-	public List<StatusDTO> getByDescricaoStatus(@RequestParam String descricao) {
-		return sS.findByDescricaoStatus(descricao).stream()
-				.map(this::convertToDTO)
+	@GetMapping("/buscar-por-descricao")
+	public List<StatusDTO> buscarPorDescricaoRest(@RequestParam String descricao) {
+		return service.buscarPorDescricaoStatus(descricao)
+				.stream().map(this::paraDTO)
 				.collect(Collectors.toList());
 	}
 	
-	@PostMapping
-	public ResponseEntity<StatusDTO> create(@RequestBody @Valid StatusDTO statusDTO) {
-		Status status = convertToEntity(statusDTO);
-		Status saved = sS.saveStatus(status);
-		return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(saved));
+	@PostMapping("/cadastrar")
+	public ResponseEntity<StatusDTO> cadastrarRest(@RequestBody @Valid StatusDTO dto) {
+		Status status = paraEntity(dto);
+		Status salvo = service.cadastrarStatus(status);
+		return ResponseEntity.status(HttpStatus.CREATED).body(paraDTO(salvo));
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<StatusDTO> update(@PathVariable Long id, @RequestBody @Valid StatusDTO statusDTO) {
-		Status statusAtualizado = convertToEntity(statusDTO);
-		Status updated = sS.updateStatus(id, statusAtualizado);
-		return ResponseEntity.ok(convertToDTO(updated));
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<StatusDTO> editarRest(@PathVariable Long id, @RequestBody @Valid StatusDTO dto) {
+		Status atualizado = paraEntity(dto);
+		Status updated = service.editarStatus(id, atualizado);
+		return ResponseEntity.ok(paraDTO(updated));
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		sS.deleteByIdStatus(id);
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<Void> deletarRest(@PathVariable Long id) {
+		service.deletarStatus(id);
 		return ResponseEntity.noContent().build();
 	}
 }

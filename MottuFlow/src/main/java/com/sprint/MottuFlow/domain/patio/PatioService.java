@@ -1,6 +1,7 @@
 package com.sprint.MottuFlow.domain.patio;
 
 import com.sprint.MottuFlow.infra.exception.RegraDeNegocioException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public class PatioService {
 	
 	private final PatioRepository pR;
 	
-	public PatioService( PatioRepository pR ) {
+	public PatioService(PatioRepository pR ) {
 		this.pR = pR;
 	}
 	
@@ -23,14 +24,12 @@ public class PatioService {
 				.orElseThrow(() -> new RegraDeNegocioException("Pátio não encontrado com id: " + id));
 	}
 	
-	public List<Patio> buscarPatioPorEndereco(String endereco) {
-		return pR.findByEndereco(endereco);
-	}
-	
+	@Transactional
 	public Patio cadastrarPatio(Patio patio) {
 		return pR.save(patio);
 	}
 	
+	@Transactional
 	public Patio editarPatio(Long id, Patio patioAtualizado) {
 		Patio patio = buscarPatioPorId(id);
 		
@@ -41,15 +40,9 @@ public class PatioService {
 		return pR.save(patio);
 	}
 	
+	@Transactional
 	public void deletarPatio(Long id) {
-		Patio patio = pR.findById(id)
-				.orElseThrow(() -> new RegraDeNegocioException("Pátio não encontrado com id: " + id));
-		
-		// Força carregamento das coleções (se for necessário)
-		patio.getMotos().size();
-		patio.getCameras().size();
-		patio.getLocalidades().size();
-		
+		Patio patio = buscarPatioPorId(id);
 		pR.delete(patio);
 	}
 }

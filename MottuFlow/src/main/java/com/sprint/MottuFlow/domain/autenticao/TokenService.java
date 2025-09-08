@@ -29,7 +29,7 @@ public class TokenService {
 			return JWT.create()
 					.withIssuer("MottuFlow") // Identificador do emissor do token
 					.withSubject(funcionario.getUsername()) // Nome de usuário do usuário autenticado
-					.withExpiresAt(expiracao(30)) // Expira em 30 minutos
+					.withExpiresAt(expiracao(120)) // Expira em 120 minutos
 					.sign(algorithm);
 		} catch (JWTCreationException exception) {
 			throw new RegraDeNegocioException("Erro ao gerar o token JWT de acesso");
@@ -42,7 +42,7 @@ public class TokenService {
 			return JWT.create()
 					.withIssuer("MottuFlow")
 					.withSubject(funcionario.getId_funcionario().toString())
-					.withExpiresAt(expiracao(120))
+					.withExpiresAt(expiracao(10080))
 					.sign(algorithm);
 		} catch (JWTCreationException exception) {
 			throw new RegraDeNegocioException("Erro ao gerar o token JWT de acesso");
