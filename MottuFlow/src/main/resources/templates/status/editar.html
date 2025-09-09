@@ -20,14 +20,20 @@
         <input id="descricao" type="text" th:field="*{descricao}">
 
         <label for="moto">Moto</label>
-        <select id="moto" th:field="*{moto}" required>
-            <option th:each="moto : ${motos}" th:value="${moto.idMoto}" th:text="${moto.placa}" th:selected="${status.moto.idMoto == moto.idMoto}"></option>
-        </select>
+        <select id="moto" th:field="*{moto.idMoto}" required>
+		    <option th:each="moto : ${motos}"
+		            th:value="${moto.idMoto}"
+		            th:text="${moto.placa}">
+		    </option>
+		</select>
 
         <label for="funcionario">Funcionário</label>
-        <select id="funcionario" th:field="*{funcionario}" required>
-            <option th:each="func : ${funcionarios}" th:value="${func.id_funcionario}" th:text="${func.nome}" th:selected="${status.funcionario.id_funcionario == func.id_funcionario}"></option>
-        </select>
+		<select id="funcionario" th:field="*{funcionario.id_funcionario}" required>
+		    <option th:each="func : ${funcionarios}"
+		            th:value="${func.id_funcionario}"
+		            th:text="${func.nome}">
+		    </option>
+		</select>
 
         <button type="submit" class="save">Salvar Alterações</button>
         <a th:href="@{/status/listar}" class="button cancel">Cancelar</a>

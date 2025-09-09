@@ -4,6 +4,7 @@ import com.sprint.MottuFlow.domain.status.Status;
 import com.sprint.MottuFlow.domain.status.StatusService;
 import com.sprint.MottuFlow.domain.moto.MotoService;
 import com.sprint.MottuFlow.domain.funcionario.FuncionarioService;
+import com.sprint.MottuFlow.domain.status.TipoStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class StatusWebController {
 		model.addAttribute("novoStatus", new Status());
 		model.addAttribute("motos", mS.listarMotos());
 		model.addAttribute("funcionarios", fS.listarFuncionarios());
+		model.addAttribute("tiposStatus", TipoStatus.values());
 		return "status/listar-cadastrar-delete";
 	}
 	
@@ -43,6 +45,7 @@ public class StatusWebController {
 		model.addAttribute("status", status);
 		model.addAttribute("motos", mS.listarMotos());
 		model.addAttribute("funcionarios", fS.listarFuncionarios());
+		model.addAttribute("tiposStatus", TipoStatus.values());
 		return "status/editar";
 	}
 	
