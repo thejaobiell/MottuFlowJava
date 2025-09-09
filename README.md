@@ -18,6 +18,11 @@ A API comunica-se com o **banco de dados MySQL**, facilitando o envio e recebime
 
 ---
 
+## Link para o vídeo
+[Clique aqui para ver o vídeo](https://www.youtube.com/watch?v=sNgxuqE-NmI)
+
+---
+
 ## Funcionalidades
 
 A aplicação oferece **CRUD completo** para os seguintes módulos:
