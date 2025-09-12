@@ -1,4 +1,7 @@
-# 🚀 MottuFlow
+<div align="center">
+  <img src="MottuFlow/src/main/resources/static/images/logo.png" alt="MottuFlow" width="200"/>
+  <h1>𝙈𝙤𝙩𝙩𝙪𝙁𝙡𝙤𝙬</h1>
+</div>
 
 ![Java](https://img.shields.io/badge/Java-21-orange.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)
