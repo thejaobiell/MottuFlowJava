@@ -170,8 +170,6 @@ cd MottuFlowJava\MottuFlow
 
 </details>
 
-Beleza 🚀 Vou ajustar seu trecho de configuração para funcionar em **Linux/Mac** e **Windows** com o usuário e senha que você definiu:
-
 ---
 
 ## ⚙️ Configuração
