@@ -170,11 +170,17 @@ cd MottuFlowJava\MottuFlow
 
 </details>
 
+Beleza 🚀 Vou ajustar seu trecho de configuração para funcionar em **Linux/Mac** e **Windows** com o usuário e senha que você definiu:
+
+---
+
 ## ⚙️ Configuração
 
 ### 🗄️ Banco de Dados MySQL
 
-#### 1. Instalação MySQL (Ubuntu/Debian)
+#### 1. Instalação MySQL
+
+##### 🔹 **Linux (Ubuntu/Debian)**
 
 ```bash
 sudo apt update
@@ -182,27 +188,52 @@ sudo apt install mysql-server mysql-client
 sudo mysql_secure_installation
 ```
 
+---
+
+##### 🔹 **Windows**
+
+1. Baixe o **MySQL Installer**:
+   👉 [Download MySQL Installer](https://dev.mysql.com/downloads/installer/)
+
+2. Durante a instalação, escolha:
+
+   * **Server Only** (somente servidor) ou **Full** (se quiser Workbench e utilitários).
+   * Configure a senha do usuário `root`.
+
+3. Após a instalação, inicie o MySQL.
+
+4. Para acessar via terminal do Windows:
+
+   * Pressione `Win + R`, digite `cmd` e execute:
+
+   ```bash
+   mysql -u root -p
+   ```
+
+   * Digite a senha configurada.
+
 #### 2. Criação do Usuário e Banco
 
 ```sql
 -- Execute no MySQL como root
-CREATE DATABASE mottuflow;
-CREATE USER 'mottu_user'@'localhost' IDENTIFIED BY 'mottu_password_2024';
-GRANT ALL PRIVILEGES ON mottuflow.* TO 'mottu_user'@'localhost';
+CREATE USER 'mottu_user'@'%' IDENTIFIED BY 'user123';
+GRANT ALL PRIVILEGES ON mottuflow.* TO 'mottu_user'@'%';
 FLUSH PRIVILEGES;
 ```
 
-#### 3. Configuração da Aplicação
+> Se quiser restringir só para a máquina local, use `'localhost'` no lugar de `%`.
 
-Edite `src/main/resources/application.properties`:
+---
+
+#### 3. Configuração da Aplicação (`src/main/resources/application.properties`)
 
 ```properties
 spring.application.name=MottuFlow
 
 spring.datasource.url=jdbc:mysql://localhost:3306/mottuflow?createDatabaseIfNotExist=true
-#Edite Aqui
-spring.datasource.username=root 
-spring.datasource.password=root
+
+spring.datasource.username= # COLOQUE O SEU USUÁRIO
+spring.datasource.password= # COLOQUE A SUA SENHA
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
@@ -237,9 +268,9 @@ spring.main.allow-bean-definition-overriding=true
 
 server.address=0.0.0.0
 server.port=8080
-
-
 ```
+
+---
 
 ## 🚀 Uso
 
@@ -273,7 +304,7 @@ Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.
 
 ### 3. Usuários Padrão
 
-| Usuário | Senha | Perfil | Acesso |
+| Usuário | Senha | Cargo | Acesso |
 |---------|-------|--------|--------|
 | `admin@email.com` | `adminmottu` | Administrador | Completo | 
 | `joao@email.com` | `joao123` | Mecânico | Limitado | 
@@ -283,25 +314,58 @@ Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.
 
 ---
 
-## 📡 API REST
+## 🔐 Autenticação JWT
 
-### 🔐 Autenticação
+Todas as requisições para a **API MottuFlow** exigem autenticação via **JWT (JSON Web Token)**.
 
-Todas as requisições para a API precisam de autenticação JWT:
+---
 
-```bash
-# 1. Login para obter token
-curl -X POST http://localhost:8080/api/login \
-  -H "Content-Type: application/json" \
-  -d '{"email": "admin@email.com", "senha": "adminmottu"}'
+### ✅ Usando o Postman
 
-# Resposta:
-# {"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}
+1. **Importe** a coleção [API - MottuFlow.postman\_collection.json](https://github.com/thejaobiell/MottuFlowJava/blob/main/MottuFlow/jsonsAPIREST/API%20-%20MottuFlow.postman_collection.json) no Postman.
+2. No menu **`0 - JWT`**, execute o **POST Pegar Token JWT**, informando no **body** o `email` e `senha` do funcionário:
 
-# 2. Use o token nas requisições
-curl -X GET http://localhost:8080/api/funcionario/listar \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..."
-```
+   ```json
+   {
+     "email": "admin@email.com",
+     "senha": "adminmottu"
+   }
+   ```
+3. Copie o valor de **`tokenAcesso`** retornado.
+4. Vá até **API - MottuFlow → Variables**.
+5. Substitua o valor da variável `jwt` pelo seu **token JWT**.
+6. Agora todos os endpoints da coleção já estarão autenticados. 🚀
+
+---
+
+### ✅ Usando o Terminal (cURL)
+
+1. **Login para obter o token:**
+
+   ```bash
+   curl -X POST http://localhost:8080/api/login \
+     -H "Content-Type: application/json" \
+     -d '{"email": "admin@email.com", "senha": "adminmottu"}'
+   ```
+
+   **Resposta esperada:**
+
+   ```json
+   {
+     "tokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp..."
+   }
+   ```
+
+2. **Use o token nas chamadas protegidas:**
+
+   ```bash
+   curl -X GET http://localhost:8080/api/funcionario/listar \
+     -H "Authorization: Bearer SEU_TOKEN_AQUI"
+   ```
+
+---
+
+👉 Dica: sempre prefixe o token com **`Bearer `** no cabeçalho `Authorization`.
 
 ## 📡 API REST
 
