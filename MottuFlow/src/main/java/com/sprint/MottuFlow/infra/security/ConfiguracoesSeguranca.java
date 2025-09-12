@@ -54,6 +54,7 @@ public class ConfiguracoesSeguranca {
 		return http
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.requestMatchers("/login").permitAll()
 						
 						.requestMatchers("/", "/menu", "/perfil").authenticated()
