@@ -17,39 +17,35 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 	
-	/*
-	 * Serviço responsável por gerar tokens JWT para autenticação de usuários.
-	 * Gera um token JWT para o usuário autenticado.
-	 * @param usuario O usuário autenticado.
-	 * @return O token JWT gerado.
-	 */
-	public String gerarToken( Funcionario funcionario) {
+	//Aqui gera o JWT
+	public String gerarToken( Funcionario funcionario ) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
 			return JWT.create()
-					.withIssuer("MottuFlow") // Identificador do emissor do token
-					.withSubject(funcionario.getUsername()) // Nome de usuário do usuário autenticado
-					.withExpiresAt(expiracao(120)) // Expira em 120 minutos
-					.sign(algorithm);
-		} catch (JWTCreationException exception) {
-			throw new RegraDeNegocioException("Erro ao gerar o token JWT de acesso");
+					.withIssuer( "MottuFlow" )
+					.withSubject( funcionario.getUsername() )
+					.withExpiresAt( expiracao( 120 ) )
+					.sign( algorithm );
+		} catch ( JWTCreationException exception ) {
+			throw new RegraDeNegocioException( "Erro ao gerar o token JWT de acesso" );
 		}
 	}
 	
-	public String gerarRefreshToken(Funcionario funcionario) {
+	//Aqui gera o refreshtoken(token com função de atualizar o JWT)
+	public String gerarRefreshToken( Funcionario funcionario ) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
 			return JWT.create()
-					.withIssuer("MottuFlow")
+					.withIssuer( "MottuFlow" )
 					.withSubject(funcionario.getId_funcionario().toString())
-					.withExpiresAt(expiracao(10080))
-					.sign(algorithm);
-		} catch (JWTCreationException exception) {
-			throw new RegraDeNegocioException("Erro ao gerar o token JWT de acesso");
+					.withExpiresAt( expiracao( 10080 ) )
+					.sign( algorithm );
+		} catch ( JWTCreationException exception ) {
+			throw new RegraDeNegocioException( "Erro ao gerar o token Refresh Token" );
 		}
 	}
 	
-	public String getSubject( String token) {
+	public String getSubject( String token ) {
 		DecodedJWT decodedJWT;
 		try {
 			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
@@ -64,7 +60,24 @@ public class TokenService {
 		}
 	}
 	
-	private Instant expiracao(int minutos) {
-		return LocalDateTime.now().plusMinutes(minutos).toInstant(ZoneOffset.of("-03:00"));
+	public boolean isJwtExpired( String tokenAcesso ) {
+		try {
+			Algorithm algorithm = Algorithm.HMAC256("joao-gabriel-lucas-leal-leo-mota");
+			JWTVerifier verifier = JWT.require( algorithm )
+					.withIssuer( "MottuFlow" )
+					.build();
+			
+			DecodedJWT decodedJWT = verifier.verify( tokenAcesso );
+			Instant exp = decodedJWT.getExpiresAt().toInstant();
+			Instant now = Instant.now();
+			
+			return now.isAfter( exp );
+		} catch ( JWTVerificationException e ) {
+			return true;
+		}
+	}
+	
+	private Instant expiracao( int minutos ) {
+		return LocalDateTime.now().plusMinutes( minutos ).toInstant( ZoneOffset.of( "-03:00" ) );
 	}
 }
