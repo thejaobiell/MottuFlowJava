@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @RequestMapping( "/api/funcionario" )
 public class FuncionarioRestController {
 	
-	private final FuncionarioService service;
+	private final FuncionarioService fS;
 	
-	public FuncionarioRestController( FuncionarioService service ) {
-		this.service = service;
+	public FuncionarioRestController( FuncionarioService fS ) {
+		this.fS = fS;
 	}
 	
 	private FuncionarioDTO paraDTO( Funcionario funcionario ) {
@@ -45,18 +45,18 @@ public class FuncionarioRestController {
 	
 	@GetMapping( "/listar" )
 	public List<FuncionarioDTO> listarRest() {
-		return service.listarFuncionarios().stream().map( this::paraDTO ).collect( Collectors.toList() );
+		return fS.listarFuncionarios().stream().map( this::paraDTO ).collect( Collectors.toList() );
 	}
 	
 	@GetMapping( "/buscar-por-id/{id}" )
 	public ResponseEntity<FuncionarioDTO> buscarPorIdRest( @PathVariable Long id ) {
-		Funcionario funcionario = service.buscarFuncionarioPorId( id );
+		Funcionario funcionario = fS.buscarFuncionarioPorId( id );
 		return ResponseEntity.ok( paraDTO( funcionario ) );
 	}
 	
 	@GetMapping( "/buscar-por-cpf/{cpf}" )
 	public ResponseEntity<FuncionarioDTO> buscarPorCpfRest( @PathVariable String cpf ) {
-		Funcionario funcionario = service.buscarFuncionarioPorCPF( cpf );
+		Funcionario funcionario = fS.buscarFuncionarioPorCPF( cpf );
 		if ( funcionario == null ) {
 			return ResponseEntity.notFound().build();
 		}
@@ -65,7 +65,7 @@ public class FuncionarioRestController {
 	
 	@GetMapping( "/buscar-por-email/{email}" )
 	public ResponseEntity<FuncionarioDTO> buscarPorEmail( @PathVariable String email ) {
-		Funcionario funcionario = service.buscarFuncionarioPorEmail( email );
+		Funcionario funcionario = fS.buscarFuncionarioPorEmail( email );
 		if ( funcionario == null ) {
 			return ResponseEntity.notFound().build();
 		}
@@ -75,26 +75,26 @@ public class FuncionarioRestController {
 	@PostMapping( "/cadastrar" )
 	public ResponseEntity<FuncionarioDTO> cadastrarRest( @RequestBody @Valid FuncionarioDTO dto ) {
 		Funcionario funcionario = paraEntity( dto );
-		Funcionario salvo = service.cadastrarFuncionario( funcionario );
+		Funcionario salvo = fS.cadastrarFuncionario( funcionario );
 		return ResponseEntity.ok( paraDTO( salvo ) );
 	}
 	
 	@PutMapping( "/editar/{id}" )
 	public ResponseEntity<FuncionarioDTO> editarRest( @PathVariable Long id, @RequestBody FuncionarioDTO dto ) {
 		Funcionario funcionario = paraEntity( dto );
-		Funcionario atualizado = service.editarFuncionario( id, funcionario );
+		Funcionario atualizado = fS.editarFuncionario( id, funcionario );
 		return ResponseEntity.ok( paraDTO( atualizado ) );
 	}
 	
 	@PatchMapping("/alterar-senha")
 	public ResponseEntity<Void> alterarSenha(@RequestBody @Valid AlterarSenhaDTO dto) {
-		service.alterarSenha(dto.email(), dto.senhaAtual(), dto.novaSenha());
+		fS.alterarSenha(dto.email(), dto.senhaAtual(), dto.novaSenha());
 		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping( "/deletar/{id}" )
 	public ResponseEntity<Void> deletarRest( @PathVariable Long id ) {
-		service.deletarFuncionario( id );
+		fS.deletarFuncionario( id );
 		return ResponseEntity.noContent().build();
 	}
 }

@@ -82,6 +82,22 @@ public class MotoRestController {
 		}
 	}
 	
+	@GetMapping("/buscar-por-modelo/{modelo}")
+	public ResponseEntity<?> buscarPorModeloRest(@PathVariable String modelo) {
+		List<Moto> motoList = mS.buscarPorModelo(modelo);
+		
+		if (motoList.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		} else if (motoList.size() == 1) {
+			return ResponseEntity.ok(paraDTO(motoList.get(0)));
+		} else {
+			List<MotoDTO> dtos = motoList.stream()
+					.map(this::paraDTO)
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(dtos);
+		}
+	}
+	
 	@GetMapping( "/buscar-por-patio/{idPatio}" )
 	public ResponseEntity<?> buscarPorPatioRest( @PathVariable long idPatio ) {
 		List<Moto> motoList = mS.buscarPorPatioId( idPatio );

@@ -43,6 +43,17 @@ public class MotoService {
 		return mR.findByFabricante(fabricante);
 	}
 	
+	public List<Moto> buscarPorModelo(String modelo) {
+		List<Moto> motos = mR.findByModeloContainingIgnoreCase(modelo);
+		if (motos.isEmpty()) {
+			throw new RegraDeNegocioException(
+					"Nenhuma moto encontrada com modelo contendo: " + modelo
+			);
+		}
+		return motos;
+	}
+	
+	
 	public List<Moto> buscarPorPatioId(long idPatio) {
 		return mR.findByPatioId(idPatio);
 	}
