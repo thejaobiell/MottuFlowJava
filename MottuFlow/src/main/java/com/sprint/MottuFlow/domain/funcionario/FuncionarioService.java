@@ -114,7 +114,6 @@ public class FuncionarioService implements UserDetailsService {
 			throw new RegraDeNegocioException("Senha atual incorreta!");
 		}
 		
-		// altera para a nova senha
 		funcionario.setSenha(encoder.encode(novaSenha));
 		repository.save(funcionario);
 	}
