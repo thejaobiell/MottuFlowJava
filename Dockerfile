@@ -6,10 +6,10 @@ COPY .mvn .mvn
 RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline -B
 
-COPY src ./src
+COPY MottuFlow/src ./src
 RUN ./mvnw package -DskipTests -B
 
-RUN mv target/MottuFlow-*.jar app.jar
+RUN mv MottuFlow/target/MottuFlow-*.jar app.jar
 
 FROM gcr.io/distroless/java21:nonroot
 WORKDIR /app
@@ -19,3 +19,4 @@ COPY --from=builder /app/app.jar app.jar
 EXPOSE 8080
 USER nonroot
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
