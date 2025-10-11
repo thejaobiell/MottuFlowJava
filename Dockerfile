@@ -9,7 +9,7 @@ RUN ./mvnw dependency:go-offline -B
 COPY MottuFlow/src ./src
 RUN ./mvnw package -DskipTests -B
 
-RUN mv MottuFlow/target/MottuFlow-*.jar app.jar
+RUN mv target/MottuFlow-*.jar app.jar
 
 FROM gcr.io/distroless/java21:nonroot
 WORKDIR /app
