@@ -31,12 +31,25 @@ O MottuFlow foi desenvolvido como parte de um projeto acadêmico integrando as d
 
 ### 🎥 Demonstração
 
-[![Ver demonstração no YouTube](https://img.shields.io/badge/YouTube-Ver%20Demonstração-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=sNgxuqE-NmI)
+[![Ver demonstração no YouTube](https://img.shields.io/badge/YouTube-Ver%20Demonstração-red?style=for-the-badge&logo=youtube)]( depois mudar aqui )
 
 ### 🔗 Recursos Externos
 
 - **[📂 Repositório GitHub](https://github.com/thejaobiell/MottuFlowJava)**
 - **[🔌 Collection Postman](https://github.com/thejaobiell/MottuFlowJava/blob/main/MottuFlow/jsonsAPIREST/API%20-%20MottuFlow.postman_collection.json)**
+
+---
+
+## 🌿 Estrutura de Branches
+
+O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento e produção:
+
+| Branch | Ambiente | Banco de Dados | URL | Configuração |
+|--------|----------|----------------|-----|--------------|
+| **`main`** | Desenvolvimento Local | MySQL 8.0+ | http://localhost:8080 | `application.properties` |
+| **`sprint4`** | Produção | PostgreSQL 15 (Render) | https://mottuflowjava.onrender.com | `application.properties` |
+
+---
 
 ## ✨ Funcionalidades
 
@@ -58,11 +71,15 @@ O MottuFlow foi desenvolvido como parte de um projeto acadêmico integrando as d
 - ✅ **Autenticação Segura** - JWT + Spring Security
 - ✅ **Migração de Dados** - Flyway para versionamento de BD
 - ✅ **Validação de Dados** - Bean Validation integrado
+<<<<<<< HEAD
 - ✅ **Deploy em Produção** - Render + PostgreSQL
+=======
+- ✅ **Deploy em Produção** - Render + Render PostgreSQL
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 ## 🛠️ Tecnologias
 
-### Backend Core
+### Backend
 - **Java 21** - LTS com recursos modernos
 - **Spring Boot 3.x** - Framework principal
 - **Spring Data JPA** - Persistência de dados
@@ -70,7 +87,11 @@ O MottuFlow foi desenvolvido como parte de um projeto acadêmico integrando as d
 - **Spring Web** - API REST
 
 ### Database & Migration
+<<<<<<< HEAD
 - **PostgreSQL 15** - Banco de dados em produção
+=======
+- **PostgreSQL 15** - Banco de dados em produção(Disponibilizado pelo Render)
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 - **MySQL 8.0** - Suporte para desenvolvimento local
 - **Flyway** - Controle de versão do schema
 - **HikariCP** - Pool de conexões otimizado
@@ -78,7 +99,11 @@ O MottuFlow foi desenvolvido como parte de um projeto acadêmico integrando as d
 ### Frontend & Templates
 - **Thymeleaf** - Engine de templates
 
+<<<<<<< HEAD
 ### Infrastructure
+=======
+### InfraEstrutura
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 - **Render** - Plataforma de deploy em nuvem
 - **PostgreSQL (Render)** - Banco de dados gerenciado
 
@@ -86,6 +111,7 @@ O MottuFlow foi desenvolvido como parte de um projeto acadêmico integrando as d
 
 ```
 MottuFlow/
+├── 📄 DockerFile              # Arquivo DockerFile para Deploy(apenas disponível na branch `sprint4`)
 ├── 📁 src/main/java/com/sprint/MottuFlow/
 │   ├── 📁 controller/         # Controladores REST e Web
 │   │   ├── 📁 rest/           # Endpoints API REST
@@ -117,8 +143,12 @@ MottuFlow/
 │   │   ├── 📁 motos/          # Templates Motocicletas
 │   │   ├── 📁 patios/         # Templates Pátios
 │   │   └── 📁 status/         # Templates Status
+<<<<<<< HEAD
 │   ├── 📄 application.properties           # Configuração local (MySQL)
 │   └── 📄 application-prod.properties      # Configuração produção (PostgreSQL)
+=======
+│   └── 📄 application.properties      # Configuração (varia por branch)
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 └── 📄 pom.xml                 # Dependências Maven
 ```
 
@@ -137,54 +167,33 @@ MottuFlow/
 
 ```bash
 # Clone o repositório
-git clone https://github.com/thejaobiell/MottuFlowJava.git
-cd MottuFlowJava/MottuFlow
+git clone -b main https://github.com/thejaobiell/MottuFlowJava.git
 
-# Execute a aplicação (baixa dependências automaticamente)
-./mvnw spring-boot:run
+cd MottuFlowJava
+
+# (Opicional) Troque para a branch de deploy
+git checkout sprint4
+
+cd MottuFlow
+.\mvnw.cmd spring-boot:run
 ```
 
-#### Via Windows PowerShell
+#### Via CMD
 
-```powershell
+```cmd
 # Clone o repositório
-git clone https://github.com/thejaobiell/MottuFlowJava.git
-cd MottuFlowJava\MottuFlow
+git clone -b main https://github.com/thejaobiell/MottuFlowJava.git
+
+cd MottuFlowJava
+
+# (Opicional) Troque para a branch de deploy
+git checkout sprint4
+
+cd MottuFlow
 
 # Execute a aplicação
 .\mvnw.cmd spring-boot:run
 ```
-
-### 🔨 IDEs Suportadas
-
-<details>
-<summary><b>🚀 IntelliJ IDEA (Recomendado)</b></summary>
-
-1. **File** → **Open**
-2. Selecione a pasta `MottuFlow` (contém `pom.xml`)
-3. Aguarde o IntelliJ importar as dependências Maven
-4. Execute `MottuFlowApplication.java` → **Run**
-
-</details>
-
-<details>
-<summary><b>🌙 Eclipse IDE</b></summary>
-
-1. **File** → **Import** → **Maven** → **Existing Maven Projects**
-2. **Browse** → Selecione pasta `MottuFlow`
-3. Marque o `pom.xml` → **Finish**
-4. **Run As** → **Spring Boot App**
-
-</details>
-
-<details>
-<summary><b>💻 VS Code</b></summary>
-
-1. Instale as extensões: **Java Extension Pack**, **Spring Boot Extension Pack**
-2. Abra a pasta `MottuFlow`
-3. **Ctrl+Shift+P** → "Spring Boot: Run"
-
-</details>
 
 ---
 
@@ -192,6 +201,7 @@ cd MottuFlowJava\MottuFlow
 
 ### 🗄️ Banco de Dados
 
+<<<<<<< HEAD
 A aplicação suporta dois bancos de dados dependendo do ambiente:
 
 #### 🐘 PostgreSQL (Produção - Render)
@@ -205,6 +215,11 @@ SPRING_PROFILES_ACTIVE=prod
 ```
 
 #### 🐬 MySQL (Desenvolvimento Local)
+=======
+A aplicação utiliza configurações diferentes dependendo da branch:
+
+#### 🌿 Branch `main` - MySQL (Desenvolvimento Local)
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 ##### 🔹 **Linux (Ubuntu/Debian)**
 
@@ -232,7 +247,11 @@ sudo mysql_secure_installation
    ```
    * Digite a senha configurada.
 
+<<<<<<< HEAD
 #### Criação do Usuário e Banco (MySQL)
+=======
+##### Criação do Usuário e Banco (MySQL)
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 ```sql
 -- Execute no MySQL como root
@@ -241,6 +260,7 @@ GRANT ALL PRIVILEGES ON mottuflow.* TO 'mottu_user'@'%';
 FLUSH PRIVILEGES;
 ```
 
+<<<<<<< HEAD
 > Se quiser restringir só para a máquina local, use `'localhost'` no lugar de `%`.
 
 ---
@@ -248,6 +268,9 @@ FLUSH PRIVILEGES;
 ### 📝 Configuração da Aplicação
 
 #### `src/main/resources/application.properties` (Desenvolvimento Local - MySQL)
+=======
+##### `application.properties` (Branch main)
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 ```properties
 spring.application.name=MottuFlow
@@ -321,6 +344,56 @@ server.port=${PORT:8080}
 
 ---
 
+#### 🚀 Branch `sprint4` - PostgreSQL (Produção - Render)
+
+O PostgreSQL é usado automaticamente na branch `sprint4` para produção no Render.
+
+##### Variáveis de Ambiente no Render
+
+```bash
+DATABASE_URL=jdbc:postgresql://dpg-d3sh9eili9vc73fr27ug-a.oregon-postgres.render.com:5432/mottuflowdb
+DATABASE_USERNAME=rm554874
+DATABASE_PASSWORD=F11qMduTmfLy8Xw15NBCTbsr7ypmBPbi
+PORT=8080
+```
+
+##### `application.properties` (Branch sprint4)
+
+```properties
+spring.application.name=MottuFlow
+
+spring.datasource.url=${DATABASE_URL}
+spring.datasource.username=${DATABASE_USERNAME}
+spring.datasource.password=${DATABASE_PASSWORD}
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=20000
+spring.datasource.hikari.keepalive-time=300000
+spring.datasource.hikari.max-lifetime=1800000
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.connection-test-query=SELECT 1
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.show-sql=false
+spring.jpa.open-in-view=false
+
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+spring.flyway.repair=true
+spring.flyway.repair-on-migrate=true
+
+logging.level.root=WARN
+spring.main.allow-bean-definition-overriding=true
+
+server.address=0.0.0.0
+server.port=${PORT:8080}
+```
+
+---
+
 ## 🚀 Uso
 
 ### 🌐 Acessando a Aplicação em Produção
@@ -329,6 +402,17 @@ A aplicação está disponível em: **[mottuflowjava.onrender.com](https://mottu
 
 > ⚠️ **Importante**: No plano gratuito do Render, a aplicação entra em modo sleep após 15 minutos de inatividade. O primeiro acesso pode levar até 50 segundos para "acordar" o serviço.
 
+<<<<<<< HEAD
+=======
+#### Health Check
+
+O Render verifica automaticamente a saúde da aplicação em:
+
+[/actuator/health](https://mottuflowjava.onrender.com/actuator/health)
+
+---
+
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 ### 💻 Executando Localmente
 
 #### 1. Iniciando a Aplicação
@@ -351,6 +435,7 @@ Clique aqui para acessar o Thymeleaf:   http://localhost:8080
 Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.html
 ```
 
+<<<<<<< HEAD
 #### 2. Acessos Principais
 
 | Serviço | URL Local | URL Produção | Descrição |
@@ -360,6 +445,19 @@ Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.
 | **📚 Documentação** | http://localhost:8080/swagger-ui.html | https://mottuflowjava.onrender.com/swagger-ui.html | Swagger UI |
 
 #### 3. Usuários Padrão
+=======
+---
+
+## Acessos Principais
+
+| Serviço | URL Local | URL Produção | Descrição |
+|---------|-----------|--------------|-----------|
+| **🖥️ Interface Web** | http://localhost:8080 | https://mottuflowjava.onrender.com | Dashboard principal |
+| **📡 API REST** | http://localhost:8080/api | https://mottuflowjava.onrender.com/api | Endpoints REST |
+| **📚 Documentação** | http://localhost:8080/swagger-ui.html | https://mottuflowjava.onrender.com/swagger-ui.html | Swagger UI |
+
+#### Usuários Padrão
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 | Usuário | Senha | Cargo | Acesso |
 |---------|-------|--------|--------|
@@ -371,6 +469,7 @@ Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.
 
 ---
 
+<<<<<<< HEAD
 ## ☁️ Deploy no Render
 
 ### 📋 Configuração do Deploy
@@ -393,6 +492,8 @@ O Render verifica automaticamente a saúde da aplicação em:
 GET /actuator/health
 ```
 
+=======
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 ### 🔄 Migrações de Banco de Dados
 
 O Flyway gerencia as migrações automaticamente:
@@ -414,9 +515,15 @@ Todas as requisições para a **API MottuFlow** exigem autenticação via **JWT 
 
 1. **Importe** a coleção [API - MottuFlow.postman_collection.json](https://github.com/thejaobiell/MottuFlowJava/blob/main/MottuFlow/jsonsAPIREST/API%20-%20MottuFlow.postman_collection.json) no Postman.
 
+<<<<<<< HEAD
 2. **Configure a variável de ambiente**:
    - **Local**: `http://localhost:8080`
    - **Produção**: `https://mottuflowjava.onrender.com`
+=======
+2. **Configure a variável de ambiente `baseURLhttps://mottuflowjava.onrender.com/actuator/health`**:
+   - **Local**: `http://localhost:8080/api`
+   - **Produção**: `https://mottuflowjava.onrender.com/api`
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 3. No menu **`0 - JWT`**, execute o **POST Pegar Token JWT**, informando no **body** o `email` e `senha` do funcionário:
 
@@ -431,7 +538,11 @@ Todas as requisições para a **API MottuFlow** exigem autenticação via **JWT 
 
 5. Vá até **API - MottuFlow → Variables**.
 
+<<<<<<< HEAD
 6. Substitua o valor da variável `jwt` pelo seu **token JWT**.
+=======
+6. Substitua o valor da variável `jwt` pelo seu **token de acesso**.
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 7. Agora todos os endpoints da coleção já estarão autenticados. 🚀
 
@@ -998,6 +1109,7 @@ Authorization: Bearer {jwt_token}
 ### ❌ Problemas Comuns
 
 <details>
+<<<<<<< HEAD
 <summary><b>Aplicação não inicia no Render</b></summary>
 
 **Solução:**
@@ -1009,6 +1121,8 @@ Authorization: Bearer {jwt_token}
 </details>
 
 <details>
+=======
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 <summary><b>Primeiro acesso muito lento</b></summary>
 
 **Causa:** No plano gratuito do Render, serviços ficam em sleep após 15 minutos de inatividade.
@@ -1021,9 +1135,16 @@ Authorization: Bearer {jwt_token}
 <summary><b>Erro de conexão com banco de dados local</b></summary>
 
 **Solução:**
+<<<<<<< HEAD
 1. Verifique se o MySQL está rodando: `sudo systemctl status mysql`
 2. Confirme as credenciais em `application.properties`
 3. Crie o banco manualmente se necessário: `CREATE DATABASE mottuflow;`
+=======
+1. Verifique se está na branch `main`
+2. Confirme se o MySQL está rodando: `sudo systemctl status mysql`
+3. Confirme as credenciais em `application.properties`
+4. Crie o banco manualmente se necessário: `CREATE DATABASE mottuflow;`
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 </details>
 
@@ -1039,6 +1160,31 @@ Authorization: Bearer {jwt_token}
 
 ---
 
+<<<<<<< HEAD
+=======
+## ⚡ Boas Práticas
+
+### ✅ DO's
+
+- ✅ **Sempre desenvolva na branch `main`** para testes locais
+- ✅ **Teste completamente** antes de fazer merge para `sprint4`
+- ✅ **Use commits semânticos**: `feat:`, `fix:`, `docs:`, `refactor:`
+- ✅ **Faça pull antes de push** para evitar conflitos
+- ✅ **Verifique os logs do Render** após deploy
+- ✅ **Mantenha as configurações de cada branch separadas**
+- ✅ **Documente mudanças significativas** no código
+
+### ❌ DON'Ts
+
+- ❌ **Não desenvolva diretamente na `sprint4`**
+- ❌ **Não commite credenciais** no código (use variáveis de ambiente)
+- ❌ **Não faça force push** em `sprint4`
+- ❌ **Não misture configurações** de MySQL e PostgreSQL entre branches
+- ❌ **Não ignore erros de build** do Render
+- ❌ **Não faça merge sem testar** localmente primeiro
+
+---
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
 
 ## 👥 Equipe de Desenvolvimento
 
@@ -1075,4 +1221,11 @@ Authorization: Bearer {jwt_token}
 [![GitHub](https://img.shields.io/badge/GitHub-MottuFlowJava-181717?style=for-the-badge&logo=github)](https://github.com/thejaobiell/MottuFlowJava)
 [![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render)](https://mottuflowjava.onrender.com)
 
+<<<<<<< HEAD
 </div
+=======
+**MottuFlow** - Sistema de Gerenciamento de Frotas  
+Desenvolvido com ❤️ pela equipe 2TDSB2025
+
+</div>
+>>>>>>> 2461396352ff15012a95025707dfa1d2edd86c9a
