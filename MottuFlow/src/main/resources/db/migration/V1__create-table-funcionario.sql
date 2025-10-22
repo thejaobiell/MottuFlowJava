@@ -1,5 +1,5 @@
 CREATE TABLE funcionario (
-    id_funcionario BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id_funcionario BIGSERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     cargo VARCHAR(50) NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE funcionario (
     email VARCHAR(50) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
     refresh_token VARCHAR(255) DEFAULT NULL,
-    expiracao_refresh_token DATETIME DEFAULT NULL
+    expiracao_refresh_token TIMESTAMP DEFAULT NULL
 );
 
 INSERT INTO funcionario (

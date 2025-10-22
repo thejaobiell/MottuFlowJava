@@ -16,12 +16,6 @@ WORKDIR /app
 
 COPY --from=builder /app/app.jar app.jar
 
-ENV DB_HOST=mysql.railway.internal
-ENV DB_PORT=3306
-ENV DB_NAME=railway
-ENV DB_USER=root
-ENV DB_PASSWORD=QFNKHjNvwfWrAKHZUJCgqkSzhmmprjLX
-
 EXPOSE 8080
 USER nonroot
 ENTRYPOINT ["java", "-jar", "app.jar"]
