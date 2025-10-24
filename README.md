@@ -9,8 +9,6 @@
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.x-lightgreen.svg)
 ![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7.svg)
 
-**MottuFlow** é uma solução completa para gerenciamento de frotas de motocicletas, desenvolvida com arquitetura híbrida que combina **API REST** moderna com interface web intuitiva. O sistema utiliza **visão computacional** e **ArUco Tags** para identificação automática de veículos, oferecendo controle total sobre funcionários, pátios, motos, câmeras e localização de ativos.
-
 ## Visão Geral
 
 - **📱 Arquitetura Híbrida**: API REST para integração mobile + Interface web Thymeleaf
@@ -43,7 +41,7 @@
 O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento e produção:
 
 | Branch | Ambiente | Banco de Dados | URL |
-|--------|----------|----------------|-----|--------------|
+|--------|----------|----------------|-----|
 | **`main`** | Desenvolvimento Local | MySQL 8.0+ | http://localhost:8080 |
 | **`sprint4`** | Produção | PostgreSQL 15 (Render) | https://mottuflowjava.onrender.com |
 
