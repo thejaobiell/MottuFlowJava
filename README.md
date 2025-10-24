@@ -43,7 +43,7 @@
 O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento e produção:
 
 | Branch | Ambiente | Banco de Dados | URL |
-|--------|----------|----------------|-----|--------------|
+|--------|----------|----------------|-----|
 | **`main`** | Desenvolvimento Local | MySQL 8.0+ | http://localhost:8080 |
 | **`sprint4`** | Produção | PostgreSQL 15 (Render) | https://mottuflowjava.onrender.com |
 
