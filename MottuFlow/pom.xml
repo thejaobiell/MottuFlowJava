@@ -14,7 +14,7 @@
 
     <groupId>com.sprint</groupId>
     <artifactId>MottuFlow</artifactId>
-    <version>1.2</version>
+    <version>4.0</version>
     <name>MottuFlow</name>
     <description>Projeto MottuFlow para as SPRINTS-2025</description>
 
@@ -87,9 +87,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.8</version>
         </dependency>
 
         <dependency>
@@ -109,7 +109,7 @@
 
         <dependency>
             <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-mysql</artifactId>
+            <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
     </dependencies>
 

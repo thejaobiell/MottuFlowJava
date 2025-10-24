@@ -1,6 +1,6 @@
 CREATE TABLE localidade (
-    id_localidade BIGINT PRIMARY KEY AUTO_INCREMENT,
-    data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_localidade BIGSERIAL PRIMARY KEY,
+    data_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     ponto_referencia VARCHAR(100) NOT NULL,
     id_moto BIGINT NOT NULL,
     id_patio BIGINT NOT NULL,
@@ -15,6 +15,7 @@ CREATE TABLE localidade (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 
 INSERT INTO localidade (ponto_referencia, id_moto, id_patio, id_camera) VALUES
 ('Entrada principal', 1, 1, 1),
