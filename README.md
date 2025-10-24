@@ -11,7 +11,7 @@
 
 **MottuFlow** é uma solução completa para gerenciamento de frotas de motocicletas, desenvolvida com arquitetura híbrida que combina **API REST** moderna com interface web intuitiva. O sistema utiliza **visão computacional** e **ArUco Tags** para identificação automática de veículos, oferecendo controle total sobre funcionários, pátios, motos, câmeras e localização de ativos.
 
-## 🎯 Visão Geral
+## Visão Geral
 
 - **📱 Arquitetura Híbrida**: API REST para integração mobile + Interface web Thymeleaf
 - **🔒 Segurança Robusta**: Autenticação JWT e Spring Security
@@ -38,20 +38,18 @@
 
 ---
 
-## 🌿 Estrutura de Branches
+## Estrutura de Branches
 
 O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento e produção:
 
-| Branch | Ambiente | Banco de Dados | URL | Configuração |
+| Branch | Ambiente | Banco de Dados | URL |
 |--------|----------|----------------|-----|--------------|
-| **`main`** | Desenvolvimento Local | MySQL 8.0+ | http://localhost:8080 | `application.properties` |
-| **`sprint4`** | Produção | PostgreSQL 15 (Render) | https://mottuflowjava.onrender.com | `application.properties` |
+| **`main`** | Desenvolvimento Local | MySQL 8.0+ | http://localhost:8080 |
+| **`sprint4`** | Produção | PostgreSQL 15 (Render) | https://mottuflowjava.onrender.com |
 
 ---
 
-## ✨ Funcionalidades
-
-### 🏢 Módulos Principais
+## Funcionalidades
 
 | Módulo | Descrição | Funcionalidades |
 |--------|-----------|-----------------|
@@ -62,16 +60,16 @@ O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento
 | **🏷️ ArUco Tags** | Identificação visual | Cadastro e rastreamento |
 | **📍 Status & Localização** | Tracking em tempo real | Posição, disponibilidade, alertas |
 
-### 🚀 Recursos Avançados
+### Recursos Avançados
 
 - ✅ **API REST Completa** - Documentação OpenAPI/Swagger
-- ✅ **Interface Web Responsiva** - Thymeleaf + Bootstrap
+- ✅ **Interface Web Responsiva** - Thymeleaf
 - ✅ **Autenticação Segura** - JWT + Spring Security
 - ✅ **Migração de Dados** - Flyway para versionamento de BD
 - ✅ **Validação de Dados** - Bean Validation integrado
 - ✅ **Deploy em Produção** - Render + Render PostgreSQL
 
-## 🛠️ Tecnologias
+## 🛠️Tecnologias
 
 ### Backend
 - **Java 21** - LTS com recursos modernos
@@ -93,7 +91,7 @@ O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento
 - **Render** - Plataforma de deploy em nuvem
 - **PostgreSQL (Render)** - Banco de dados gerenciado
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 ```
 MottuFlow/
@@ -133,16 +131,14 @@ MottuFlow/
 └── 📄 pom.xml                 # Dependências Maven
 ```
 
-## 💾 Instalação
+## Instalação
 
-### 📋 Pré-requisitos
+### Pré-requisitos
 
 - **Java 21+** ([OpenJDK](https://openjdk.org/install/) ou [Oracle JDK](https://www.oracle.com/java/technologies/downloads/))
 - **PostgreSQL 15+** (produção) ou **MySQL 8.0+** (desenvolvimento local)
 - **Maven 3.8+** ([Download](https://maven.apache.org/download.cgi))
 - **Git** ([Download](https://git-scm.com/downloads))
-
-### 🔧 Instalação Rápida
 
 #### Via Terminal (Linux/macOS/WSL)
 
@@ -180,13 +176,13 @@ cd MottuFlow
 
 ## ⚙️ Configuração
 
-### 🗄️ Banco de Dados
+### Banco de Dados
 
 A aplicação utiliza configurações diferentes dependendo da branch:
 
 #### 🌿 Branch `main` - MySQL (Desenvolvimento Local)
 
-##### 🔹 **Linux (Ubuntu/Debian)**
+##### **Linux (Ubuntu/Debian)**
 
 ```bash
 sudo apt update
@@ -194,10 +190,10 @@ sudo apt install mysql-server mysql-client
 sudo mysql_secure_installation
 ```
 
-##### 🔹 **Windows**
+##### **Windows**
 
 1. Baixe o **MySQL Installer**:
-   👉 [Download MySQL Installer](https://dev.mysql.com/downloads/installer/)
+   [Download MySQL Installer](https://dev.mysql.com/downloads/installer/)
 
 2. Durante a instalação, escolha:
    * **Server Only** (somente servidor) ou **Full** (se quiser Workbench e utilitários).
@@ -264,13 +260,14 @@ server.port=8080
 
 O PostgreSQL é usado automaticamente na branch `sprint4` para produção no Render.
 
-##### Variáveis de Ambiente no Render
+##### Credenciais do Render
 
 ```bash
-DATABASE_URL=jdbc:postgresql://dpg-d3sh9eili9vc73fr27ug-a.oregon-postgres.render.com:5432/mottuflowdb
-DATABASE_USERNAME=rm554874
-DATABASE_PASSWORD=F11qMduTmfLy8Xw15NBCTbsr7ypmBPbi
-PORT=8080
+HOST: dpg-d3sh9eili9vc73fr27ug-a.oregon-postgres.render.com
+USERNAME: rm554874
+PASSWORD: F11qMduTmfLy8Xw15NBCTbsr7ypmBPbi
+DATABASE: mottuflowdb
+PORT: 5432
 ```
 
 ##### `application.properties` (Branch sprint4)
@@ -387,7 +384,7 @@ src/main/resources/db/
 
 Todas as requisições para a **API MottuFlow** exigem autenticação via **JWT (JSON Web Token)**.
 
-### ✅ Usando o Postman
+### Usando o Postman
 
 1. **Importe** a coleção [API - MottuFlow.postman_collection.json](https://github.com/thejaobiell/MottuFlowJava/blob/main/MottuFlow/jsonsAPIREST/API%20-%20MottuFlow.postman_collection.json) no Postman.
 
@@ -410,7 +407,7 @@ Todas as requisições para a **API MottuFlow** exigem autenticação via **JWT 
 
 6. Substitua o valor da variável `jwt` pelo seu **token de acesso**.
 
-7. Agora todos os endpoints da coleção já estarão autenticados. 🚀
+7. Agora todos os endpoints da coleção já estarão autenticados!
 
 ---
 
@@ -1000,38 +997,15 @@ Authorization: Bearer {jwt_token}
 **Solução:**
 1. Faça login novamente para obter um novo token
 2. Verifique se o token está sendo enviado corretamente no header `Authorization: Bearer {token}`
-3. Certifique-se de que não há espaços extras no token
+3. Certifique-se de que não há espaços extras ou aspas no token. Copie apenas o código.
 
 </details>
 
 ---
 
-## ⚡ Boas Práticas
-
-### ✅ DO's
-
-- ✅ **Sempre desenvolva na branch `main`** para testes locais
-- ✅ **Teste completamente** antes de fazer merge para `sprint4`
-- ✅ **Use commits semânticos**: `feat:`, `fix:`, `docs:`, `refactor:`
-- ✅ **Faça pull antes de push** para evitar conflitos
-- ✅ **Verifique os logs do Render** após deploy
-- ✅ **Mantenha as configurações de cada branch separadas**
-- ✅ **Documente mudanças significativas** no código
-
-### ❌ DON'Ts
-
-- ❌ **Não desenvolva diretamente na `sprint4`**
-- ❌ **Não commite credenciais** no código (use variáveis de ambiente)
-- ❌ **Não faça force push** em `sprint4`
-- ❌ **Não misture configurações** de MySQL e PostgreSQL entre branches
-- ❌ **Não ignore erros de build** do Render
-- ❌ **Não faça merge sem testar** localmente primeiro
-
----
-
 ## 👥 Equipe de Desenvolvimento
 
-<table>
+<table align="center">
 <tr>
 <td align="center">
 <a href="https://github.com/thejaobiell">
@@ -1056,15 +1030,3 @@ Authorization: Bearer {jwt_token}
 </td>
 </tr>
 </table>
-
----
-
-<div align="center">
-
-[![GitHub](https://img.shields.io/badge/GitHub-MottuFlowJava-181717?style=for-the-badge&logo=github)](https://github.com/thejaobiell/MottuFlowJava)
-[![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7?style=for-the-badge&logo=render)](https://mottuflowjava.onrender.com)
-
-**MottuFlow** - Sistema de Gerenciamento de Frotas  
-Desenvolvido com ❤️ pela equipe 2TDSB2025
-
-</div>
