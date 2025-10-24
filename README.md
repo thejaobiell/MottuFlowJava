@@ -13,8 +13,6 @@
 
 ## 🎯 Visão Geral
 
-O MottuFlow foi desenvolvido como parte de um projeto acadêmico integrando as disciplinas de **Internet of Things (IoT)** e **Mobile Application Development**. A solução oferece:
-
 - **📱 Arquitetura Híbrida**: API REST para integração mobile + Interface web Thymeleaf
 - **🔒 Segurança Robusta**: Autenticação JWT e Spring Security
 - **📊 Gestão Completa**: Controle de funcionários, frotas, pátios e status em tempo real
