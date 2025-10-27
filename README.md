@@ -79,6 +79,7 @@ O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento
 ### Database & Migration
 - **PostgreSQL 15** - Banco de dados em produção(Disponibilizado pelo Render)
 - **MySQL 8.0** - Suporte para desenvolvimento local
+- **PostgreSQL (Render)** - Banco de dados gerenciado
 - **Flyway** - Controle de versão do schema
 - **HikariCP** - Pool de conexões otimizado
 
@@ -87,7 +88,6 @@ O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento
 
 ### InfraEstrutura
 - **Render** - Plataforma de deploy em nuvem
-- **PostgreSQL (Render)** - Banco de dados gerenciado
 
 ## Arquitetura
 
@@ -130,42 +130,34 @@ MottuFlow/
 ```
 
 ## Instalação
-
 ### Pré-requisitos
-
 - **Java 21+** ([OpenJDK](https://openjdk.org/install/) ou [Oracle JDK](https://www.oracle.com/java/technologies/downloads/))
 - **PostgreSQL 15+** (produção) ou **MySQL 8.0+** (desenvolvimento local)
 - **Maven 3.8+** ([Download](https://maven.apache.org/download.cgi))
 - **Git** ([Download](https://git-scm.com/downloads))
+- **Database Client** (Extensão para consultar o banco de dados) 
+  - [Database Client](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-database-client2)
+  - [Database Client JDBC](https://marketplace.visualstudio.com/items?itemName=cweijan.dbclient-jdbc)
 
 #### Via Terminal (Linux/macOS/WSL)
-
 ```bash
 # Clone o repositório
 git clone -b main https://github.com/thejaobiell/MottuFlowJava.git
-
 cd MottuFlowJava
-
-# (Opicional) Troque para a branch de deploy
+# (Opcional) Troque para a branch de deploy
 git checkout sprint4
-
 cd MottuFlow
-.\mvnw.cmd spring-boot:run
+./mvnw spring-boot:run
 ```
 
-#### Via CMD
-
+#### Via CMD (Windows)
 ```cmd
 # Clone o repositório
 git clone -b main https://github.com/thejaobiell/MottuFlowJava.git
-
 cd MottuFlowJava
-
-# (Opicional) Troque para a branch de deploy
+# (Opcional) Troque para a branch de deploy
 git checkout sprint4
-
 cd MottuFlow
-
 # Execute a aplicação
 .\mvnw.cmd spring-boot:run
 ```
@@ -181,7 +173,6 @@ A aplicação utiliza configurações diferentes dependendo da branch:
 #### 🌿 Branch `main` - MySQL (Desenvolvimento Local)
 
 ##### **Linux (Ubuntu/Debian)**
-
 ```bash
 sudo apt update
 sudo apt install mysql-server mysql-client
@@ -189,16 +180,12 @@ sudo mysql_secure_installation
 ```
 
 ##### **Windows**
-
 1. Baixe o **MySQL Installer**:
    [Download MySQL Installer](https://dev.mysql.com/downloads/installer/)
-
 2. Durante a instalação, escolha:
    * **Server Only** (somente servidor) ou **Full** (se quiser Workbench e utilitários).
    * Configure a senha do usuário `root`.
-
 3. Após a instalação, inicie o MySQL.
-
 4. Para acessar via terminal do Windows:
    * Pressione `Win + R`, digite `cmd` e execute:
    ```bash
@@ -207,7 +194,6 @@ sudo mysql_secure_installation
    * Digite a senha configurada.
 
 ##### Criação do Usuário e Banco (MySQL)
-
 ```sql
 -- Execute no MySQL como root
 CREATE USER 'mottu_user'@'%' IDENTIFIED BY 'user123';
@@ -216,18 +202,14 @@ FLUSH PRIVILEGES;
 ```
 
 ##### `application.properties` (Branch main)
-
 ```properties
 spring.application.name=MottuFlow
-
 spring.datasource.url=jdbc:mysql://localhost:3306/mottuflow?createDatabaseIfNotExist=true
 spring.datasource.username=mottu_user
 spring.datasource.password=user123
-
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
-
 spring.datasource.hikari.maximum-pool-size=10
 spring.datasource.hikari.minimum-idle=5
 spring.datasource.hikari.connection-timeout=20000
@@ -235,19 +217,15 @@ spring.datasource.hikari.keepalive-time=300000
 spring.datasource.hikari.max-lifetime=1800000
 spring.datasource.hikari.idle-timeout=300000
 spring.datasource.hikari.connection-test-query=SELECT 1
-
 spring.flyway.enabled=true
 spring.flyway.locations=classpath:db/migration
 spring.flyway.repair=true
 spring.flyway.repair-on-migrate=true
-
 logging.level.root=WARN
 logging.level.org.springframework=WARN
 logging.level.org.hibernate=WARN
 logging.level.com.sprint.MottuFlow=WARN
-
 spring.main.allow-bean-definition-overriding=true
-
 server.address=0.0.0.0
 server.port=8080
 ```
@@ -259,7 +237,6 @@ server.port=8080
 O PostgreSQL é usado automaticamente na branch `sprint4` para produção no Render.
 
 ##### Credenciais do Render
-
 ```bash
 HOST: dpg-d3sh9eili9vc73fr27ug-a.oregon-postgres.render.com
 USERNAME: rm554874
@@ -269,15 +246,12 @@ PORT: 5432
 ```
 
 ##### `application.properties` (Branch sprint4)
-
 ```properties
 spring.application.name=MottuFlow
-
 spring.datasource.url=${DATABASE_URL}
 spring.datasource.username=${DATABASE_USERNAME}
 spring.datasource.password=${DATABASE_PASSWORD}
 spring.datasource.driver-class-name=org.postgresql.Driver
-
 spring.datasource.hikari.maximum-pool-size=10
 spring.datasource.hikari.minimum-idle=5
 spring.datasource.hikari.connection-timeout=20000
@@ -285,27 +259,77 @@ spring.datasource.hikari.keepalive-time=300000
 spring.datasource.hikari.max-lifetime=1800000
 spring.datasource.hikari.idle-timeout=300000
 spring.datasource.hikari.connection-test-query=SELECT 1
-
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.show-sql=false
 spring.jpa.open-in-view=false
-
 spring.flyway.enabled=true
 spring.flyway.locations=classpath:db/migration
 spring.flyway.repair=true
 spring.flyway.repair-on-migrate=true
-
 logging.level.root=WARN
 spring.main.allow-bean-definition-overriding=true
-
 server.address=0.0.0.0
 server.port=${PORT:8080}
 ```
 
 ---
 
-## 🚀 Uso
+## 🗄️ Database Client (VSCode)
+
+### Instalação das Extensões
+
+1. Abra o VSCode
+2. Acesse a aba de Extensões (Ctrl+Shift+X)
+3. Instale as seguintes extensões:
+   - **Database Client** (cweijan.vscode-database-client2)
+   - **Database Client JDBC** (cweijan.dbclient-jdbc)
+
+### Configurando Conexões
+
+#### Conexão MySQL (Branch main - Desenvolvimento Local)
+
+1. Clique no ícone do **Database Client** na barra lateral do VSCode
+2. Clique em **"Create Connection"** (ícone de +)
+3. Selecione **MySQL**
+4. Preencha os dados:
+   ```
+   Host: localhost
+   Port: 3306
+   Username: mottu_user
+   Password: user123
+   Database: mottuflow
+   ```
+5. Clique em **Connect**
+
+#### Conexão PostgreSQL (Branch sprint4 - Produção Render)
+
+1. Clique no ícone do **Database Client** na barra lateral do VSCode
+2. Clique em **"Create Connection"** (ícone de +)
+3. Selecione **PostgreSQL**
+4. Preencha os dados:
+   ```
+   Host: dpg-d3sh9eili9vc73fr27ug-a.oregon-postgres.render.com
+   Port: 5432
+   Username: rm554874
+   Password: F11qMduTmfLy8Xw15NBCTbsr7ypmBPbi
+   Database: mottuflowdb
+   ```
+5. Marque a opção **SSL** (obrigatório para Render)
+6. Clique em **Connect**
+
+### Utilizando o Database Client
+
+#### Explorando Tabelas
+- Expanda a conexão criada
+- Navegue por **Schemas → Public → Tables**
+- Clique com botão direito em uma tabela para:
+  - **Show Table Data**: Visualizar dados
+  - **Show Create Statement**: Ver o SQL de criação
+
+---
+
+## Uso
 
 ### 🌐 Acessando a Aplicação em Produção
 
@@ -314,9 +338,7 @@ A aplicação está disponível em: **[mottuflowjava.onrender.com](https://mottu
 > ⚠️ **Importante**: No plano gratuito do Render, a aplicação entra em modo sleep após 15 minutos de inatividade. O primeiro acesso pode levar até 50 segundos para "acordar" o serviço.
 
 #### Health Check
-
 O Render verifica automaticamente a saúde da aplicação em:
-
 [/actuator/health](https://mottuflowjava.onrender.com/actuator/health)
 
 ---
@@ -324,7 +346,6 @@ O Render verifica automaticamente a saúde da aplicação em:
 ### 💻 Executando Localmente
 
 #### 1. Iniciando a Aplicação
-
 ```bash
 ./mvnw spring-boot:run
 ```
@@ -337,9 +358,7 @@ O Render verifica automaticamente a saúde da aplicação em:
 ██║   ██║██║╚██╗██║██║     ██║██║╚██╗██║██╔══╝  ╚═╝
 ╚██████╔╝██║ ╚████║███████╗██║██║ ╚████║███████╗██╗
  ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝╚═╝
-
 Clique aqui para acessar o Thymeleaf:   http://localhost:8080
-
 Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.html
 ```
 
@@ -386,7 +405,7 @@ Todas as requisições para a **API MottuFlow** exigem autenticação via **JWT 
 
 1. **Importe** a coleção [API - MottuFlow.postman_collection.json](https://github.com/thejaobiell/MottuFlowJava/blob/main/MottuFlow/jsonsAPIREST/API%20-%20MottuFlow.postman_collection.json) no Postman.
 
-2. **Configure a variável de ambiente `baseURLhttps://mottuflowjava.onrender.com/actuator/health`**:
+2. **Configure a variável de ambiente `baseURL`**:
    - **Local**: `http://localhost:8080/api`
    - **Produção**: `https://mottuflowjava.onrender.com/api`
 
@@ -913,40 +932,6 @@ Content-Type: application/json
 ```http
 DELETE /localidades/deletar/{id}
 Authorization: Bearer {jwt_token}
-```
-
----
-
-## ⚠️ Tratamento de Erros
-
-### Erro de Autenticação (401)
-```json
-{
-  "timestamp": "2025-09-29T10:30:00",
-  "status": 401,
-  "error": "Unauthorized",
-  "message": "Token JWT inválido ou expirado"
-}
-```
-
-### Erro de Validação (400)
-```json
-{
-  "timestamp": "2025-09-29T10:30:00",
-  "status": 400,
-  "error": "Bad Request",
-  "message": "CPF já cadastrado no sistema"
-}
-```
-
-### Erro de Recurso Não Encontrado (404)
-```json
-{
-  "timestamp": "2025-09-29T10:30:00",
-  "status": 404,
-  "error": "Not Found",
-  "message": "Funcionário não encontrado com o ID: 999"
-}
 ```
 
 ---
