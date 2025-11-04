@@ -20,7 +20,7 @@ INSERT INTO funcionario (
     refresh_token,
     expiracao_refresh_token
 ) VALUES
-('CONTA ADMIN', '000.000.000-00', 'ADMIN', '(00) 00000-0000', 'admin@email.com', '$2a$12$HkHTbCOCrUW55EXH8MjZfO.8MpjpyKWsVd.4oM1xCbceqtCpaqOFK', NULL, NULL);
+('CONTA ADMIN', '000.000.000-00', 'ADMIN', '(00) 00000-0000', 'admin@email.com', 'adminmottu', NULL, NULL);
 
 INSERT INTO funcionario (
     nome,

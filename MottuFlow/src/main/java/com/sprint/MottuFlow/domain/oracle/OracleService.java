@@ -2,25 +2,61 @@ package com.sprint.MottuFlow.domain.oracle;
 
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
-import java.util.List;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+
+import javax.sql.DataSource;
+import java.sql.Clob;
+import java.sql.SQLException;
 import java.util.Map;
 
 @Service
 public class OracleService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcCall relatorioFuncionarioCall;
+    private final SimpleJdbcCall funcaoMotoCall;
 
-    public OracleService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public OracleService(DataSource dataSource) {
+        this.relatorioFuncionarioCall = new SimpleJdbcCall(dataSource)
+                .withCatalogName("PCT_MOTTUFLOW")
+                .withProcedureName("RELATORIO_FUNCIONARIO_MOTO_STATUS")
+                .withoutProcedureColumnMetaDataAccess()
+                .declareParameters(
+                        new org.springframework.jdbc.core.SqlParameter("P_ID_FUNCIONARIO", java.sql.Types.NUMERIC),
+                        new org.springframework.jdbc.core.SqlOutParameter("P_JSON", java.sql.Types.CLOB)
+                );
+
+        this.funcaoMotoCall = new SimpleJdbcCall(dataSource)
+                .withCatalogName("PCT_MOTTUFLOW")
+                .withFunctionName("MOTO_TO_JSON");
     }
 
-    public List<Map<String, Object>> executarRelatorioFuncionario(Long idFuncionario) {
-        String sql = "SELECT * FROM funcionario WHERE id_funcionario = ?";
-        return jdbcTemplate.queryForList(sql, idFuncionario);
+
+    public String executarRelatorioFuncionario(Long idFuncionario) {
+        Map<String, Object> out = relatorioFuncionarioCall.execute(Map.of("P_ID_FUNCIONARIO", idFuncionario));
+        Object clobObj = out.get("P_JSON");
+
+        if (clobObj instanceof Clob) {
+            Clob clob = (Clob) clobObj;
+            try {
+                return clob.getSubString(1, (int) clob.length());
+            } catch (SQLException e) {
+                throw new RuntimeException("Erro ao ler CLOB", e);
+            }
+        }
+        return clobObj != null ? clobObj.toString() : null;
     }
 
-    public List<Map<String, Object>> executarFuncaoMoto(Long idMoto) {
-        String sql = "SELECT * FROM moto WHERE id_moto = ?";
-        return jdbcTemplate.queryForList(sql, idMoto);
+    public String executarFuncaoMoto(Long idMoto) {
+        Object clobObj = funcaoMotoCall.executeFunction(Object.class, Map.of("P_ID_MOTO", idMoto));
+
+        if (clobObj instanceof Clob) {
+            Clob clob = (Clob) clobObj;
+            try {
+                return clob.getSubString(1, (int) clob.length());
+            } catch (SQLException e) {
+                throw new RuntimeException("Erro ao ler CLOB", e);
+            }
+        }
+        return clobObj != null ? clobObj.toString() : null;
     }
 }
