@@ -21,7 +21,7 @@ END;
 /
 
 INSERT INTO funcionario (nome, cpf, cargo, telefone, email, senha)
-SELECT 'CONTA ADMIN', '00000000000', 'Admin', '00000000000', 'admin@email.com', '$2a$12$e6QJwFNdnau90pQN/3OkFeelAPVi8nCsJped.YQYxEy/573E1nR1G'
+SELECT 'CONTA ADMIN', '00000000000', 'ADMIN', '00000000000', 'admin@email.com', '$2a$12$e6QJwFNdnau90pQN/3OkFeelAPVi8nCsJped.YQYxEy/573E1nR1G'
 FROM dual
 WHERE NOT EXISTS (SELECT 1 FROM funcionario WHERE email = 'admin@email.com');
 
