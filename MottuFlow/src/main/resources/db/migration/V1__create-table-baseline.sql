@@ -1,5 +1,3 @@
--- V0__baseline_placeholder.sql
-
 CREATE TABLE baseline_placeholder (
     id NUMBER(1)
 );

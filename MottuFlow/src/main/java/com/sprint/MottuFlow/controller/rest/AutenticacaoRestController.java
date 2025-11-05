@@ -7,6 +7,7 @@ import com.sprint.MottuFlow.domain.autenticao.TokenService;
 import com.sprint.MottuFlow.domain.funcionario.Funcionario;
 import com.sprint.MottuFlow.domain.funcionario.FuncionarioService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +31,7 @@ public class AutenticacaoRestController {
 		this.fS = fS;
 	}
 	
+	@SecurityRequirements()
 	@PostMapping( "/login" )
 	public ResponseEntity<DadosToken> efetuarLogin( @Valid @RequestBody DadosLogin dados ) {
 		var authToken = new UsernamePasswordAuthenticationToken( dados.email(), dados.senha() );
@@ -46,6 +48,7 @@ public class AutenticacaoRestController {
 		return ResponseEntity.ok( new DadosToken( tokenAcesso, refreshToken, expiracaoRefresh ) );
 	}
 	
+	@SecurityRequirements()
 	@PostMapping( "/atualizar-token" )
 	public ResponseEntity<DadosToken> atualizarToken( @Valid @RequestBody DadosRefreshToken dados ) {
 		Funcionario funcionario = fS.validarRefreshTokenFuncionario( dados.refreshToken() );
@@ -58,6 +61,7 @@ public class AutenticacaoRestController {
 		return ResponseEntity.ok(new DadosToken(tokenAcesso, refreshTokenExistente, expiracaoRefresh));
 	}
 	
+	@SecurityRequirements()
 	@PostMapping("/verificar-jwt")
 	public ResponseEntity<String> verificarJwt(@RequestBody Map<String, String> body) {
 		String tokenAcesso = body.get("tokenAcesso");

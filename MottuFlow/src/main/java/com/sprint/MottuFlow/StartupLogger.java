@@ -12,6 +12,7 @@ public class StartupLogger {
 	private static final String BLUE = "\u001B[34m";
 	private static final String CYAN = "\u001B[36m";
 	private static final String RED = "\u001B[31m";
+	private static final String BOLD = "\u001B[1m";
 	
 	@EventListener( ApplicationReadyEvent.class )
 	public void logWhenReady() {
@@ -20,8 +21,8 @@ public class StartupLogger {
 	
 	private void printBanner() {
 		clearConsole();
-		System.out.println( GREEN + """
-			     ██████╗ ███╗   ██╗██╗     ██╗███╗   ██╗███████╗██╗
+		System.out.println( GREEN + BOLD + """
+				 ██████╗ ███╗   ██╗██╗     ██╗███╗   ██╗███████╗██╗
 				██╔═══██╗████╗  ██║██║     ██║████╗  ██║██╔════╝██║
 				██║   ██║██╔██╗ ██║██║     ██║██╔██╗ ██║█████╗  ██║
 				██║   ██║██║╚██╗██║██║     ██║██║╚██╗██║██╔══╝  ╚═╝
