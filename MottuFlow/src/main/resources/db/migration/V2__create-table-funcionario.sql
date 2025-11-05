@@ -14,7 +14,7 @@ BEGIN
     ';
 EXCEPTION
     WHEN OTHERS THEN
-        IF SQLCODE != -955 THEN -- -955 = ORA-00955 (tabela já existe)
+        IF SQLCODE != -955 THEN 
             RAISE;
         END IF;
 END;
@@ -41,7 +41,7 @@ FROM dual
 WHERE NOT EXISTS (SELECT 1 FROM funcionario WHERE email = 'carlos.lima@email.com');
 
 INSERT INTO funcionario (nome, cpf, cargo, telefone, email, senha)
-SELECT 'Ana Costa', '42345678900', 'Supervisor', '11999990004', 'ana.costa@email.com', '$2a$12$P7BetbmT3nap8KkA/sD4aOHD8SI2JHSgkUrCuuzljXtd.wtpbEFHC'
+SELECT 'Ana Costa', '42345678900', 'Supervisor', '11999990004', 'ana.costa@email.com', 'senha123'
 FROM dual
 WHERE NOT EXISTS (SELECT 1 FROM funcionario WHERE email = 'ana.costa@email.com');
 

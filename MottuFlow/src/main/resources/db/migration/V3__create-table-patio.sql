@@ -9,7 +9,7 @@ BEGIN
     ';
 EXCEPTION
     WHEN OTHERS THEN
-        IF SQLCODE != -955 THEN -- -955 = ORA-00955 (objeto já existe)
+        IF SQLCODE != -955 THEN 
             RAISE;
         END IF;
 END;
