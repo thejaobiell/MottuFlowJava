@@ -2403,7 +2403,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://mottuflow-app.brazilsouth.azurecontainer.io:8080/api"
+			"value": "http://localhost:8080/api"
 		},
 		{
 			"key": "jwt",
