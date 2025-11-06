@@ -42,7 +42,7 @@ O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento
 |--------|----------|----------------|-----|
 | **`main`** | Desenvolvimento Local | MySQL 8.0+ | http://localhost:8080 |
 | **`sprint4`** | Produção | PostgreSQL 15 (Render) | https://mottuflowjava.onrender.com |
-| **`databse`** | Mastering Database (**Apenas para matéria de Mastering Database**) | Oracle Database | http://localhost:8080/api |
+| **`database`** | Mastering Database (**Apenas para matéria de Mastering Database**) | Oracle Database | http://localhost:8080/api |
 
 ---
 
