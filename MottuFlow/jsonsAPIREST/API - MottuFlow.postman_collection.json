@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "8ba14ee2-7d92-43a3-90b1-6de1d3e44871",
+		"_postman_id": "2d6678fb-b100-479d-a5ee-a2e5a535dea4",
 		"name": "API - MottuFlow",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "39334205",
-		"_collection_link": "https://galactic-resonance-365575.postman.co/workspace/MottuFlow-Endpoints~479ea491-7731-4683-b0a4-56afc7df5c83/collection/39334205-8ba14ee2-7d92-43a3-90b1-6de1d3e44871?action=share&source=collection_link&creator=39334205"
+		"_collection_link": "https://galactic-resonance-365575.postman.co/workspace/MottuFlow-Endpoints~479ea491-7731-4683-b0a4-56afc7df5c83/collection/39334205-2d6678fb-b100-479d-a5ee-a2e5a535dea4?action=share&source=collection_link&creator=39334205"
 	},
 	"item": [
 		{
@@ -22,17 +22,7 @@
 							"type": "noauth"
 						},
 						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "User-Agent",
-								"value": "insomnia/11.5.0",
-								"disabled": true
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"email\": \"admin@email.com\",\n    \"senha\": \"adminmottu\"\n}",
@@ -319,14 +309,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/funcionario/editar/2",
+							"raw": "{{baseUrl}}/funcionario/editar/4",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"funcionario",
 								"editar",
-								"2"
+								"4"
 							]
 						}
 					},
@@ -845,6 +835,40 @@
 								"motos",
 								"buscar-por-patio",
 								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Moto por Modelo (GET)",
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/motos/buscar-por-modelo/Mottu Pop",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"motos",
+								"buscar-por-modelo",
+								"Mottu Pop"
 							]
 						}
 					},
@@ -1652,6 +1676,40 @@
 					"response": []
 				},
 				{
+					"name": "Buscar Status por Moto (GET)",
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/status/buscar-por-moto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"status",
+								"buscar-por-moto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Buscar Status por TIpo Status (GET)",
 					"protocolProfileBehavior": {
 						"followRedirects": true,
@@ -2263,6 +2321,49 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "MasteringDatabase",
+			"item": [
+				{
+					"name": "DATABASE - relatorioFuncionario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/database/funcionario/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"database",
+								"funcionario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DATABASE - relatorioMoto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/database/moto/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"database",
+								"moto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -2306,7 +2407,7 @@
 		},
 		{
 			"key": "jwt",
-			"value": ""
+			"value": "<mude aqui>"
 		}
 	]
 }
