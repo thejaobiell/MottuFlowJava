@@ -255,7 +255,7 @@ Clique aqui para acessar o Swagger UI:   http://localhost:8080/swagger-ui/index.
 ## Acessos Principais
 
 | Serviço | URL Local | Descrição |
-|---------|-----------|--------------|-----------|
+|---------|-----------|-----------|
 | **🖥️ Interface Web** | http://localhost:8080 | Dashboard principal |
 | **📡 API REST** | http://localhost:8080/api | Endpoints REST |
 | **📚 Documentação** | http://localhost:8080/swagger-ui.html | Swagger UI |
