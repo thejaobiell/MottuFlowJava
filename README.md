@@ -1,3 +1,8 @@
+# Este repositório é para uso exclusivo para a matéria de MASTERING RELATIONAL AND NON-RELATIONAL DATABASE
+## Professor Marcel Thomé Filho / pf1547
+
+---
+
 <div align="center">
   <img src="https://github.com/thejaobiell/MottuFlowJava/blob/main/MottuFlow/src/main/resources/static/images/logo.png?raw=true" alt="MottuFlow" width="200"/>
   <h1>𝙈𝙤𝙩𝙩𝙪𝙁𝙡𝙤𝙬</h1>
