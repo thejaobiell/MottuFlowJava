@@ -12,7 +12,6 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)
 ![Oracle](https://img.shields.io/badge/Oracle-Database-red.svg)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-3.x-lightgreen.svg)
-![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7.svg)
 
 ## Visão Geral
 
@@ -27,7 +26,7 @@
 | **💻 Local** | http://localhost:8080 | Desenvolvimento |
 
 
-### 🎥 Demonstração
+### 🎥 Demonstração com o Banco de dados Oracle + Uso das Procedures
 
 [![Ver demonstração da aplicação](https://img.shields.io/badge/YouTube-Demonstração%20da%20Aplicação-red?style=for-the-badge&logo=youtube)](https://youtu.be/bOPGT5gL_h0)
 
@@ -61,7 +60,7 @@ O projeto utiliza branches separadas para gerenciar ambientes de desenvolvimento
 | **📹 Câmeras** | Sistema de monitoramento | Configuração e status |
 | **🏷️ ArUco Tags** | Identificação visual | Cadastro e rastreamento |
 | **📍 Status & Localização** | Tracking em tempo real | Posição, disponibilidade, alertas |
-| **Procedures** | Integração com a matéria de `Mastering Database` | Relatorios de Funcionario e Moto |
+| **Procedures** | Integração com a matéria de `MASTERING RELATIONAL AND NON-RELATIONAL DATABASE` | Relatorios de Funcionario e Moto |
 
 ### Recursos Avançados
 
@@ -102,7 +101,7 @@ MottuFlow/
 │   │   ├── 📁 camera/         # Câmeras
 │   │   ├── 📁 funcionario/    # Funcionários
 │   │   ├── 📁 localidade/     # Localidades
-│   │   ├── 📁 masteringdatabase/     # Service para integração para matéria de Mastering Database
+│   │   ├── 📁 masteringdatabase/     # Service para integração para matéria de MASTERING RELATIONAL AND NON-RELATIONAL DATABASE
 │   │   ├── 📁 moto/           # Motocicletas
 │   │   ├── 📁 patio/          # Pátios
 │   │   └── 📁 status/         # Status das motos
@@ -364,7 +363,7 @@ Content-Type: application/json
 
 ---
 
-## 📊 Relatórios Avançados (Branch `database` - Oracle)
+## 📊 Relatórios Avançados (Branch `database` - Oracle) - MASTERING RELATIONAL AND NON-RELATIONAL DATABASE
 
 ### Relatório de Funcionário
 ```http
