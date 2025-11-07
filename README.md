@@ -29,9 +29,8 @@
 
 [![Ver demonstração da aplicação](https://img.shields.io/badge/YouTube-Demonstração%20da%20Aplicação-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=vQ2NEXrVQ-Q)
 
-[![Ver integração com mobile](https://img.shields.io/badge/YouTube-Integração%20com%20Mobile-red?style=for-the-badge&logo=youtube)](https://youtu.be/j_LRC3WB7pA)
-
-
+[![Ver integração com mobile1](https://img.shields.io/badge/YouTube-Integração1%20com%20Mobile-red?style=for-the-badge&logo=youtube)](https://youtu.be/j_LRC3WB7pA)
+[![Ver integração com mobile2](https://img.shields.io/badge/YouTube-Integração2%20com%20Mobile-red?style=for-the-badge&logo=youtube)](https://youtu.be/4R4TaI2h_lw?si=Odgk_YXUbx0iS86Y)
 ### 🔗 Recursos Externos
 
 - **[📂 Repositório GitHub](https://github.com/thejaobiell/MottuFlowJava)**
