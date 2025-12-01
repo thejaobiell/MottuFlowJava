@@ -1,5 +1,5 @@
 CREATE TABLE camera (
-    id_camera BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id_camera BIGSERIAL PRIMARY KEY,
     status_operacional VARCHAR(20) NOT NULL,
     localizacao_fisica VARCHAR(255) NOT NULL,
     id_patio BIGINT NOT NULL,
@@ -7,6 +7,7 @@ CREATE TABLE camera (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
+
 
 INSERT INTO camera (status_operacional, localizacao_fisica, id_patio) VALUES
 ('OPERACIONAL', 'Entrada principal', 1),

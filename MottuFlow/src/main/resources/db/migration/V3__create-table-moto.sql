@@ -1,5 +1,5 @@
 CREATE TABLE moto (
-    id_moto BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id_moto BIGSERIAL PRIMARY KEY,
     placa VARCHAR(10) NOT NULL,
     modelo VARCHAR(50) NOT NULL,
     fabricante VARCHAR(50) NOT NULL,
